@@ -1,5 +1,8 @@
 package com.example.myfirstapp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +36,7 @@ public class MainActivity extends Activity {
     	EditText editText = (EditText) findViewById(R.id.edit_message);
     	//String message = editText.getText().toString();
     	String message = readTestSms();
+    	//getSMS();
     	intent.putExtra(EXTRA_MESSAGE, message);
     	startActivity(intent);
     }
@@ -56,4 +60,17 @@ public class MainActivity extends Activity {
     	return msgData;
     }
     
+    public List<String> getSMS(){
+        List<String> sms = new ArrayList<String>();
+           Uri uriSMSURI = Uri.parse("content://sms/inbox");
+           Cursor cur = getContentResolver().query(uriSMSURI, null, null, null, null);
+
+           while (cur.moveToNext()) {
+                  String address = cur.getString(cur.getColumnIndex("address"));
+                  String body = cur.getString(cur.getColumnIndexOrThrow("body"));
+                 sms.add("Number: " + address + " .Message: " + body);  
+
+             }
+           return sms;
+    }
 }
