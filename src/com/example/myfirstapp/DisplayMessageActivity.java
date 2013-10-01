@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -29,6 +30,7 @@ public class DisplayMessageActivity extends Activity {
         TextView textView = new TextView(this);
         textView.setTextSize(12);
         textView.setText(message);
+        textView.setMovementMethod(new ScrollingMovementMethod());
         
         /*RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.test_layout);
         views.setTextViewText(R.id.TextView01, "Test message");

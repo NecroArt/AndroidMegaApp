@@ -58,26 +58,29 @@ public class MainActivity extends Activity {
                  int index_Body = cur.getColumnIndex("body");  
                  int index_Date = cur.getColumnIndex("date");  
                  int index_Type = cur.getColumnIndex("type");         
-                 //do {  
-                     String strAddress = cur.getString(index_Address);  
-                     int intPerson = cur.getInt(index_Person);  
-                     String strbody = cur.getString(index_Body);  
-                     long longDate = cur.getLong(index_Date);  
-                     int int_Type = cur.getInt(index_Type);  
+                 do {
+                	 if(cur.getString(index_Address).trim().equalsIgnoreCase("000019"))
+                	 {
+	                     String strAddress = cur.getString(index_Address);  
+	                     int intPerson = cur.getInt(index_Person);  
+	                     String strbody = cur.getString(index_Body);  
+	                     long longDate = cur.getLong(index_Date);  
+	                     int int_Type = cur.getInt(index_Type);  
+	
+	                     smsBuilder.append("[ ");  
+	                     smsBuilder.append(strAddress + ", ");  
+	                     smsBuilder.append(intPerson + ", ");  
+	                     smsBuilder.append(strbody + ", ");  
+	                     smsBuilder.append(longDate + ", ");  
+	                     smsBuilder.append(int_Type);  
+	                     smsBuilder.append(" ]\n\n");
+                	 }
+                 } while (cur.moveToNext());  
 
-                     smsBuilder.append("[ ");  
-                     smsBuilder.append(strAddress + ", ");  
-                     smsBuilder.append(intPerson + ", ");  
-                     smsBuilder.append(strbody + ", ");  
-                     smsBuilder.append(longDate + ", ");  
-                     smsBuilder.append(int_Type);  
-                     smsBuilder.append(" ]\n\n");  
-                 //} while (cur.moveToNext());  
-
-                 //if (!cur.isClosed()) {  
+                 if (!cur.isClosed()) {  
                      cur.close();  
                      cur = null;  
-                 //}  
+                 }  
              } else {  
                  smsBuilder.append("no result!");
              } // end if
