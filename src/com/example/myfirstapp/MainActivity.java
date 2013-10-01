@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
          try {  
              Uri uri = Uri.parse(SMS_URI_INBOX);  
              String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };  
-             Cursor cur = getContentResolver().query(uri, projection, null/*where_clause*/, null, "date desc");
+             Cursor cur = getContentResolver().query(uri, null/*projection*/, null/*"address=000019"*/, null, "date desc");
               if (cur.moveToFirst()) {  
                  int index_Address = cur.getColumnIndex("address");  
                  int index_Person = cur.getColumnIndex("person");  

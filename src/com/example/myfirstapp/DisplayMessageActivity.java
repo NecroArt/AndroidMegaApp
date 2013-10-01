@@ -27,7 +27,7 @@ public class DisplayMessageActivity extends Activity {
         
         // Create the text view
         TextView textView = new TextView(this);
-        textView.setTextSize(40);
+        textView.setTextSize(12);
         textView.setText(message);
         
         /*RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.test_layout);
