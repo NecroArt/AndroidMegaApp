@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
          try {  
              Uri uri = Uri.parse(SMS_URI_INBOX);  
              String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };  
-             Cursor cur = getContentResolver().query(uri, null/*projection*/, null/*"address=000019"*/, null, "date desc");
+             Cursor cur = getContentResolver().query(uri, null/*projection*/, /*null*/"address=\"000019\"", null, "date desc");
               if (cur.moveToFirst()) {  
                  int index_Address = cur.getColumnIndex("address");  
                  int index_Person = cur.getColumnIndex("person");  
@@ -59,22 +59,19 @@ public class MainActivity extends Activity {
                  int index_Date = cur.getColumnIndex("date");  
                  int index_Type = cur.getColumnIndex("type");         
                  do {
-                	 if(cur.getString(index_Address).trim().equalsIgnoreCase("000019"))
-                	 {
-	                     String strAddress = cur.getString(index_Address);  
-	                     int intPerson = cur.getInt(index_Person);  
-	                     String strbody = cur.getString(index_Body);  
-	                     long longDate = cur.getLong(index_Date);  
-	                     int int_Type = cur.getInt(index_Type);  
-	
-	                     smsBuilder.append("[ ");  
-	                     smsBuilder.append(strAddress + ", ");  
-	                     smsBuilder.append(intPerson + ", ");  
-	                     smsBuilder.append(strbody + ", ");  
-	                     smsBuilder.append(longDate + ", ");  
-	                     smsBuilder.append(int_Type);  
-	                     smsBuilder.append(" ]\n\n");
-                	 }
+            	     String strAddress = cur.getString(index_Address);  
+                     int intPerson = cur.getInt(index_Person);  
+                     String strbody = cur.getString(index_Body);  
+                     long longDate = cur.getLong(index_Date);  
+                     int int_Type = cur.getInt(index_Type);  
+
+                     smsBuilder.append("[ ");  
+                     smsBuilder.append(strAddress + ", ");  
+                     smsBuilder.append(intPerson + ", ");  
+                     smsBuilder.append(strbody + ", ");  
+                     smsBuilder.append(longDate + ", ");  
+                     smsBuilder.append(int_Type);  
+                     smsBuilder.append(" ]\n\n");
                  } while (cur.moveToNext());  
 
                  if (!cur.isClosed()) {  
