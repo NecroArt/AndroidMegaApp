@@ -1,6 +1,7 @@
 package com.example.myfirstapp;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -60,7 +61,7 @@ public class MainActivity extends Activity {
              Uri uri = Uri.parse(SMS_URI_INBOX);  
              String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };
              String whereClause = "address=\"000019\"";
-             Cursor cur = getContentResolver().query(uri, null/*projection*/, /*null*/whereClause, null, (rowNumReq > 0 ? " date " + "limit 0, " + rowNumReq.toString(): null));
+             Cursor cur = getContentResolver().query(uri, projection, whereClause, null, " date" + (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString(): ""));
               if (cur.moveToFirst()) {
                  int index_Address = cur.getColumnIndex("address");
                  int index_Person = cur.getColumnIndex("person");
@@ -78,7 +79,7 @@ public class MainActivity extends Activity {
                      smsBuilder.append(strAddress + ", ");
                      smsBuilder.append(intPerson + ", ");
                      smsBuilder.append(strbody + ", ");
-                     smsBuilder.append(longDate + ", ");
+                     smsBuilder.append(new Date(longDate)+ ", ");
                      smsBuilder.append(int_Type);
                      smsBuilder.append(" ]\n\n");
                  } while (cur.moveToNext());
