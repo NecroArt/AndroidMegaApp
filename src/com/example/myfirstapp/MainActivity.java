@@ -36,21 +36,31 @@ public class MainActivity extends Activity {
     	Intent intent = new Intent(this, DisplayMessageActivity.class);
     	EditText editText = (EditText) findViewById(R.id.edit_message);
     	//String message = editText.getText().toString();
-    	String message = getSMS();
+    	Integer rowNumReq = 0;
+    	try {
+    		rowNumReq = Integer.parseInt(editText.getText().toString());
+    	}
+    	catch (NumberFormatException ex)
+    	{
+    		/*rowNumReq = 0;*/
+    		//action not required
+    	}
+    	String message = getSMS(rowNumReq);
     	//getSMS();
     	intent.putExtra(EXTRA_MESSAGE, message);
     	startActivity(intent);
     }
     
-    public String getSMS() {
+    public String getSMS(Integer rowNumReq) {
     	
     	StringBuilder smsBuilder = new StringBuilder();
         final String SMS_URI_INBOX = "content://sms/inbox";
         final String SMS_URI_ALL = "content://sms/";
-         try {  
+         try {
              Uri uri = Uri.parse(SMS_URI_INBOX);  
-             String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };  
-             Cursor cur = getContentResolver().query(uri, null/*projection*/, /*null*/"address=\"000019\"", null, "date desc");
+             String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };
+             String whereClause = "address=\"000019\"";
+             Cursor cur = getContentResolver().query(uri, null/*projection*/, /*null*/whereClause, null, (rowNumReq > 0 ? " date " + "limit 0, " + rowNumReq.toString(): null));
               if (cur.moveToFirst()) {
                  int index_Address = cur.getColumnIndex("address");
                  int index_Person = cur.getColumnIndex("person");
@@ -82,6 +92,7 @@ public class MainActivity extends Activity {
              }
          }
          catch (SQLiteException ex) {
+        	 String errMsg = ex.getMessage();
              System.out.println("SQLiteException" + ex.getMessage());
          }
          
