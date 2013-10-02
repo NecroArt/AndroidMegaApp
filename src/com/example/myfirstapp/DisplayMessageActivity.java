@@ -3,6 +3,7 @@ package com.example.myfirstapp;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -27,16 +28,19 @@ public class DisplayMessageActivity extends Activity {
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         
         // Create the text view
-        TextView textView = new TextView(this);
+        setContentView(R.layout.activity_display_message);
+        TextView textView = (TextView) findViewById(R.id.sms_text);
         textView.setTextSize(12);
         textView.setText(message);
-        textView.setMovementMethod(new ScrollingMovementMethod());
+        //textView.setMaxLines(5);
+        //textView.setMovementMethod(new ScrollingMovementMethod());
         
         /*RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.test_layout);
         views.setTextViewText(R.id.TextView01, "Test message");
         appWidgetManager.updateAppWidget(appWidgetIds, views);*/
         
-        setContentView(textView);
+        //setContentView(textView);
+        
 	}
 
 	/**
