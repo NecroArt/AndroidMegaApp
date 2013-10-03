@@ -1,17 +1,18 @@
 package com.example.myfirstapp;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.MenuItem;
-import android.widget.TextView;
-import android.support.v4.app.NavUtils;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 
-public class DisplayMessageActivity extends Activity {
 
+
+public class DisplayTableActivity extends Activity {
+	
 	@SuppressLint("NewApi") 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,24 +24,9 @@ public class DisplayMessageActivity extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        
-        // Create the text view
-        setContentView(R.layout.activity_display_message);
-        TextView textView = (TextView) findViewById(R.id.sms_text);
-        textView.setTextSize(12);
-        textView.setText(message);
-        //textView.setMaxLines(5);
-        //textView.setMovementMethod(new ScrollingMovementMethod());
-        
-        /*RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.test_layout);
-        views.setTextViewText(R.id.TextView01, "Test message");
-        appWidgetManager.updateAppWidget(appWidgetIds, views);*/
-        
-        //setContentView(textView);
-        
+        setContentView(R.layout.activity_display_table);
 	}
-
+	
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
@@ -50,7 +36,7 @@ public class DisplayMessageActivity extends Activity {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -67,5 +53,4 @@ public class DisplayMessageActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 }

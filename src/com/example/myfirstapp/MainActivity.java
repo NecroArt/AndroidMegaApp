@@ -1,9 +1,6 @@
 package com.example.myfirstapp;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +30,7 @@ public class MainActivity extends Activity {
     }
     
     /** Called when the user clicks the Send button */
-    public void sendMessage(View view) {
+    public void showMessages(View view) {
     	Intent intent = new Intent(this, DisplayMessageActivity.class);
     	EditText editText = (EditText) findViewById(R.id.edit_message);
     	//String message = editText.getText().toString();
@@ -56,14 +53,17 @@ public class MainActivity extends Activity {
     	
     	StringBuilder smsBuilder = new StringBuilder();
         final String SMS_URI_INBOX = "content://sms/inbox";
-        final String SMS_URI_ALL = "content://sms/";
-         try {
+        try {
              Uri uri = Uri.parse(SMS_URI_INBOX);  
              String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };
+             
+             //interesting sms only from 000019
              String whereClause = "address=\"000019\"";
+             
+             //fetching sms with order by date
              Cursor cur = getContentResolver().query(uri, projection, whereClause, null, " date" + (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString(): ""));
-              if (cur.moveToFirst()) {
-                 int index_Address = cur.getColumnIndex("address");
+             if (cur.moveToFirst()) {
+            	 int index_Address = cur.getColumnIndex("address");
                  int index_Person = cur.getColumnIndex("person");
                  int index_Body = cur.getColumnIndex("body");
                  int index_Date = cur.getColumnIndex("date");
@@ -93,11 +93,23 @@ public class MainActivity extends Activity {
              }
          }
          catch (SQLiteException ex) {
-        	 String errMsg = ex.getMessage();
-             System.out.println("SQLiteException" + ex.getMessage());
+        	 smsBuilder.append("SQLiteException" + ex.getMessage());
          }
          
          return smsBuilder.toString();
     }
     
+    public void showTable(View view) {
+    	try {
+    		Intent intent = new Intent(this, DisplayTableActivity.class);
+    		startActivity(intent);
+    	}
+    	catch (java.lang.IllegalStateException ex) {
+    		Intent intent = new Intent(this, DisplayMessageActivity.class);
+    		String message = getSMS(1);
+        	intent.putExtra(EXTRA_MESSAGE, message);
+        	startActivity(intent);
+    	}
+    	
+    }
 }
