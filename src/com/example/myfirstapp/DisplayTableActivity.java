@@ -1,13 +1,13 @@
 package com.example.myfirstapp;
 
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.MenuItem;
+import android.support.v4.app.NavUtils;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.view.MenuItem;
 
 
 
@@ -24,9 +24,12 @@ public class DisplayTableActivity extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         Intent intent = getIntent();
-        setContentView(R.layout.activity_display_table);
+        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        
+        // Create the text view
+        setContentView(R.layout.activity_display_table);        
 	}
-	
+
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
@@ -36,7 +39,7 @@ public class DisplayTableActivity extends Activity {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -53,4 +56,5 @@ public class DisplayTableActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 }

@@ -30,15 +30,7 @@ public class DisplayMessageActivity extends Activity {
         TextView textView = (TextView) findViewById(R.id.sms_text);
         textView.setTextSize(12);
         textView.setText(message);
-        //textView.setMaxLines(5);
-        //textView.setMovementMethod(new ScrollingMovementMethod());
-        
-        /*RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.test_layout);
-        views.setTextViewText(R.id.TextView01, "Test message");
-        appWidgetManager.updateAppWidget(appWidgetIds, views);*/
-        
-        //setContentView(textView);
-        
+
 	}
 
 	/**

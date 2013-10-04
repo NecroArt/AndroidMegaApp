@@ -33,7 +33,6 @@ public class MainActivity extends Activity {
     public void showMessages(View view) {
     	Intent intent = new Intent(this, DisplayMessageActivity.class);
     	EditText editText = (EditText) findViewById(R.id.edit_message);
-    	//String message = editText.getText().toString();
     	Integer rowNumReq = 0;
     	try {
     		rowNumReq = Integer.parseInt(editText.getText().toString());
@@ -44,7 +43,6 @@ public class MainActivity extends Activity {
     		//action not required
     	}
     	String message = getSMS(rowNumReq);
-    	//getSMS();
     	intent.putExtra(EXTRA_MESSAGE, message);
     	startActivity(intent);
     }
@@ -100,16 +98,19 @@ public class MainActivity extends Activity {
     }
     
     public void showTable(View view) {
+    	Intent intent = new Intent(this, DisplayTableActivity.class);
+    	EditText editText = (EditText) findViewById(R.id.edit_message);
+    	Integer rowNumReq = 0;
     	try {
-    		Intent intent = new Intent(this, DisplayTableActivity.class);
-    		startActivity(intent);
+    		rowNumReq = Integer.parseInt(editText.getText().toString());
     	}
-    	catch (java.lang.IllegalStateException ex) {
-    		Intent intent = new Intent(this, DisplayMessageActivity.class);
-    		String message = getSMS(1);
-        	intent.putExtra(EXTRA_MESSAGE, message);
-        	startActivity(intent);
+    	catch (NumberFormatException ex)
+    	{
+    		/*rowNumReq = 0;*/
+    		//action not required
     	}
-    	
+    	String message = getSMS(rowNumReq);
+    	intent.putExtra(EXTRA_MESSAGE, message);
+    	startActivity(intent);
     }
 }
