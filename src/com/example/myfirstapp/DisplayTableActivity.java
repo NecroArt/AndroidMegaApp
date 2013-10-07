@@ -1,7 +1,9 @@
 package com.example.myfirstapp;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -174,13 +176,16 @@ public class DisplayTableActivity extends Activity {
         	TableRow currentRow = new TableRow(this);  
         	currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
         	
+        	TextView SMSDateView = new TextView(this);
+        	SMSDateView.setText(currentSMS.date.get(Calendar.DAY_OF_MONTH) + " " + new SimpleDateFormat("MMMM").format(currentSMS.date.getTime()) + 
+    				" " + String.format("%02d:%02d", 
+    						currentSMS.date.get(Calendar.HOUR_OF_DAY), 
+    						currentSMS.date.get(Calendar.MINUTE)));
+        	currentRow.addView(SMSDateView);
+
         	TextView SMSTextView = new TextView(this);
         	SMSTextView.setText(currentSMS.content);
         	currentRow.addView(SMSTextView);
-        	
-        	TextView SMSDateView = new TextView(this);
-        	SMSDateView.setText(currentSMS.date.getTime().toString());
-        	currentRow.addView(SMSDateView);
         	
         	SMSTable.addView(currentRow);
         }
