@@ -1,16 +1,20 @@
 package com.example.myfirstapp;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.graphics.Typeface;
+import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -30,7 +34,7 @@ public class DisplayTableActivity extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         
-        TableLayout table = new TableLayout(this);
+        /*TableLayout table = new TableLayout(this);
         table.setStretchAllColumns(true);  
         table.setShrinkAllColumns(true);
         TableRow rowTitle = new TableRow(this);  
@@ -145,7 +149,34 @@ public class DisplayTableActivity extends Activity {
         table.addView(rowHighs);  
         table.addView(rowLows);  
         table.addView(rowConditions);  
-        setContentView(table);
+        setContentView(table);*/
+        
+        ArrayList<SMS> SMSArray = new ArrayList<SMS>(); 
+        SMSArray = getSMSArrayList();
+        
+        TableLayout SMSTable = new TableLayout(this);
+        SMSTable.setStretchAllColumns(true);  
+        SMSTable.setShrinkAllColumns(true);
+        
+        for (SMS currentSMS: SMSArray) {
+        	TableRow currentRow = new TableRow(this);  
+        	currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
+        	
+        	TextView SMSTextView = new TextView(this);
+        	SMSTextView.setText(currentSMS.content);
+        	currentRow.addView(SMSTextView);
+        	
+        	TextView SMSDateView = new TextView(this);
+        	SMSDateView.setText(currentSMS.date.getTime().toString());
+        	currentRow.addView(SMSDateView);
+        	
+        	SMSTable.addView(currentRow);
+        }
+        
+        ScrollView tableScrollView = new ScrollView(this);
+        tableScrollView.addView(SMSTable);
+        
+        setContentView(tableScrollView);
 	}
 
 	/**
@@ -175,4 +206,65 @@ public class DisplayTableActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	ArrayList<SMS> getSMSArrayList () {
+		ArrayList<SMS> array = new ArrayList<SMS>();
+		final String SMS_URI_INBOX = "content://sms/inbox";
+        try {
+             Uri uri = Uri.parse(SMS_URI_INBOX);  
+             String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };
+             
+             //interesting sms only from 000019
+             String whereClause = "address=\"000019\"";
+             
+             //fetching sms with order by date
+             Cursor cur = getContentResolver().query(uri, projection, whereClause, null, " date asc");
+             if (cur.moveToFirst()) {
+            	 int index_Address = cur.getColumnIndex("address");
+                 int index_Person = cur.getColumnIndex("person");
+                 int index_Body = cur.getColumnIndex("body");
+                 int index_Date = cur.getColumnIndex("date");
+                 int index_Type = cur.getColumnIndex("type");
+                 do {
+            	     String strAddress = cur.getString(index_Address);
+                     int intPerson = cur.getInt(index_Person);
+                     String strbody = cur.getString(index_Body);
+                     long longDate = cur.getLong(index_Date);
+                     int int_Type = cur.getInt(index_Type);
+
+                     Calendar currentCalendarDate = Calendar.getInstance();
+                     currentCalendarDate.setTimeInMillis(longDate);
+                     SMS newSMS = new SMS(strbody, currentCalendarDate);
+                     
+                     array.add(newSMS);
+                     /*smsBuilder.append("[ ");
+                     smsBuilder.append(strAddress + ", ");
+                     smsBuilder.append(intPerson + ", ");
+                     smsBuilder.append(strbody + ", ");
+                     smsBuilder.append(new Date(longDate)+ ", ");
+                     smsBuilder.append(int_Type);
+                     smsBuilder.append(" ]\n\n");*/
+                 } while (cur.moveToNext());
+
+                 if (!cur.isClosed()) {
+                     cur.close();
+                     cur = null;
+                 }
+             }
+         }
+         catch (SQLiteException ex) {
+        	 System.out.println("sql-exception occured");
+         }
+        
+        return array;
+	}
+
+	public class SMS {
+		String content;
+		Calendar date;
+		
+		public SMS (String content, Calendar date){
+			this.content = content;
+			this.date = date;
+		}
+	}
 }
