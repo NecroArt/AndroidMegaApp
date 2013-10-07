@@ -6,6 +6,7 @@ import java.util.Calendar;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
@@ -151,8 +152,19 @@ public class DisplayTableActivity extends Activity {
         table.addView(rowConditions);  
         setContentView(table);*/
         
+        Intent intent = getIntent();
+        Integer rowNumReq = 0;
+    	try {
+    		rowNumReq = Integer.parseInt(intent.getStringExtra(MainActivity.EXTRA_MESSAGE));
+    	}
+    	catch (NumberFormatException ex)
+    	{
+    		/*rowNumReq = 0;*/
+    		//action not required
+    	}
+    	
         ArrayList<SMS> SMSArray = new ArrayList<SMS>(); 
-        SMSArray = getSMSArrayList();
+        SMSArray = getSMSArrayList(rowNumReq);
         
         TableLayout SMSTable = new TableLayout(this);
         SMSTable.setStretchAllColumns(true);  
@@ -206,7 +218,7 @@ public class DisplayTableActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	ArrayList<SMS> getSMSArrayList () {
+	ArrayList<SMS> getSMSArrayList (Integer rowNumReq) {
 		ArrayList<SMS> array = new ArrayList<SMS>();
 		final String SMS_URI_INBOX = "content://sms/inbox";
         try {
@@ -217,7 +229,7 @@ public class DisplayTableActivity extends Activity {
              String whereClause = "address=\"000019\"";
              
              //fetching sms with order by date
-             Cursor cur = getContentResolver().query(uri, projection, whereClause, null, " date asc");
+             Cursor cur = getContentResolver().query(uri, projection, whereClause, null, " date asc" + (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString(): ""));
              if (cur.moveToFirst()) {
             	 int index_Address = cur.getColumnIndex("address");
                  int index_Person = cur.getColumnIndex("person");

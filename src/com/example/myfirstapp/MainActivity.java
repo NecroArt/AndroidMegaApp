@@ -14,6 +14,7 @@ import android.widget.EditText;
 public class MainActivity extends Activity {
 
 	public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+	public final static Integer COLUMN_REQ_AMOUNT = 0;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,17 +101,7 @@ public class MainActivity extends Activity {
     public void showTable(View view) {
     	Intent intent = new Intent(this, DisplayTableActivity.class);
     	EditText editText = (EditText) findViewById(R.id.edit_message);
-    	Integer rowNumReq = 0;
-    	try {
-    		rowNumReq = Integer.parseInt(editText.getText().toString());
-    	}
-    	catch (NumberFormatException ex)
-    	{
-    		/*rowNumReq = 0;*/
-    		//action not required
-    	}
-    	String message = getSMS(rowNumReq);
-    	intent.putExtra(EXTRA_MESSAGE, message);
+    	intent.putExtra(EXTRA_MESSAGE, editText.getText().toString());
     	startActivity(intent);
     }
 }
