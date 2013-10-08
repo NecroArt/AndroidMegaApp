@@ -1,3 +1,4 @@
+package com.example.myfirstapp;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +16,7 @@ public class SmsReceiver  extends BroadcastReceiver{
 	        // TODO Auto-generated method stub
 
 	        //if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
-	            Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
+	            /*Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
 	            SmsMessage[] msgs = null;
 	            String msg_from;
 	            if (bundle != null){
@@ -36,7 +37,8 @@ public class SmsReceiver  extends BroadcastReceiver{
 	                }catch(Exception e){
 	                	//Log.d("Exception caught",e.getMessage());
 	                }
-	            }
+	            }*/
 	        //}
+	    	Toast.makeText(context, "onReceive invoked", Toast.LENGTH_SHORT).show();
 	    }
 }

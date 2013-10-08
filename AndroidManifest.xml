@@ -41,7 +41,7 @@
                 android:value="com.example.myfirstapp.MainActivity" />
         </activity>
         
-        <receiver android:name = ".SmsReceiver">
+        <receiver android:name = "com.example.myfirstapp.SmsReceiver">
         	<intent-filter>
         	    <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
         	</intent-filter>
