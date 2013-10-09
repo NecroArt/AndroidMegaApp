@@ -39,5 +39,6 @@ public class SmsReceiver  extends BroadcastReceiver{
 	                }
 	            }
 	        //}
+	            //FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getContext());
 	    }
 }
