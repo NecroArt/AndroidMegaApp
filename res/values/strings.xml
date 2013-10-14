@@ -9,5 +9,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_display_message">My Message</string>
     <string name="title_activity_display_table">My Table</string>
+    <string name="title_activity_add_sms">Add sms</string>
 
 </resources>

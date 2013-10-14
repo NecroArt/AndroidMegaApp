@@ -108,7 +108,7 @@ public class DisplayTableActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	ArrayList<SMS> getSMSArrayList (Integer rowNumReq) {
+	public ArrayList<SMS> getSMSArrayList (Integer rowNumReq) {
 		ArrayList<SMS> array = new ArrayList<SMS>();
 		final String SMS_URI_INBOX = "content://sms/inbox";
         try {
@@ -167,6 +167,14 @@ public class DisplayTableActivity extends Activity {
 		public SMS (String content, Calendar date){
 			this.content = content;
 			this.date = date;
+		}
+		
+		public String getContent () {
+			return this.content;
+		}
+		
+		public Calendar getDate () {
+			return this.date;
 		}
 	}
 }

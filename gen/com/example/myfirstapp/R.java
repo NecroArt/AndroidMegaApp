@@ -44,6 +44,7 @@ public final class R {
         public static final int button_send=0x7f050002;
         public static final int button_table=0x7f050003;
         public static final int edit_message=0x7f050001;
+        public static final int title_activity_add_sms=0x7f050008;
         public static final int title_activity_display_message=0x7f050006;
         public static final int title_activity_display_table=0x7f050007;
         public static final int title_activity_main=0x7f050005;

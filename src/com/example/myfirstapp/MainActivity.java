@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 import database.DbHelper;
 import database.SmsRecord;
 
@@ -186,6 +187,12 @@ public class MainActivity extends Activity {
 		ArrayList<SmsRecord> array = DbHelper.getAll();
 		Intent intent = new Intent(this, DisplayTableActivity.class);
 		
+		DbHelper dbHelper = new DbHelper(this, null, null, 1);
+		
+		for (SmsRecord currentSmsRecord: array) {
+			dbHelper.addRecord(currentSmsRecord.getDate().toString(), currentSmsRecord.getParameterName(), currentSmsRecord.getParameterValue());
+		}
+		Toast.makeText(this, "sms added to database", Toast.LENGTH_SHORT).show();
     	intent.putParcelableArrayListExtra("SmsRecordsArray", array);
 	}
 }

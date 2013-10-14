@@ -10,8 +10,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 import android.provider.SyncStateContract.Columns;
+import com.example.myfirstapp.DisplayTableActivity;
+import com.example.myfirstapp.DisplayTableActivity.SMS;
 
 public class DbHelper extends SQLiteOpenHelper {
 
@@ -139,7 +142,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		
 		//TODO delete
 		
-		//TODO set value "deleted" variable 
+		//TODO set value "deleted" variable
 		
 		return deleted;
 		
@@ -155,9 +158,19 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * Return set number records from database, group by id. If amount is not defined or 0, then return all records. If table empty - returns null.
 	 */
 	public static ArrayList<SmsRecord> getAll () {
-		ArrayList<SmsRecord> recordArray = null;
+		ArrayList<SmsRecord> recordArray = new ArrayList<SmsRecord>();
+		DisplayTableActivity classEntity = new DisplayTableActivity();
+		ArrayList<SMS> smsArrayList = classEntity.getSMSArrayList (3);
+		Integer i = 0;
+		for (SMS currentSMS: smsArrayList) {
+			//TODO right sms adding
+			SmsRecord newSmsRecord = new SmsRecord(currentSMS.getDate(), "param " + i.toString(), "value " + i.toString());
+			recordArray.add(newSmsRecord);
+			i++;
+		}
+		 
 		return recordArray;
 		
 	}
-	
+		
 }

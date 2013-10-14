@@ -8,6 +8,21 @@ import android.util.Log;
 
 public class SmsRecord implements Parcelable {
 	
+	public class SmsRecordCreator implements Parcelable.Creator<SmsRecord> {
+
+		@Override
+		public SmsRecord createFromParcel(Parcel source) {
+			return new SmsRecord(source);
+		}
+
+		@Override
+		public SmsRecord[] newArray(int size) {
+			return new SmsRecord[size];
+		}
+		
+	}
+	
+	
 	private int id;
 	private Calendar date;
 	private String parameterName;
@@ -16,6 +31,14 @@ public class SmsRecord implements Parcelable {
 	public SmsRecord (int id, Calendar date, String parameterName, String parameterValue) {
 		
 		this.id = id;
+		this.date = date;
+		this.parameterName = parameterName;
+		this.parameterValue = parameterValue;
+		
+	}
+	
+	public SmsRecord (Calendar date, String parameterName, String parameterValue) {
+		
 		this.date = date;
 		this.parameterName = parameterName;
 		this.parameterValue = parameterValue;
