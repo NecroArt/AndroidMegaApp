@@ -29,19 +29,16 @@ public class SmsReceiver extends BroadcastReceiver {
 			try {
 				Object[] pdus = (Object[]) bundle.get("pdus");
 				msgs = new SmsMessage[pdus.length];
-				String allMEssages = "";
+				String allMessages = "";
 				for (int i = 0; i < msgs.length; i++) {
 					msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
 					msg_from = msgs[i].getOriginatingAddress();
 					String msgBody = msgs[i].getMessageBody();
 					
-					//test
-					String MarkResult = markMessageRead(context, msg_from, msgBody);
-					
-					allMEssages += MarkResult + " - " + msgBody;
+					allMessages += msgBody;
 				}
 				Toast.makeText(context,
-						(allMEssages.length() == 0 ? "no text" : allMEssages),
+						(allMessages.length() == 0 ? "no text" : allMessages),
 						Toast.LENGTH_SHORT).show();
 
 			} catch (Exception e) {
@@ -56,19 +53,19 @@ public class SmsReceiver extends BroadcastReceiver {
 
 		String result = "";
 		Uri uri = Uri.parse("content://sms/inbox");
-		Cursor cursor = context.getContentResolver().query(uri, null, null,
+		String whereClause = "address=\"" + number +"\"";
+		/*try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			result = "faild when try sleep; ";
+		}*/
+		
+		Cursor cursor = context.getContentResolver().query(uri, null, whereClause,
 				null, null);
 		try {
 
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				result = "faild when try sleep; ";
-			}
 			while (cursor.moveToNext()) {
-				if ((cursor.getString(cursor.getColumnIndex("address"))
-						.equals(number))
-						&& (cursor.getInt(cursor.getColumnIndex("read")) == 0)) {
+				if (cursor.getInt(cursor.getColumnIndex("read")) == 0) {
 					if (cursor.getString(cursor.getColumnIndex("body"))
 							.startsWith(body)) {
 						String SmsMessageId = cursor.getString(cursor
@@ -86,8 +83,6 @@ public class SmsReceiver extends BroadcastReceiver {
 			Log.e("Mark Read", "Error in Read: " + e.toString());
 			result += "exception during marking";
 		}
-		finally {
-			return result;
-		}
+		return result;
 	}
 }

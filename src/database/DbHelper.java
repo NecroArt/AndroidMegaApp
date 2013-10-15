@@ -112,7 +112,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		{
 			do {
 				Calendar date = Calendar.getInstance();
-				date.setTimeInMillis(Long.parseLong(cursor.getString(1)));
+				date.setTimeInMillis(Long.parseLong(cursor.getString(0)));
 				
 				SmsRecord newRecord = new SmsRecord(
 						Integer.parseInt(cursor.getString(0)),

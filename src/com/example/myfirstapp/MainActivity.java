@@ -184,15 +184,27 @@ public class MainActivity extends Activity {
 	
 	public void showAddedSms(View view) {
 		//TODO show sms from database
-		ArrayList<SmsRecord> array = DbHelper.getAll();
+		//ArrayList<SmsRecord> array = DbHelper.getAll();
 		Intent intent = new Intent(this, DisplayTableActivity.class);
 		
 		DbHelper dbHelper = new DbHelper(this, null, null, 1);
 		
-		for (SmsRecord currentSmsRecord: array) {
+		/*for (SmsRecord currentSmsRecord: array) {
 			dbHelper.addRecord(currentSmsRecord.getDate().toString(), currentSmsRecord.getParameterName(), currentSmsRecord.getParameterValue());
-		}
+		}*/
+		//test
+		Calendar tempCalendar = Calendar.getInstance();
+		dbHelper.addRecord(tempCalendar.getTime().toString(), "parameterName", "parameter value");
+		
 		Toast.makeText(this, "sms added to database", Toast.LENGTH_SHORT).show();
-    	intent.putParcelableArrayListExtra("SmsRecordsArray", array);
+		try {
+			Thread.sleep(5000);
+		}
+		catch (InterruptedException ex) {
+			Toast.makeText(this, "exception during trying sleep", Toast.LENGTH_SHORT).show();
+		}
+		ArrayList<SmsRecord> array = dbHelper.findByParameterName("parameterName");
+		Toast.makeText(this, array.get(0).getParameterValue(), Toast.LENGTH_SHORT).show();
+    	//intent.putParcelableArrayListExtra("SmsRecordsArray", array);
 	}
 }
