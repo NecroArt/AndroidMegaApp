@@ -194,7 +194,8 @@ public class MainActivity extends Activity {
 		}*/
 		//test
 		Calendar tempCalendar = Calendar.getInstance();
-		dbHelper.addRecord(tempCalendar.getTime().toString(), "parameterName", "parameter value");
+		Long tempLong = (Long)(tempCalendar.getTimeInMillis());
+		dbHelper.addRecord(tempLong.toString(), "parameterName", "parameter value");
 		
 		Toast.makeText(this, "sms added to database", Toast.LENGTH_SHORT).show();
 		try {

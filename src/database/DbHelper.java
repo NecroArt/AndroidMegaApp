@@ -23,7 +23,8 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 	public static final String SQL_CREATE_ENTRIES =
 			"CREATE TABLE " + TableEntry.TABLE_NAME + " (" + TableEntry.COLUMN_NAME_SMS_ID + " " + TableEntry.INTEGER_TYPE + " PRIMARY KEY, " +
-					TableEntry.COLUMN_NAME_DATE + " timestamp, " + TableEntry.COLUMN_NAME_PARAMETER + " varchar (100));";
+					TableEntry.COLUMN_NAME_DATE + " timestamp, " + TableEntry.COLUMN_NAME_PARAMETER + " varchar (100)" + 
+					TableEntry.COLUMN_NAME_VALUE + " varchar (100));";
 	
 	private static final String SQL_DELETE_ENTRIES =
 			"DROP TABLE IF EXIST " + TableEntry.TABLE_NAME;
@@ -52,6 +53,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		public static final String COLUMN_NAME_SMS_ID = "sms_id";
 		public static final String COLUMN_NAME_DATE = "date";
 		public static final String COLUMN_NAME_PARAMETER = "parameter";
+		public static final String COLUMN_NAME_VALUE = "value";
 		public static final String INTEGER_TYPE = "INTEGER";
 	}
 	
@@ -79,7 +81,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_NAME_DATE, date);
 		values.put(COLUMN_NAME_PARAMETER, parameter);
-		values.put(COLUMN_NAME_DATE, date);
+		values.put(COLUMN_NAME_VALUE, value);
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -115,10 +117,9 @@ public class DbHelper extends SQLiteOpenHelper {
 				date.setTimeInMillis(Long.parseLong(cursor.getString(0)));
 				
 				SmsRecord newRecord = new SmsRecord(
-						Integer.parseInt(cursor.getString(0)),
 						date,
-						cursor.getString(2),
-						cursor.getString(3)
+						cursor.getString(1),
+						cursor.getString(2)
 						);
 				rec.add(newRecord);
 			}
