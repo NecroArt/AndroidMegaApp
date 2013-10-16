@@ -62,6 +62,10 @@ public class SmsRecord implements Parcelable {
 		parameterValue = source.readString();
 	}
 	
+	public String getSmsId () {
+		return this.smsId;
+	}
+	
 	public Calendar getDate () {
 		return this.date;
 	}

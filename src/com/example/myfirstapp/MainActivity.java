@@ -120,7 +120,7 @@ public class MainActivity extends Activity {
     	ArrayList<SmsRecord> array = getSMSArrayList(0);
     	for (SmsRecord currentSms: array) {
     		//TODO add to database
-    		dbHandler.addRecord("0", currentSms.getDate().toString(), currentSms.getParameterName(), currentSms.getParameterValue());
+    		//dbHandler.addRecord("0", currentSms.getDate().toString(), currentSms.getParameterName(), currentSms.getParameterValue());
     	}
     }
     
@@ -189,15 +189,17 @@ public class MainActivity extends Activity {
 		//ArrayList<SmsRecord> array = DbHelper.getAll();
 		Intent intent = new Intent(this, DisplayTableActivity.class);
 		
-		DbHelper dbHelper = new DbHelper(this, null, null, 1);
+		
+		DbHelper dbHelper = new DbHelper(this, /*"productDB.db"*/null, null, 2);
 		
 		/*for (SmsRecord currentSmsRecord: array) {
 			dbHelper.addRecord(currentSmsRecord.getDate().toString(), currentSmsRecord.getParameterName(), currentSmsRecord.getParameterValue());
 		}*/
 		//test
 		Calendar tempCalendar = Calendar.getInstance();
-		Long tempLong = (Long)(tempCalendar.getTimeInMillis());
-		dbHelper.addRecord("1", tempLong.toString(), "parameter name 3", "parameter value 3");
+		//Long tempLong = (Long)(tempCalendar.getTimeInMillis());
+		SmsRecord newSms = new SmsRecord("1", tempCalendar, "parameter name 3", "parameter value 3");
+		dbHelper.addRecord(newSms);
 		
 		Toast.makeText(this, "sms added to database", Toast.LENGTH_SHORT).show();
 		try {

@@ -18,14 +18,14 @@ import com.example.myfirstapp.DisplayTableActivity.SMS;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 	private static final String DATABASE_NAME = "productDB.db";
 	
 	public static final String SQL_CREATE_ENTRIES =
 			"CREATE TABLE " + TableEntry.TABLE_NAME + " (" + 
-					TableEntry.COLUMN_NAME_ID + TableEntry.INTEGER_TYPE + " PRIMARY KEY, " + 
+					TableEntry.COLUMN_NAME_ID + " " + TableEntry.INTEGER_TYPE + " PRIMARY KEY, " + 
 					TableEntry.COLUMN_NAME_SMS_ID + " " + TableEntry.INTEGER_TYPE + ", " +
-					TableEntry.COLUMN_NAME_DATE + TableEntry.INTEGER_TYPE + " , " + 
+					TableEntry.COLUMN_NAME_DATE + " " + TableEntry.INTEGER_TYPE + " , " + 
 					TableEntry.COLUMN_NAME_PARAMETER + " varchar (100), " + 
 					TableEntry.COLUMN_NAME_VALUE + " varchar (100)" +
 							");";
@@ -83,15 +83,15 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * @param parameter - parameter name 
 	 * @param value - parameter value
 	 */
-	public boolean addRecord (String smsId, String date, String parameter, String value) {
+	public boolean addRecord (SmsRecord addingRecord) {
 		
 		boolean added = false;
 		
 		ContentValues values = new ContentValues();
-		values.put(COLUMN_NAME_SMS_ID, smsId);
-		values.put(COLUMN_NAME_DATE, date);
-		values.put(COLUMN_NAME_PARAMETER, parameter);
-		values.put(COLUMN_NAME_VALUE, value);
+		values.put(COLUMN_NAME_SMS_ID, addingRecord.getSmsId());
+		values.put(COLUMN_NAME_DATE, addingRecord.getDate().getTimeInMillis());
+		values.put(COLUMN_NAME_PARAMETER, addingRecord.getParameterName());
+		values.put(COLUMN_NAME_VALUE, addingRecord.getParameterValue());
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -111,7 +111,8 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 	public ArrayList<SmsRecord> findByParameterName (String name) {
 		
-		String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_PARAMETER + " =  \"" + name + "\"";
+		//String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_PARAMETER + " = \"" + name + "\"";
+		String query = "Select * FROM " + TABLE_NAME;
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
