@@ -30,5 +30,11 @@
         android:layout_height="wrap_content"
         android:text="@string/title_activity_add_sms" 
         android:onClick="showAddedSms"/>
+    
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_drop_db" 
+        android:onClick="dropDatabase"/>
 
 </LinearLayout>

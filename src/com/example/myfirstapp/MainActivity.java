@@ -1,5 +1,6 @@
 package com.example.myfirstapp;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -118,7 +120,7 @@ public class MainActivity extends Activity {
     	ArrayList<SmsRecord> array = getSMSArrayList(0);
     	for (SmsRecord currentSms: array) {
     		//TODO add to database
-    		dbHandler.addRecord(currentSms.getDate().toString(), currentSms.getParameterName(), currentSms.getParameterValue());
+    		dbHandler.addRecord("0", currentSms.getDate().toString(), currentSms.getParameterName(), currentSms.getParameterValue());
     	}
     }
     
@@ -162,7 +164,7 @@ public class MainActivity extends Activity {
 
 					Calendar currentCalendarDate = Calendar.getInstance();
 					currentCalendarDate.setTimeInMillis(longDate);
-					SmsRecord newSMS = new SmsRecord(1, currentCalendarDate,
+					SmsRecord newSMS = new SmsRecord("1", currentCalendarDate,
 							"name", "value");
 
 					array.add(newSMS);
@@ -195,7 +197,7 @@ public class MainActivity extends Activity {
 		//test
 		Calendar tempCalendar = Calendar.getInstance();
 		Long tempLong = (Long)(tempCalendar.getTimeInMillis());
-		dbHelper.addRecord(tempLong.toString(), "parameterName", "parameter value");
+		dbHelper.addRecord("1", tempLong.toString(), "parameter name 3", "parameter value 3");
 		
 		Toast.makeText(this, "sms added to database", Toast.LENGTH_SHORT).show();
 		try {
@@ -204,8 +206,14 @@ public class MainActivity extends Activity {
 		catch (InterruptedException ex) {
 			Toast.makeText(this, "exception during trying sleep", Toast.LENGTH_SHORT).show();
 		}
-		ArrayList<SmsRecord> array = dbHelper.findByParameterName("parameterName");
-		Toast.makeText(this, array.get(0).getParameterValue(), Toast.LENGTH_SHORT).show();
+		ArrayList<SmsRecord> array = dbHelper.findByParameterName("parameter name 3");
+		Toast.makeText(this, array.size() > 0 ? array.get(0).getParameterValue().toString() + " " + array.get(0).getDate().getTime().toString() : "no result", Toast.LENGTH_LONG).show();
     	//intent.putParcelableArrayListExtra("SmsRecordsArray", array);
+	}
+	
+	public void dropDatabase(View view) {
+		DbHelper dbHelper = new DbHelper(this, null, null, 1);
+		File extStorDir = Environment.getExternalStorageDirectory();
+		
 	}
 }

@@ -18,16 +18,20 @@ import com.example.myfirstapp.DisplayTableActivity.SMS;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	private static final String DATABASE_NAME = "productDB.db";
 	
 	public static final String SQL_CREATE_ENTRIES =
-			"CREATE TABLE " + TableEntry.TABLE_NAME + " (" + TableEntry.COLUMN_NAME_SMS_ID + " " + TableEntry.INTEGER_TYPE + " PRIMARY KEY, " +
-					TableEntry.COLUMN_NAME_DATE + " timestamp, " + TableEntry.COLUMN_NAME_PARAMETER + " varchar (100)" + 
-					TableEntry.COLUMN_NAME_VALUE + " varchar (100));";
+			"CREATE TABLE " + TableEntry.TABLE_NAME + " (" + 
+					TableEntry.COLUMN_NAME_ID + TableEntry.INTEGER_TYPE + " PRIMARY KEY, " + 
+					TableEntry.COLUMN_NAME_SMS_ID + " " + TableEntry.INTEGER_TYPE + ", " +
+					TableEntry.COLUMN_NAME_DATE + TableEntry.INTEGER_TYPE + " , " + 
+					TableEntry.COLUMN_NAME_PARAMETER + " varchar (100), " + 
+					TableEntry.COLUMN_NAME_VALUE + " varchar (100)" +
+							");";
 	
 	private static final String SQL_DELETE_ENTRIES =
-			"DROP TABLE IF EXIST " + TableEntry.TABLE_NAME;
+			"DROP TABLE IF EXISTS " + TableEntry.TABLE_NAME;
 	
 	public DbHelper(Context context, String name, CursorFactory factory,
 			int version) {
@@ -47,9 +51,14 @@ public class DbHelper extends SQLiteOpenHelper {
 		db.execSQL(SQL_CREATE_ENTRIES);
 	}
 	
+	public void onDelete(SQLiteDatabase db) {
+		
+		db.execSQL(SQL_DELETE_ENTRIES);
+	}
 	
 	public static abstract class TableEntry implements BaseColumns {
-		public static final String TABLE_NAME = "sms_content";
+		public static final String TABLE_NAME = "SMS_CONTENT";
+		public static final String COLUMN_NAME_ID = "id";
 		public static final String COLUMN_NAME_SMS_ID = "sms_id";
 		public static final String COLUMN_NAME_DATE = "date";
 		public static final String COLUMN_NAME_PARAMETER = "parameter";
@@ -74,11 +83,12 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * @param parameter - parameter name 
 	 * @param value - parameter value
 	 */
-	public boolean addRecord (String date, String parameter, String value) {
+	public boolean addRecord (String smsId, String date, String parameter, String value) {
 		
 		boolean added = false;
 		
 		ContentValues values = new ContentValues();
+		values.put(COLUMN_NAME_SMS_ID, smsId);
 		values.put(COLUMN_NAME_DATE, date);
 		values.put(COLUMN_NAME_PARAMETER, parameter);
 		values.put(COLUMN_NAME_VALUE, value);
@@ -87,7 +97,6 @@ public class DbHelper extends SQLiteOpenHelper {
 		
 		added = db.insert(TABLE_NAME, null, values) == -1L? false: true;
 		db.close();
-		//TODO set value "added" variable 
 		
 		return added;
 		
@@ -114,12 +123,13 @@ public class DbHelper extends SQLiteOpenHelper {
 		{
 			do {
 				Calendar date = Calendar.getInstance();
-				date.setTimeInMillis(Long.parseLong(cursor.getString(0)));
+				date.setTimeInMillis(Long.parseLong(cursor.getString(2)));
 				
 				SmsRecord newRecord = new SmsRecord(
-						date,
 						cursor.getString(1),
-						cursor.getString(2)
+						date,
+						cursor.getString(2),
+						cursor.getString(3)
 						);
 				rec.add(newRecord);
 			}
@@ -165,7 +175,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		Integer i = 0;
 		for (SMS currentSMS: smsArrayList) {
 			//TODO right sms adding
-			SmsRecord newSmsRecord = new SmsRecord(currentSMS.getDate(), "param " + i.toString(), "value " + i.toString());
+			SmsRecord newSmsRecord = new SmsRecord("1", currentSMS.getDate(), "param " + i.toString(), "value " + i.toString());
 			recordArray.add(newSmsRecord);
 			i++;
 		}

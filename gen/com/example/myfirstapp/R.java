@@ -47,6 +47,7 @@ public final class R {
         public static final int title_activity_add_sms=0x7f050008;
         public static final int title_activity_display_message=0x7f050006;
         public static final int title_activity_display_table=0x7f050007;
+        public static final int title_activity_drop_db=0x7f050009;
         public static final int title_activity_main=0x7f050005;
     }
     public static final class style {

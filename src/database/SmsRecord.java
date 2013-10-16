@@ -24,21 +24,25 @@ public class SmsRecord implements Parcelable {
 	
 	
 	private int id;
+	private String smsId;
 	private Calendar date;
 	private String parameterName;
 	private String parameterValue;
 	
-	public SmsRecord (int id, Calendar date, String parameterName, String parameterValue) {
+	public SmsRecord (int id, String smsId, Calendar date, String parameterName, String parameterValue) {
 		
 		this.id = id;
+		this.smsId = smsId;
 		this.date = date;
 		this.parameterName = parameterName;
 		this.parameterValue = parameterValue;
 		
 	}
 	
-	public SmsRecord (Calendar date, String parameterName, String parameterValue) {
+	public SmsRecord (String smsId, Calendar date, String parameterName, String parameterValue) {
 		
+		this.id = 0;
+		this.smsId = smsId;
 		this.date = date;
 		this.parameterName = parameterName;
 		this.parameterValue = parameterValue;
@@ -51,6 +55,7 @@ public class SmsRecord implements Parcelable {
 	 */
 	public SmsRecord (Parcel source) {
 		id = source.readInt();
+		smsId = source.readString();
 		Calendar buf = Calendar.getInstance();
 		buf.setTimeInMillis(source.readLong());
 		date = buf;
