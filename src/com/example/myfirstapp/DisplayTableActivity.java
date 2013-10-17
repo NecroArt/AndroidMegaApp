@@ -41,15 +41,7 @@ public class DisplayTableActivity extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         Context context = getApplicationContext();
-		System.out.println("start");
-        Toast.makeText(context, "start read", Toast.LENGTH_LONG).show();
-        System.out.println("start read");
-        /*try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			System.out.println("faild when try sleep");
-		}*/
-        
+		
         Intent intent = getIntent();
         Integer rowNumReq = 0;
     	try {
@@ -64,65 +56,35 @@ public class DisplayTableActivity extends Activity {
     	ArrayList<SMS> SMSArray = new ArrayList<SMS>(); 
         SMSArray = getSMSArrayList(rowNumReq);
         
-        Toast.makeText(context, "successfully read", Toast.LENGTH_LONG).show();
-        System.out.println("successfully read");
-        /*try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			System.out.println("faild when try sleep");
-		}*/
+        Toast.makeText(context, "successfully read", Toast.LENGTH_SHORT).show();
         
         //TODO delete this
-        ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
+        Toast.makeText(context, "start parse", Toast.LENGTH_SHORT).show();
+    	ArrayList<SmsRecord> globalArray = new ArrayList<SmsRecord>();
         for (SMS currentSms: SMSArray) {
         	
-        	//TODO uncomment this
-        	//ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
-        	//TODO delete this
-        	Toast.makeText(context, "start parse", Toast.LENGTH_LONG).show();
-        	System.out.println("start parse");
-        	/*try {
-    			Thread.sleep(10000);
-    		} catch (InterruptedException e) {
-    			System.out.println("faild when try sleep");
-    		}*/
-        	recordsArray = Parser.parse(currentSms);
-        	Toast.makeText(context, "successfully parsed", Toast.LENGTH_LONG).show();
-        	System.out.println("successfully parsed");
-        	/*try {
-    			Thread.sleep(10000);
-    		} catch (InterruptedException e) {
-    			System.out.println("faild when try sleep");
-    		}*/
+        	ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
+        	for (SmsRecord cur: recordsArray) {
+        		globalArray.add(cur);
+        	}
         	
-        	/*Toast.makeText(context, "start add", Toast.LENGTH_LONG).show();
         	for (SmsRecord currentRecord: recordsArray) {
         		
-        		DbHelper dbHelper = new DbHelper(this, null, null, 1);
+        		DbHelper dbHelper = new DbHelper(this, null, null, 2);
         		dbHelper.addRecord(currentRecord);
         		
         	}
-        	Toast.makeText(context, "successfully add", Toast.LENGTH_LONG).show();*/
         }
-        
+        //TODO delete this
+        Toast.makeText(context, "successfully parsed", Toast.LENGTH_LONG).show();
+    	
         TableLayout SMSTable = new TableLayout(this);
         SMSTable.setStretchAllColumns(true);  
         SMSTable.setShrinkAllColumns(true);
         
-        for (SmsRecord currentSMS: recordsArray) {
+        for (SmsRecord currentSMS: globalArray) {
         	TableRow currentRow = new TableRow(this);  
         	currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
-        	
-        	/*TextView SMSDateView = new TextView(this);
-        	SMSDateView.setText(currentSMS.getDate().get(Calendar.DAY_OF_MONTH) + " " + new SimpleDateFormat("MMMM").format(currentSMS.getDate().getTime()) + 
-    				" " + String.format("%02d:%02d", 
-    						currentSMS.getDate().get(Calendar.HOUR_OF_DAY), 
-    						currentSMS.getDate().get(Calendar.MINUTE)));
-        	currentRow.addView(SMSDateView);
-
-        	TextView SMSTextView = new TextView(this);
-        	SMSTextView.setText(currentSMS.getContent());
-        	currentRow.addView(SMSTextView);*/
         	
         	TextView SMSDateView = new TextView(this);
         	SMSDateView.setText(currentSMS.getDate().get(Calendar.DAY_OF_MONTH) + " " + new SimpleDateFormat("MMMM").format(currentSMS.getDate().getTime()) + 
@@ -184,10 +146,12 @@ public class DisplayTableActivity extends Activity {
              
              //interesting sms only from 000019
              String whereClause = "address=\"000019\"";
+             
+             //TODO delete this
              //String whereClause = "address=\"15555215554\"";
              
              //fetching sms with order by date
-             Cursor cur = getContentResolver().query(uri, projection, whereClause, null, " date asc" + (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString(): ""));
+             Cursor cur = getContentResolver().query(uri, projection, whereClause, null, " date desc" + (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString(): ""));
              if (cur.moveToFirst()) {
             	 int index_id = cur.getColumnIndex("_id");
             	 int index_Address = cur.getColumnIndex("address");
@@ -230,6 +194,11 @@ public class DisplayTableActivity extends Activity {
          }
          catch (SQLiteException ex) {
         	 System.out.println("sql-exception occured");
+        	 
+        	//TODO delete this
+        	 Context context = getApplicationContext();
+             Toast.makeText(context, "sql-exception occured", Toast.LENGTH_LONG).show();
+         	
          }
         
         return array;

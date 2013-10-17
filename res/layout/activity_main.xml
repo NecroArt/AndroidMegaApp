@@ -7,13 +7,14 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" 
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <EditText android:id="@+id/edit_message"
         android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/edit_message"></EditText>
+        android:layout_height="0dip"
+        android:layout_width="100dip"
+        android:hint="@string/edit_message"
+        android:inputType="number"></EditText>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +26,7 @@
         android:text="@string/button_table" 
         android:onClick="showTable"/>
     
-    <!--  <Button
+      <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_activity_add_sms" 
@@ -35,6 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_activity_drop_db" 
-        android:onClick="dropDatabase"/>-->
+        android:onClick="dropDatabase"/>
 
 </LinearLayout>
