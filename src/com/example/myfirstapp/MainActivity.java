@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
@@ -105,6 +106,7 @@ public class MainActivity extends Activity {
     }
     
     public void showTable(View view) {
+    	
     	Intent intent = new Intent(this, DisplayTableActivity.class);
     	EditText editText = (EditText) findViewById(R.id.edit_message);
     	intent.putExtra(EXTRA_MESSAGE, editText.getText().toString());

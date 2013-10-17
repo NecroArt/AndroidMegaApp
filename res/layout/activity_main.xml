@@ -25,7 +25,7 @@
         android:text="@string/button_table" 
         android:onClick="showTable"/>
     
-    <Button
+    <!--  <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_activity_add_sms" 
@@ -35,6 +35,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_activity_drop_db" 
-        android:onClick="dropDatabase"/>
+        android:onClick="dropDatabase"/>-->
 
 </LinearLayout>

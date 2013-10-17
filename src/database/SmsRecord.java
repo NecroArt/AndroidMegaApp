@@ -22,7 +22,6 @@ public class SmsRecord implements Parcelable {
 		
 	}
 	
-	
 	private int id;
 	private String smsId;
 	private Calendar date;

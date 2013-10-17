@@ -10,15 +10,13 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Parcelable;
 import android.provider.BaseColumns;
-import android.provider.SyncStateContract.Columns;
 import com.example.myfirstapp.DisplayTableActivity;
-import com.example.myfirstapp.DisplayTableActivity.SMS;
+import com.example.myfirstapp.SMS;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "productDB.db";
 	
 	public static final String SQL_CREATE_ENTRIES =
@@ -68,6 +66,17 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		try {
+			db.execSQL(SQL_DELETE_ENTRIES);
+		}
+		catch (SQLException ex) {
+			throw ex;
+		}
+		onCreate(db);
+	}
+	
+	@Override
+	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		try {
 			db.execSQL(SQL_DELETE_ENTRIES);
 		}

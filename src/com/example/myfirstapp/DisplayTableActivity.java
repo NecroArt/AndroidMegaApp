@@ -3,11 +3,12 @@ package com.example.myfirstapp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
+import smsParsing.Parser;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
@@ -21,6 +22,9 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+import database.DbHelper;
+import database.SmsRecord;
 
 
 
@@ -36,6 +40,15 @@ public class DisplayTableActivity extends Activity {
             // Show the Up button in the action bar.
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        Context context = getApplicationContext();
+		System.out.println("start");
+        Toast.makeText(context, "start read", Toast.LENGTH_LONG).show();
+        System.out.println("start read");
+        /*try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			System.out.println("faild when try sleep");
+		}*/
         
         Intent intent = getIntent();
         Integer rowNumReq = 0;
@@ -48,29 +61,83 @@ public class DisplayTableActivity extends Activity {
     		//action not required
     	}
     	
-    	intent.getParcelableArrayListExtra("SmsRecordsArray");
-    	
-        ArrayList<SMS> SMSArray = new ArrayList<SMS>(); 
+    	ArrayList<SMS> SMSArray = new ArrayList<SMS>(); 
         SMSArray = getSMSArrayList(rowNumReq);
+        
+        Toast.makeText(context, "successfully read", Toast.LENGTH_LONG).show();
+        System.out.println("successfully read");
+        /*try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			System.out.println("faild when try sleep");
+		}*/
+        
+        //TODO delete this
+        ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
+        for (SMS currentSms: SMSArray) {
+        	
+        	//TODO uncomment this
+        	//ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
+        	//TODO delete this
+        	Toast.makeText(context, "start parse", Toast.LENGTH_LONG).show();
+        	System.out.println("start parse");
+        	/*try {
+    			Thread.sleep(10000);
+    		} catch (InterruptedException e) {
+    			System.out.println("faild when try sleep");
+    		}*/
+        	recordsArray = Parser.parse(currentSms);
+        	Toast.makeText(context, "successfully parsed", Toast.LENGTH_LONG).show();
+        	System.out.println("successfully parsed");
+        	/*try {
+    			Thread.sleep(10000);
+    		} catch (InterruptedException e) {
+    			System.out.println("faild when try sleep");
+    		}*/
+        	
+        	/*Toast.makeText(context, "start add", Toast.LENGTH_LONG).show();
+        	for (SmsRecord currentRecord: recordsArray) {
+        		
+        		DbHelper dbHelper = new DbHelper(this, null, null, 1);
+        		dbHelper.addRecord(currentRecord);
+        		
+        	}
+        	Toast.makeText(context, "successfully add", Toast.LENGTH_LONG).show();*/
+        }
         
         TableLayout SMSTable = new TableLayout(this);
         SMSTable.setStretchAllColumns(true);  
         SMSTable.setShrinkAllColumns(true);
         
-        for (SMS currentSMS: SMSArray) {
+        for (SmsRecord currentSMS: recordsArray) {
         	TableRow currentRow = new TableRow(this);  
         	currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
         	
-        	TextView SMSDateView = new TextView(this);
-        	SMSDateView.setText(currentSMS.date.get(Calendar.DAY_OF_MONTH) + " " + new SimpleDateFormat("MMMM").format(currentSMS.date.getTime()) + 
+        	/*TextView SMSDateView = new TextView(this);
+        	SMSDateView.setText(currentSMS.getDate().get(Calendar.DAY_OF_MONTH) + " " + new SimpleDateFormat("MMMM").format(currentSMS.getDate().getTime()) + 
     				" " + String.format("%02d:%02d", 
-    						currentSMS.date.get(Calendar.HOUR_OF_DAY), 
-    						currentSMS.date.get(Calendar.MINUTE)));
+    						currentSMS.getDate().get(Calendar.HOUR_OF_DAY), 
+    						currentSMS.getDate().get(Calendar.MINUTE)));
         	currentRow.addView(SMSDateView);
 
         	TextView SMSTextView = new TextView(this);
-        	SMSTextView.setText(currentSMS.content);
-        	currentRow.addView(SMSTextView);
+        	SMSTextView.setText(currentSMS.getContent());
+        	currentRow.addView(SMSTextView);*/
+        	
+        	TextView SMSDateView = new TextView(this);
+        	SMSDateView.setText(currentSMS.getDate().get(Calendar.DAY_OF_MONTH) + " " + new SimpleDateFormat("MMMM").format(currentSMS.getDate().getTime()) + 
+    				" " + String.format("%02d:%02d", 
+    						currentSMS.getDate().get(Calendar.HOUR_OF_DAY), 
+    						currentSMS.getDate().get(Calendar.MINUTE)));
+        	currentRow.addView(SMSDateView);
+        	
+        	TextView SMSParamName = new TextView(this);
+        	SMSParamName.setText(currentSMS.getParameterName());
+        	currentRow.addView(SMSParamName);
+        	
+        	TextView SMSParamValue = new TextView(this);
+        	SMSParamValue.setText(currentSMS.getParameterValue());
+        	currentRow.addView(SMSParamValue);
         	
         	SMSTable.addView(currentRow);
         }
@@ -111,22 +178,26 @@ public class DisplayTableActivity extends Activity {
 	public ArrayList<SMS> getSMSArrayList (Integer rowNumReq) {
 		ArrayList<SMS> array = new ArrayList<SMS>();
 		final String SMS_URI_INBOX = "content://sms/inbox";
-        try {
+		try {
              Uri uri = Uri.parse(SMS_URI_INBOX);  
              String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };
              
              //interesting sms only from 000019
              String whereClause = "address=\"000019\"";
+             //String whereClause = "address=\"15555215554\"";
              
              //fetching sms with order by date
              Cursor cur = getContentResolver().query(uri, projection, whereClause, null, " date asc" + (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString(): ""));
              if (cur.moveToFirst()) {
+            	 int index_id = cur.getColumnIndex("_id");
             	 int index_Address = cur.getColumnIndex("address");
                  int index_Person = cur.getColumnIndex("person");
                  int index_Body = cur.getColumnIndex("body");
                  int index_Date = cur.getColumnIndex("date");
                  int index_Type = cur.getColumnIndex("type");
                  do {
+                	 String strId = cur.getString(index_id);
+                	 
             	     String strAddress = cur.getString(index_Address);
                      int intPerson = cur.getInt(index_Person);
                      String strbody = cur.getString(index_Body);
@@ -135,7 +206,11 @@ public class DisplayTableActivity extends Activity {
 
                      Calendar currentCalendarDate = Calendar.getInstance();
                      currentCalendarDate.setTimeInMillis(longDate);
-                     SMS newSMS = new SMS(strbody, currentCalendarDate);
+                     
+                     /*String [] stringArray = strbody.split("\n");
+                     SMS newSMS = new SMS(stringArray[2], currentCalendarDate);*/
+                     
+                     SMS newSMS = new SMS(strId, strbody, currentCalendarDate);
                      
                      array.add(newSMS);
                      /*smsBuilder.append("[ ");
@@ -159,22 +234,5 @@ public class DisplayTableActivity extends Activity {
         
         return array;
 	}
-
-	public class SMS {
-		String content;
-		Calendar date;
-		
-		public SMS (String content, Calendar date){
-			this.content = content;
-			this.date = date;
-		}
-		
-		public String getContent () {
-			return this.content;
-		}
-		
-		public Calendar getDate () {
-			return this.date;
-		}
-	}
+	
 }
