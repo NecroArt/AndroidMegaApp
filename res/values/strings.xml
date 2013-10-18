@@ -9,7 +9,8 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_display_message">My Message</string>
     <string name="title_activity_display_table">My Table</string>
-    <string name="title_activity_add_sms">Add sms</string>
+    <string name="title_activity_add_all">Add all</string>
     <string name="title_activity_drop_db">Recreate database</string>
+    <string name="title_activity_delete_all">Delete all</string>
 
 </resources>

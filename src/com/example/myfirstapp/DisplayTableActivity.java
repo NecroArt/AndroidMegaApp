@@ -33,6 +33,7 @@ public class DisplayTableActivity extends Activity {
 	@SuppressLint("NewApi") 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		
 		// Make sure we're running on Honeycomb or higher to use ActionBar APIs
@@ -42,14 +43,88 @@ public class DisplayTableActivity extends Activity {
         }
         Context context = getApplicationContext();
 		
-        Intent intent = getIntent();
+        DbHelper dbHelper = new DbHelper(this, null, null, 2);
+        
+        ArrayList<SmsRecord> recordsArray = dbHelper.getAll();
+        
+        TableLayout SMSTable = new TableLayout(this);
+        SMSTable.setStretchAllColumns(true);  
+        SMSTable.setShrinkAllColumns(true);
+
+    	//TODO change this to parameter
+        int i = 0;
+        
+		String lastSmsId = "";
+		for (SmsRecord currentSMS : recordsArray) {
+
+			// add space between different sms
+			if (!currentSMS.getSmsId().equals(lastSmsId)) {
+
+				TableRow currentRow = new TableRow(this);
+				currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
+
+				TextView SMSDateView = new TextView(this);
+				SMSDateView.setText("");
+				currentRow.addView(SMSDateView);
+
+				TextView SMSParamName = new TextView(this);
+				SMSParamName.setText("");
+				currentRow.addView(SMSParamName);
+
+				TextView SMSParamValue = new TextView(this);
+				SMSParamValue.setText("");
+				currentRow.addView(SMSParamValue);
+
+				SMSTable.addView(currentRow);
+
+			}
+
+			TableRow currentRow = new TableRow(this);
+			currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
+
+			TextView SMSDateView = new TextView(this);
+			SMSDateView.setText(currentSMS.getDate().get(Calendar.DAY_OF_MONTH)
+					+ " "
+					+ new SimpleDateFormat("MMMM").format(currentSMS.getDate()
+							.getTime())
+					+ " "
+					+ String.format("%02d:%02d",
+							currentSMS.getDate().get(Calendar.HOUR_OF_DAY),
+							currentSMS.getDate().get(Calendar.MINUTE)));
+			currentRow.addView(SMSDateView);
+
+			TextView SMSParamName = new TextView(this);
+			SMSParamName.setText(currentSMS.getParameterName());
+			currentRow.addView(SMSParamName);
+
+			TextView SMSParamValue = new TextView(this);
+			SMSParamValue.setText(currentSMS.getParameterValue());
+			currentRow.addView(SMSParamValue);
+
+			SMSTable.addView(currentRow);
+
+			lastSmsId = currentSMS.getSmsId();
+
+			// TODO change this to parameter
+			i++;
+			if (i == 10 * 10 /*rownum * 10*/) {
+				break;
+			}
+
+		}
+        
+        ScrollView tableScrollView = new ScrollView(this);
+        tableScrollView.addView(SMSTable);
+        
+        setContentView(tableScrollView);
+        /*Intent intent = getIntent();
         Integer rowNumReq = 0;
     	try {
     		rowNumReq = Integer.parseInt(intent.getStringExtra(MainActivity.EXTRA_MESSAGE));
     	}
     	catch (NumberFormatException ex)
     	{
-    		/*rowNumReq = 0;*/
+    		//rowNumReq = 0;
     		//action not required
     	}
     	
@@ -70,7 +145,7 @@ public class DisplayTableActivity extends Activity {
         	
         	for (SmsRecord currentRecord: recordsArray) {
         		
-        		DbHelper dbHelper = new DbHelper(this, null, null, 2);
+        		
         		dbHelper.addRecord(currentRecord);
         		
         	}
@@ -107,7 +182,7 @@ public class DisplayTableActivity extends Activity {
         ScrollView tableScrollView = new ScrollView(this);
         tableScrollView.addView(SMSTable);
         
-        setContentView(tableScrollView);
+        setContentView(tableScrollView);*/
 	}
 
 	/**
@@ -171,12 +246,14 @@ public class DisplayTableActivity extends Activity {
                      Calendar currentCalendarDate = Calendar.getInstance();
                      currentCalendarDate.setTimeInMillis(longDate);
                      
+                     //TODO clear this                     
                      /*String [] stringArray = strbody.split("\n");
                      SMS newSMS = new SMS(stringArray[2], currentCalendarDate);*/
                      
                      SMS newSMS = new SMS(strId, strbody, currentCalendarDate);
                      
                      array.add(newSMS);
+                     //TODO clear this
                      /*smsBuilder.append("[ ");
                      smsBuilder.append(strAddress + ", ");
                      smsBuilder.append(intPerson + ", ");

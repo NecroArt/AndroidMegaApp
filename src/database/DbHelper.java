@@ -2,6 +2,8 @@ package database;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Set;
+import java.util.TreeSet;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -120,8 +122,9 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 	public ArrayList<SmsRecord> findByParameterName (String name) {
 		
-		//String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_PARAMETER + " = \"" + name + "\"";
-		String query = "Select * FROM " + TABLE_NAME;
+		String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_PARAMETER + " = \"" + name + "\"";
+		//TODO delete this 
+		//String query = "Select * FROM " + TABLE_NAME;
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -168,6 +171,18 @@ public class DbHelper extends SQLiteOpenHelper {
 		return deleted;
 		
 	}
+	
+	/** Delete all data from table DbHelper.TABLE_NAME
+	 * 
+	 * @return 
+	 */
+	public int deleteAll () {
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		return db.delete(TABLE_NAME, null, null);
+		
+	}
 
 	/** 
 	 * syncing data of sms with database*/
@@ -178,20 +193,64 @@ public class DbHelper extends SQLiteOpenHelper {
 	/**
 	 * Return set number records from database, group by id. If amount is not defined or 0, then return all records. If table empty - returns null.
 	 */
-	public static ArrayList<SmsRecord> getAll () {
+	public ArrayList<SmsRecord> getAll () {
+		
 		ArrayList<SmsRecord> recordArray = new ArrayList<SmsRecord>();
-		DisplayTableActivity classEntity = new DisplayTableActivity();
-		ArrayList<SMS> smsArrayList = classEntity.getSMSArrayList (3);
-		Integer i = 0;
-		for (SMS currentSMS: smsArrayList) {
-			//TODO right sms adding
-			SmsRecord newSmsRecord = new SmsRecord("1", currentSMS.getDate(), "param " + i.toString(), "value " + i.toString());
-			recordArray.add(newSmsRecord);
-			i++;
+		
+		String query = "Select * FROM " + TABLE_NAME;
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.rawQuery(query, null);
+		
+		if (cursor.moveToFirst()) {
+			do {
+				Calendar date = Calendar.getInstance();
+				date.setTimeInMillis(Long.parseLong(cursor.getString(2)));
+				
+				SmsRecord newRecord = new SmsRecord(
+						cursor.getString(1),
+						date,
+						cursor.getString(3),
+						cursor.getString(4)
+						);
+				recordArray.add(newRecord);
+			}
+			while (cursor.moveToNext());
 		}
-		 
+		
 		return recordArray;
 		
 	}
 		
+	public static int getDBVersion () {
+		return DATABASE_VERSION; 
+	}
+
+	/** Fetch sms id of all records from table DbHelper.TableEntry.TABLE_NAME
+	 * 
+	 * @return Set of ids.
+	 */
+	public Set<String> getSmsIds() {
+		
+		Set<String> ids = new TreeSet<String>() ;
+		
+		String query = "Select distinct " + TableEntry.COLUMN_NAME_ID  + " FROM " + TABLE_NAME ;
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+		
+		if (cursor.moveToFirst()) {
+			
+			do {
+				
+				ids.add(cursor.getString(0));
+				
+			}
+			while (cursor.moveToNext());
+			
+		}
+		
+		return ids;
+		
+	}
 }

@@ -26,16 +26,22 @@
         android:text="@string/button_table" 
         android:onClick="showTable"/>
     
-      <Button
+	<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title_activity_add_sms" 
-        android:onClick="showAddedSms"/>
+        android:text="@string/title_activity_add_all" 
+        android:onClick="addAll"/>
     
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_activity_drop_db" 
         android:onClick="dropDatabase"/>
+    
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_delete_all" 
+        android:onClick="deleteAll"/>
 
 </LinearLayout>

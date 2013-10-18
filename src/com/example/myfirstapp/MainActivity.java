@@ -1,10 +1,11 @@
 package com.example.myfirstapp;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 
+import smsParsing.Parser;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +13,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -27,8 +27,10 @@ public class MainActivity extends Activity {
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        
+    	super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
     }
     
     @Override
@@ -50,59 +52,10 @@ public class MainActivity extends Activity {
     		/*rowNumReq = 0;*/
     		//action not required
     	}
-    	String message = getSMS(rowNumReq);
+    	Test testClass = new Test();
+    	String message = testClass.getSMS(rowNumReq);
     	intent.putExtra(EXTRA_MESSAGE, message);
     	startActivity(intent);
-    }
-    
-    public String getSMS(Integer rowNumReq) {
-    	
-    	StringBuilder smsBuilder = new StringBuilder();
-        final String SMS_URI_INBOX = "content://sms/inbox";
-        try {
-             Uri uri = Uri.parse(SMS_URI_INBOX);  
-             String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };
-             
-             //interesting sms only from 000019
-             String whereClause = "address=\"000019\"";
-             
-             //fetching sms with order by date
-             Cursor cur = getContentResolver().query(uri, projection, whereClause, null, " date" + (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString(): ""));
-             if (cur.moveToFirst()) {
-            	 int index_Address = cur.getColumnIndex("address");
-                 int index_Person = cur.getColumnIndex("person");
-                 int index_Body = cur.getColumnIndex("body");
-                 int index_Date = cur.getColumnIndex("date");
-                 int index_Type = cur.getColumnIndex("type");
-                 do {
-            	     String strAddress = cur.getString(index_Address);
-                     int intPerson = cur.getInt(index_Person);
-                     String strbody = cur.getString(index_Body);
-                     long longDate = cur.getLong(index_Date);
-                     int int_Type = cur.getInt(index_Type);
-
-                     smsBuilder.append("[ ");
-                     smsBuilder.append(strAddress + ", ");
-                     smsBuilder.append(intPerson + ", ");
-                     smsBuilder.append(strbody + ", ");
-                     smsBuilder.append(new Date(longDate)+ ", ");
-                     smsBuilder.append(int_Type);
-                     smsBuilder.append(" ]\n\n");
-                 } while (cur.moveToNext());
-
-                 if (!cur.isClosed()) {
-                     cur.close();
-                     cur = null;
-                 }
-             } else {
-                 smsBuilder.append("no result!");
-             }
-         }
-         catch (SQLiteException ex) {
-        	 smsBuilder.append("SQLiteException" + ex.getMessage());
-         }
-         
-         return smsBuilder.toString();
     }
     
     public void showTable(View view) {
@@ -114,12 +67,12 @@ public class MainActivity extends Activity {
     }
     
     public void syncData (View view) {
-    	DbHelper dbHandler = new DbHelper(this, null, null, 1);
+    	DbHelper dbHandler = new DbHelper(this, null, null, DbHelper.getDBVersion());
     	
     	//TODO get sms
     	
     	//TODO insert statement
-    	ArrayList<SmsRecord> array = getSMSArrayList(0);
+    	ArrayList<SmsRecord> array = getSMSRecordArrayList(0);
     	for (SmsRecord currentSms: array) {
     		//TODO add to database
     		//dbHandler.addRecord("0", currentSms.getDate().toString(), currentSms.getParameterName(), currentSms.getParameterValue());
@@ -131,7 +84,7 @@ public class MainActivity extends Activity {
      * @param rowNumReq - number of required sms amount. 
      * @return ArrayList of SmsRecord.
      */
-	ArrayList<SmsRecord> getSMSArrayList(Integer rowNumReq) {
+	ArrayList<SmsRecord> getSMSRecordArrayList(Integer rowNumReq) {
 		ArrayList<SmsRecord> array = new ArrayList<SmsRecord>();
 		final String SMS_URI_INBOX = "content://sms/inbox";
 		try {
@@ -186,38 +139,111 @@ public class MainActivity extends Activity {
 		return array;
 	}
 	
-	public void showAddedSms(View view) {
-		//TODO show sms from database
-		//ArrayList<SmsRecord> array = DbHelper.getAll();
-		Intent intent = new Intent(this, DisplayTableActivity.class);
+	public void deleteAll(View view) {
 		
+		DbHelper dbHelper = new DbHelper(this, null, null, DbHelper.getDBVersion());
+		Integer deletedRows = dbHelper.deleteAll();
+		Toast.makeText(this, deletedRows > 0 ? "deleted" + deletedRows.toString() + "rows" : "table already empty" , Toast.LENGTH_LONG).show();
 		
-		DbHelper dbHelper = new DbHelper(this, /*"productDB.db"*/null, null, 2);
-		
-		/*for (SmsRecord currentSmsRecord: array) {
-			dbHelper.addRecord(currentSmsRecord.getDate().toString(), currentSmsRecord.getParameterName(), currentSmsRecord.getParameterValue());
-		}*/
-		//test
-		Calendar tempCalendar = Calendar.getInstance();
-		//Long tempLong = (Long)(tempCalendar.getTimeInMillis());
-		SmsRecord newSms = new SmsRecord("1", tempCalendar, "parameter name 3", "parameter value 3");
-		dbHelper.addRecord(newSms);
-		
-		Toast.makeText(this, "sms added to database", Toast.LENGTH_SHORT).show();
-		try {
-			Thread.sleep(5000);
-		}
-		catch (InterruptedException ex) {
-			Toast.makeText(this, "exception during trying sleep", Toast.LENGTH_SHORT).show();
-		}
-		ArrayList<SmsRecord> array = dbHelper.findByParameterName("parameter name 3");
-		Toast.makeText(this, array.size() > 0 ? array.get(0).getParameterValue().toString() + " " + array.get(0).getDate().getTime().toString() : "no result", Toast.LENGTH_LONG).show();
-    	//intent.putParcelableArrayListExtra("SmsRecordsArray", array);
 	}
 	
-	public void dropDatabase(View view) {
-		DbHelper dbHelper = new DbHelper(this, null, null, 1);
-		File extStorDir = Environment.getExternalStorageDirectory();
+	public void addAll(View view) {
 		
+		DbHelper dbHelper = new DbHelper(this, null, null, DbHelper.getDBVersion());
+		
+		ArrayList<SMS> SMSArray = new ArrayList<SMS>(); 
+        SMSArray = getSMSArrayList(0);
+        
+        int rowsAdded = 0;
+        
+        Set<String> ids = new TreeSet<String>() ;
+        ids = dbHelper.getSmsIds();
+        ArrayList<SmsRecord> globalArray = new ArrayList<SmsRecord>();
+        for (SMS currentSms: SMSArray) {
+        	
+        	//check, that current sms is not already in database
+        	if (!ids.contains(currentSms.getId())) {
+	        	
+        		ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
+	        	for (SmsRecord cur: recordsArray) {
+	        		globalArray.add(cur);
+	        	}
+	        	
+	        	for (SmsRecord currentRecord: recordsArray) {
+	        		
+	        		dbHelper.addRecord(currentRecord);
+	        		rowsAdded++;
+	        		
+	        	}
+	        	
+        	}
+        }
+        
+        Toast.makeText(this, "added " + rowsAdded + " rows", Toast.LENGTH_LONG).show();
+        
+	}
+	
+	public ArrayList<SMS> getSMSArrayList (Integer rowNumReq) {
+		
+		ArrayList<SMS> array = new ArrayList<SMS>();
+
+		final String SMS_URI_INBOX = "content://sms/inbox";
+		try {
+             Uri uri = Uri.parse(SMS_URI_INBOX);  
+             String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };
+             
+             //interesting sms only from 000019
+             //TODO clear this
+             //String whereClause = "address=\"000019\"";
+             String whereClause = "address=\"15555215554\"";
+             
+             //fetching sms with order by date
+             Cursor cur = getContentResolver().query(uri, projection, whereClause, null, " date desc" + (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString(): ""));
+             if (cur.moveToFirst()) {
+            	 int index_id = cur.getColumnIndex("_id");
+            	 int index_Body = cur.getColumnIndex("body");
+                 int index_Date = cur.getColumnIndex("date");
+                 do {
+                	 String strId = cur.getString(index_id);
+                	 
+            	     String strbody = cur.getString(index_Body);
+                     long longDate = cur.getLong(index_Date);
+                     
+                     Calendar currentCalendarDate = Calendar.getInstance();
+                     currentCalendarDate.setTimeInMillis(longDate);
+                     
+                     //TODO clear this
+                     /*String [] stringArray = strbody.split("\n");
+                     SMS newSMS = new SMS(stringArray[2], currentCalendarDate);*/
+                     
+                     SMS newSMS = new SMS(strId, strbody, currentCalendarDate);
+                     
+                     array.add(newSMS);
+                     //TODO clear this
+                     /*smsBuilder.append("[ ");
+                     smsBuilder.append(strAddress + ", ");
+                     smsBuilder.append(intPerson + ", ");
+                     smsBuilder.append(strbody + ", ");
+                     smsBuilder.append(new Date(longDate)+ ", ");
+                     smsBuilder.append(int_Type);
+                     smsBuilder.append(" ]\n\n");*/
+                 } while (cur.moveToNext());
+
+                 if (!cur.isClosed()) {
+                     cur.close();
+                     cur = null;
+                 }
+             }
+         }
+         catch (SQLiteException ex) {
+        	 System.out.println("sql-exception occured");
+        	 
+        	//TODO delete this
+        	 Context context = getApplicationContext();
+             Toast.makeText(context, "sql-exception occured", Toast.LENGTH_LONG).show();
+         	
+         }
+        
+        return array;
 	}
 }
