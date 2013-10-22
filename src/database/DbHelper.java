@@ -2,42 +2,43 @@ package database;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Set;
-import java.util.TreeSet;
 
+import com.view.SMS;
+
+import smsParsing.Parser;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.provider.BaseColumns;
-import com.example.myfirstapp.DisplayTableActivity;
-import com.example.myfirstapp.SMS;
+
 
 public class DbHelper extends SQLiteOpenHelper {
 
 	private static final int DATABASE_VERSION = 2;
 	private static final String DATABASE_NAME = "productDB.db";
-	
-	public static final String SQL_CREATE_ENTRIES =
-			"CREATE TABLE " + TableEntry.TABLE_NAME + " (" + 
-					TableEntry.COLUMN_NAME_ID + " " + TableEntry.INTEGER_TYPE + " PRIMARY KEY, " + 
-					TableEntry.COLUMN_NAME_SMS_ID + " " + TableEntry.INTEGER_TYPE + ", " +
-					TableEntry.COLUMN_NAME_DATE + " " + TableEntry.INTEGER_TYPE + " , " + 
-					TableEntry.COLUMN_NAME_PARAMETER + " varchar (100), " + 
-					TableEntry.COLUMN_NAME_VALUE + " varchar (100)" +
-							");";
-	
-	private static final String SQL_DELETE_ENTRIES =
-			"DROP TABLE IF EXISTS " + TableEntry.TABLE_NAME;
-	
-	public DbHelper(Context context, String name, CursorFactory factory,
-			int version) {
-		super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-	}
-	
+
+	final String SMS_URI_INBOX = "content://sms/inbox";
+
+	public static final String SQL_CREATE_ENTRIES = "CREATE TABLE "
+			+ TableEntry.TABLE_NAME + " (" + TableEntry.COLUMN_NAME_ID + " "
+			+ TableEntry.INTEGER_TYPE + " PRIMARY KEY, "
+			+ TableEntry.COLUMN_NAME_SMS_ID + " " + TableEntry.INTEGER_TYPE
+			+ ", " + TableEntry.COLUMN_NAME_DATE + " "
+			+ TableEntry.INTEGER_TYPE + " , "
+			+ TableEntry.COLUMN_NAME_PARAMETER + " varchar (100), "
+			+ TableEntry.COLUMN_NAME_VALUE + " varchar (100)" + ");";
+
+	private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS "
+			+ TableEntry.TABLE_NAME;
+
 	public static final String TABLE_NAME = "sms_content";
 	public static final String COLUMN_NAME_SMS_ID = "sms_id";
 	public static final String COLUMN_NAME_DATE = "date";
@@ -46,16 +47,35 @@ public class DbHelper extends SQLiteOpenHelper {
 	public static final String INTEGER_TYPE = "INTEGER";
 	public static final String VARCHARTYPE = "VARCHAR (100)";
 
+	public DbHelper(Context context, String name, CursorFactory factory,
+			int version) {
+		super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+	}
+
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(SQL_CREATE_ENTRIES);
 	}
-	
+
 	public void onDelete(SQLiteDatabase db) {
-		
+
 		db.execSQL(SQL_DELETE_ENTRIES);
 	}
-	
+
+	public SQLiteDatabase getDatabase() {
+
+		return this.getWritableDatabase();
+
+	}
+
+	public void recreateDatabase() {
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		onDelete(db);
+		onCreate(db);
+
+	}
+
 	public static abstract class TableEntry implements BaseColumns {
 		public static final String TABLE_NAME = "SMS_CONTENT";
 		public static final String COLUMN_NAME_ID = "id";
@@ -65,192 +85,396 @@ public class DbHelper extends SQLiteOpenHelper {
 		public static final String COLUMN_NAME_VALUE = "value";
 		public static final String INTEGER_TYPE = "INTEGER";
 	}
-	
+
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		try {
 			db.execSQL(SQL_DELETE_ENTRIES);
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			throw ex;
 		}
 		onCreate(db);
 	}
-	
+
 	@Override
 	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		try {
 			db.execSQL(SQL_DELETE_ENTRIES);
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			throw ex;
 		}
 		onCreate(db);
 	}
-	
+
 	/**
 	 * Add new record in database.
-	 * @param date - SMS date 
-	 * @param parameter - parameter name 
-	 * @param value - parameter value
+	 * 
+	 * @param date
+	 *            - SMS date
+	 * @param parameter
+	 *            - parameter name
+	 * @param value
+	 *            - parameter value
 	 */
-	public boolean addRecord (SmsRecord addingRecord) {
-		
+	public boolean addRecord(SmsRecord addingRecord) {
+
 		boolean added = false;
-		
+
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_NAME_SMS_ID, addingRecord.getSmsId());
 		values.put(COLUMN_NAME_DATE, addingRecord.getDate().getTimeInMillis());
 		values.put(COLUMN_NAME_PARAMETER, addingRecord.getParameterName());
 		values.put(COLUMN_NAME_VALUE, addingRecord.getParameterValue());
-		
+
 		SQLiteDatabase db = this.getWritableDatabase();
-		
-		added = db.insert(TABLE_NAME, null, values) == -1L? false: true;
+
+		added = db.insert(TABLE_NAME, null, values) == -1L ? false : true;
 		db.close();
-		
+
 		return added;
-		
+
 	}
-	
-	public SmsRecord findByDate (Calendar date) {
-		
+
+	public SmsRecord findByDate(Calendar date) {
+
 		SmsRecord rec = null;
 		return rec;
-		
+
 	}
-	
-	public ArrayList<SmsRecord> findByParameterName (String name) {
-		
-		String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_PARAMETER + " = \"" + name + "\"";
-		//TODO delete this 
-		//String query = "Select * FROM " + TABLE_NAME;
-		
+
+	public ArrayList<SmsRecord> findByParameterName(String name) {
+
+		String query = "Select * FROM " + TABLE_NAME + " WHERE "
+				+ COLUMN_NAME_PARAMETER + " = \"" + name + "\"";
+		// TODO delete this
+		// String query = "Select * FROM " + TABLE_NAME;
+
 		SQLiteDatabase db = this.getWritableDatabase();
-		
+
 		Cursor cursor = db.rawQuery(query, null);
-		
+
 		ArrayList<SmsRecord> rec = new ArrayList<SmsRecord>();
-		
-		if (cursor.moveToFirst() == true)
-		{
+
+		if (cursor.moveToFirst() == true) {
 			do {
 				Calendar date = Calendar.getInstance();
 				date.setTimeInMillis(Long.parseLong(cursor.getString(2)));
-				
-				SmsRecord newRecord = new SmsRecord(
-						cursor.getString(1),
-						date,
-						cursor.getString(2),
-						cursor.getString(3)
-						);
+
+				SmsRecord newRecord = new SmsRecord(cursor.getString(1), date,
+						cursor.getString(2), cursor.getString(3));
 				rec.add(newRecord);
-			}
-			while (cursor.moveToNext());
+			} while (cursor.moveToNext());
 		}
-		
+
 		return rec;
-		
+
 	}
 
-	public SmsRecord findByParameterValue (String value) {
+	public SmsRecord findByParameterValue(String value) {
 
 		SmsRecord rec = null;
 		return rec;
-		
-	}
-	
-	public boolean delete (Integer id) {
-		
-		boolean deleted = false;
-		
-		//TODO delete
-		
-		//TODO set value "deleted" variable
-		
-		return deleted;
-		
-	}
-	
-	/** Delete all data from table DbHelper.TABLE_NAME
-	 * 
-	 * @return 
-	 */
-	public int deleteAll () {
-		
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		return db.delete(TABLE_NAME, null, null);
-		
+
 	}
 
-	/** 
-	 * syncing data of sms with database*/
-	public void syncData () {
-		
+	public boolean delete(Integer id) {
+
+		boolean deleted = false;
+
+		// TODO delete
+
+		// TODO set value "deleted" variable
+
+		return deleted;
+
 	}
-	
+
 	/**
-	 * Return set number records from database, group by id. If amount is not defined or 0, then return all records. If table empty - returns null.
+	 * Delete all data from table DbHelper.TABLE_NAME
+	 * 
+	 * @return
 	 */
-	public ArrayList<SmsRecord> getAll () {
-		
+	public int deleteAll() {
+
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		return db.delete(TABLE_NAME, null, null);
+
+	}
+
+	/**
+	 * Return set number records from database, group by id. If amount is not
+	 * defined or 0, then return all records. If table empty - returns null.
+	 */
+	public ArrayList<SmsRecord> getAll() {
+
 		ArrayList<SmsRecord> recordArray = new ArrayList<SmsRecord>();
-		
+
 		String query = "Select * FROM " + TABLE_NAME;
 		SQLiteDatabase db = this.getReadableDatabase();
-		
+
 		Cursor cursor = db.rawQuery(query, null);
-		
+
 		if (cursor.moveToFirst()) {
 			do {
 				Calendar date = Calendar.getInstance();
 				date.setTimeInMillis(Long.parseLong(cursor.getString(2)));
-				
-				SmsRecord newRecord = new SmsRecord(
-						cursor.getString(1),
-						date,
-						cursor.getString(3),
-						cursor.getString(4)
-						);
+
+				SmsRecord newRecord = new SmsRecord(cursor.getString(1), date,
+						cursor.getString(3), cursor.getString(4));
 				recordArray.add(newRecord);
-			}
-			while (cursor.moveToNext());
+			} while (cursor.moveToNext());
 		}
-		
+
 		return recordArray;
-		
+
 	}
-		
-	public static int getDBVersion () {
-		return DATABASE_VERSION; 
+	
+	 /**
+     * Fetch sms from phone memory using ContentProvider. Look up sms that only received from number 000019. 
+     * @param rowNumReq - number of required sms amount. 
+     * @return ArrayList of SmsRecord.
+     */
+	public ArrayList<SmsRecord> getSMSRecordArrayList(Context context, Integer rowNumReq) {
+		ArrayList<SmsRecord> array = new ArrayList<SmsRecord>();
+		final String SMS_URI_INBOX = "content://sms/inbox";
+		try {
+			Uri uri = Uri.parse(SMS_URI_INBOX);
+			String[] projection = new String[] { "_id", "address", "person",
+					"body", "date", "type" };
+
+			// interesting sms only from 000019
+			String whereClause = "address=\"000019\"";
+
+			// fetching sms with order by date
+			
+			ContextWrapper contextWrapper = new android.content.ContextWrapper(context);
+			
+			Cursor cur = contextWrapper.getContentResolver().query(
+					uri,
+					projection,
+					whereClause,
+					null,
+					" date asc"
+							+ (rowNumReq > 0 ? " limit 0, "
+									+ rowNumReq.toString() : ""));
+			if (cur.moveToFirst()) {
+				
+				int index_Date = cur.getColumnIndex("date");
+				do {
+					long longDate = cur.getLong(index_Date);
+					
+					Calendar currentCalendarDate = Calendar.getInstance();
+					currentCalendarDate.setTimeInMillis(longDate);
+					SmsRecord newSMS = new SmsRecord("1", currentCalendarDate,
+							"name", "value");
+
+					array.add(newSMS);
+					
+				} while (cur.moveToNext());
+
+				if (!cur.isClosed()) {
+					cur.close();
+					cur = null;
+				}
+			}
+		} catch (SQLiteException ex) {
+			System.out.println("sql-exception occured");
+		} catch (NullPointerException ex) {
+			System.out.println("null pointer exception occured");
+		}
+
+		return array;
 	}
 
-	/** Fetch sms id of all records from table DbHelper.TableEntry.TABLE_NAME
+	public static int getDBVersion() {
+
+		return DATABASE_VERSION;
+
+	}
+
+	/**
+	 * Fetch sms id of all records from table DbHelper.TableEntry.TABLE_NAME
 	 * 
 	 * @return Set of ids.
 	 */
-	public Set<String> getSmsIds() {
-		
-		Set<String> ids = new TreeSet<String>() ;
-		
-		String query = "Select distinct " + TableEntry.COLUMN_NAME_ID  + " FROM " + TABLE_NAME ;
-		
+	public ArrayList<String> getSmsIds() {
+
+		ArrayList<String> ids = new ArrayList<String>();
+
+		String query = "Select distinct " + TableEntry.COLUMN_NAME_ID
+				+ " FROM " + TABLE_NAME;
+
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
-		
+
 		if (cursor.moveToFirst()) {
-			
+
 			do {
-				
+
 				ids.add(cursor.getString(0));
-				
-			}
-			while (cursor.moveToNext());
-			
+
+			} while (cursor.moveToNext());
+
 		}
-		
+
 		return ids;
-		
+
 	}
+
+	public ArrayList<SMS> getNewSms(Context context) {
+
+		ArrayList<SMS> messages = new ArrayList<SMS>();
+
+		ArrayList<String> smsIds = getSmsIds();
+
+		try {
+			Uri uri = Uri.parse(SMS_URI_INBOX);
+			String[] projection = new String[] { "_id", "address", "person",
+					"body", "date", "type" };
+			String smsIdsList = null;
+			for (String id : smsIds) {
+				smsIdsList += ", " + id;
+			}
+			String whereClause = "address=\"000019\"" + " and _id not in ("
+					+ smsIdsList + ")";
+
+			ContextWrapper contextWrapper = new android.content.ContextWrapper(context);
+			Cursor cursor = contextWrapper.getContentResolver().query(uri, projection,
+					whereClause, null, " date desc");
+
+			if (cursor.moveToFirst()) {
+
+				int index_id = cursor.getColumnIndex("_id");
+				int index_Body = cursor.getColumnIndex("body");
+				int index_Date = cursor.getColumnIndex("date");
+				
+				do {
+
+					SMS newSms = new SMS(cursor.getString(index_id),
+							cursor.getString(index_Body),
+							cursor.getString(index_Date));
+
+					messages.add(newSms);
+
+				} while (cursor.moveToNext());
+
+			}
+			if (!cursor.isClosed()) {
+				cursor.close();
+				cursor = null;
+			}
+		} catch (SQLiteException ex) {
+			System.out.println("sql-exception occured");
+		}
+		return messages;
+
+	}
+
+	public int addAll(Context context) {
+
+		ArrayList<SMS> SMSArray = new ArrayList<SMS>();
+		SMSArray = getSMSArrayList(context, 0);
+
+		int rowsAdded = 0;
+
+		ArrayList<String> ids = new ArrayList<String>();
+		ids = getSmsIds();
+		ArrayList<SmsRecord> globalArray = new ArrayList<SmsRecord>();
+		for (SMS currentSms : SMSArray) {
+
+			// check, that current sms is not already in database
+			if (!ids.contains(currentSms.getId())) {
+
+				ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
+				for (SmsRecord cur : recordsArray) {
+					globalArray.add(cur);
+				}
+
+				for (SmsRecord currentRecord : recordsArray) {
+
+					addRecord(currentRecord);
+					rowsAdded++;
+
+				}
+
+			}
+
+			// TODO delete this now
+			if (rowsAdded == 10) {
+
+				break;
+
+			}
+
+		}
+
+		return rowsAdded;
+	}
+	
+	public static ArrayList<SMS> getSMSArrayList(Context context, Integer rowNumReq) {
+
+		ArrayList<SMS> array = new ArrayList<SMS>();
+
+		final String SMS_URI_INBOX = "content://sms/inbox";
+
+		Uri uri = Uri.parse(SMS_URI_INBOX);
+		String[] projection = new String[] { "_id", "address", "person",
+				"body", "date", "type" };
+
+		// interesting sms only from 000019
+		// TODO clear this
+		String whereClause = "address=\"000019\"";
+		// String whereClause = "address=\"15555215554\"";
+
+		// fetching sms with order by date
+		ContextWrapper contextWrapper = new android.content.ContextWrapper(context);
+		
+		Cursor cur = contextWrapper.getContentResolver().query(
+				uri,
+				projection,
+				whereClause,
+				null,
+				" date desc"
+						+ (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString()
+								: ""));
+		if (cur.moveToFirst()) {
+			int index_id = cur.getColumnIndex("_id");
+			int index_Body = cur.getColumnIndex("body");
+			int index_Date = cur.getColumnIndex("date");
+			do {
+				String strId = cur.getString(index_id);
+
+				String strbody = cur.getString(index_Body);
+				String longDate = cur.getString(index_Date);
+
+				// TODO clear this
+				/*
+				 * String [] stringArray = strbody.split("\n"); SMS newSMS = new
+				 * SMS(stringArray[2], currentCalendarDate);
+				 */
+
+				SMS newSMS = new SMS(strId, strbody, longDate);
+
+				array.add(newSMS);
+				// TODO clear this
+				/*
+				 * smsBuilder.append("[ "); smsBuilder.append(strAddress +
+				 * ", "); smsBuilder.append(intPerson + ", ");
+				 * smsBuilder.append(strbody + ", "); smsBuilder.append(new
+				 * Date(longDate)+ ", "); smsBuilder.append(int_Type);
+				 * smsBuilder.append(" ]\n\n");
+				 */
+			} while (cur.moveToNext());
+
+			if (!cur.isClosed()) {
+				cur.close();
+				cur = null;
+			}
+		}
+
+		return array;
+	}
+	
+	
 }

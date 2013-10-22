@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.view;
 
 import java.util.Date;
 

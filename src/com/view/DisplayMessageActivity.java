@@ -1,4 +1,6 @@
-package com.example.myfirstapp;
+package com.view;
+
+import com.view.R;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

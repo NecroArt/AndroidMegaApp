@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.view;
 
 import java.util.Calendar;
 
@@ -6,14 +6,14 @@ public class SMS {
 	
 	private String smsId;
 	private String content;
-	private Calendar date;
+	private String date;
 	
 	/*public SMS (String content, Calendar date){
 		this.content = content;
 		this.date = date;
 	}*/
 	
-	public SMS (String smsId, String content, Calendar date){
+	public SMS (String smsId, String content, String date){
 		this.smsId = smsId;
 		this.content = content;
 		this.date = date;
@@ -23,7 +23,7 @@ public class SMS {
 		return this.content;
 	}
 	
-	public Calendar getDate () {
+	public String getDate () {
 		return this.date;
 	}
 
