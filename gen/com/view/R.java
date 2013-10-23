@@ -46,6 +46,8 @@ public final class R {
         public static final int edit_message=0x7f050001;
         public static final int title_activity_add_all=0x7f050008;
         public static final int title_activity_delete_all=0x7f05000a;
+        public static final int title_activity_delete_record_by_id=0x7f05000c;
+        public static final int title_activity_delete_sms=0x7f05000b;
         public static final int title_activity_display_message=0x7f050006;
         public static final int title_activity_display_table=0x7f050007;
         public static final int title_activity_drop_db=0x7f050009;

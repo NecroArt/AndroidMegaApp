@@ -12,5 +12,9 @@
     <string name="title_activity_add_all">Add all</string>
     <string name="title_activity_drop_db">Recreate database</string>
     <string name="title_activity_delete_all">Delete all</string>
+    
+    <string name="title_activity_delete_sms">Delete by sms id</string>
+    <string name="title_activity_delete_record_by_id">Delete by record id</string>
+    
 
 </resources>

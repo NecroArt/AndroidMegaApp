@@ -1,9 +1,7 @@
 package com.view;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
-import smsParsing.Parser;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,8 +13,6 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
-import database.DbHelper;
-import database.SmsRecord;
 
 public class SmsReceiver extends BroadcastReceiver {
 	private SharedPreferences preferences;
@@ -25,8 +21,7 @@ public class SmsReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		this.context = context;
-		boolean threadRun = false;
+		SmsReceiver.context = context;
 		Bundle bundle = intent.getExtras(); // ---get the SMS message passed
 											// in---
 		SmsMessage[] msgs = null;
@@ -45,9 +40,9 @@ public class SmsReceiver extends BroadcastReceiver {
 					
 					String msgBody = msgs[i].getMessageBody();
 					
-					if (!threadRun && msg_from.equals(MainActivity.TELEPHONE_NUMBER)) {
-						threadRun = true;
-						(new Thread(new HandleIncommingSms())).start();
+					if (HandleIncommingSms.getNumberRunning() == 0 && msg_from.equals(MainActivity.TELEPHONE_NUMBER)) {
+						
+						(new HandleIncommingSms()).start();
 						
 					}
 
@@ -67,8 +62,7 @@ public class SmsReceiver extends BroadcastReceiver {
 						Toast.LENGTH_LONG).show();
 			}
 		}
-		// }
-		// FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getContext());
+		
 	}
 
 	public static Context getContext() {
@@ -112,65 +106,4 @@ public class SmsReceiver extends BroadcastReceiver {
 		return result;
 	}
 	
-	public class HandleIncommingSms implements Runnable {
-		
-		public void run() {
-	    	
-	    	int addedRows = 0;
-	    	int iterationsOccured = 0;
-	    	boolean isSmsFound = false;
-	    	
-	    	try {
-	    		
-				while(!isSmsFound && iterationsOccured < 10) {
-	    			
-					iterationsOccured++;
-	    			//wait while sms will store in database
-		    		Thread.sleep(10000);
-		    		
-		    		DbHelper dbHelper = new DbHelper(SmsReceiver.getContext(), null, null, DbHelper.getDBVersion());
-		    		ArrayList<SMS> smsArrayList = dbHelper.getNewSms(getContext());
-		    		
-		    		if (smsArrayList.size() > 0) {
-		    			
-		    			isSmsFound = true;
-		    			
-		    			int smsHandled = 0;
-		    			for (SMS currentSms: smsArrayList) {
-		    				
-		    				smsHandled++;
-		    				ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
-		    				
-		    				for (SmsRecord currentRecord : recordsArray) {
-		    					
-		    					System.out.println("added " + String.valueOf(addedRows));
-		    					dbHelper.addRecord(currentRecord);
-		    					addedRows++;
-		    					
-		    				}
-		    				
-		    				if (smsHandled == 5) {
-		    					
-		    					break;
-		    					
-		    				}
-		    				
-		    			}
-		    			
-		    		}
-		    		
-	    		}
-	    		
-	    		
-	    	}
-	    	catch (Exception ex) {
-	    		
-	    		System.out.println("exception on sleep of thread");
-	    		ex.printStackTrace();
-	    		
-	    	}
-	        
-	    }
-
-	}
 }

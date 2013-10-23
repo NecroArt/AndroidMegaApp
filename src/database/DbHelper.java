@@ -22,9 +22,24 @@ import android.provider.BaseColumns;
 
 public class DbHelper extends SQLiteOpenHelper {
 
+	public static abstract class TableEntry implements BaseColumns {
+		public static final String TABLE_NAME = "SMS_CONTENT";
+		public static final String COLUMN_NAME_ID = "id";
+		public static final String COLUMN_NAME_SMS_ID = "sms_id";
+		public static final String COLUMN_NAME_DATE = "date";
+		public static final String COLUMN_NAME_PARAMETER = "parameter";
+		public static final String COLUMN_NAME_VALUE = "value";
+		public static final String INTEGER_TYPE = "INTEGER";
+	}
+
+	public static final String COLUMN_NAME_SMS_ID = "sms_id";
+	public static final String COLUMN_NAME_DATE = "date";
+	public static final String COLUMN_NAME_PARAMETER = "parameter";
+	public static final String COLUMN_NAME_VALUE = "value";
 	private static final int DATABASE_VERSION = 2;
 	private static final String DATABASE_NAME = "productDB.db";
 
+	public static final String INTEGER_TYPE = "INTEGER";
 	final String SMS_URI_INBOX = "content://sms/inbox";
 
 	public static final String SQL_CREATE_ENTRIES = "CREATE TABLE "
@@ -40,11 +55,6 @@ public class DbHelper extends SQLiteOpenHelper {
 			+ TableEntry.TABLE_NAME;
 
 	public static final String TABLE_NAME = "sms_content";
-	public static final String COLUMN_NAME_SMS_ID = "sms_id";
-	public static final String COLUMN_NAME_DATE = "date";
-	public static final String COLUMN_NAME_PARAMETER = "parameter";
-	public static final String COLUMN_NAME_VALUE = "value";
-	public static final String INTEGER_TYPE = "INTEGER";
 	public static final String VARCHARTYPE = "VARCHAR (100)";
 
 	public DbHelper(Context context, String name, CursorFactory factory,
@@ -77,16 +87,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
-	public static abstract class TableEntry implements BaseColumns {
-		public static final String TABLE_NAME = "SMS_CONTENT";
-		public static final String COLUMN_NAME_ID = "id";
-		public static final String COLUMN_NAME_SMS_ID = "sms_id";
-		public static final String COLUMN_NAME_DATE = "date";
-		public static final String COLUMN_NAME_PARAMETER = "parameter";
-		public static final String COLUMN_NAME_VALUE = "value";
-		public static final String INTEGER_TYPE = "INTEGER";
-	}
-
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		try {
@@ -107,6 +107,53 @@ public class DbHelper extends SQLiteOpenHelper {
 		}
 		onCreate(db);
 		db.close();
+	}
+
+	public static int getDBVersion() {
+	
+		return DATABASE_VERSION;
+	
+	}
+
+	public int addAll(Context context) {
+	
+		ArrayList<SMS> SMSArray = new ArrayList<SMS>();
+		SMSArray = getSMSArrayList(context, 0);
+	
+		int rowsAddedAmount = 0;
+	
+		ArrayList<String> ids = new ArrayList<String>();
+		ids = getSmsIds();
+		ArrayList<SmsRecord> globalArray = new ArrayList<SmsRecord>();
+		for (SMS currentSms : SMSArray) {
+	
+			// check, that current sms is not already in database
+			if (!ids.contains(currentSms.getId())) {
+	
+				ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
+				for (SmsRecord cur : recordsArray) {
+					globalArray.add(cur);
+				}
+	
+				for (SmsRecord currentRecord : recordsArray) {
+	
+					addRecord(currentRecord);
+					rowsAddedAmount++;
+	
+				}
+	
+			}
+	
+			// TODO delete this
+			if (rowsAddedAmount == 100) {
+	
+				break;
+	
+			}
+	
+		}
+	
+		return rowsAddedAmount;
 	}
 
 	/**
@@ -136,6 +183,49 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		return added;
 
+	}
+
+	public int deleteById(Integer id) {
+	
+		int rowsDeleted = 0;
+	
+		// TODO test
+		SQLiteDatabase db = this.getWritableDatabase();
+		String [] args = new String [] {String.valueOf(id)};
+		rowsDeleted = db.delete(TABLE_NAME, TableEntry.COLUMN_NAME_ID + " = ?", args);
+	
+		return rowsDeleted;
+	
+	}
+	
+	public int deleteBySmsId(Integer id) {
+		
+		int rowsDeleted = 0;
+		
+		// TODO delete
+		SQLiteDatabase db = this.getWritableDatabase();
+		String [] args = new String [] {String.valueOf(id)};
+		rowsDeleted = db.delete(TABLE_NAME, TableEntry.COLUMN_NAME_SMS_ID + " = ?", args);
+	
+		return rowsDeleted;
+	
+	}
+
+	/**
+	 * Delete all data from table DbHelper.TABLE_NAME
+	 * 
+	 * @return
+	 */
+	public int deleteAll() {
+	
+		SQLiteDatabase db = this.getWritableDatabase();
+	
+		int amountRows = db.delete(TABLE_NAME, null, null);
+		
+		db.close();
+		
+		return amountRows;
+	
 	}
 
 	public SmsRecord findByDate(Calendar date) {
@@ -184,54 +274,25 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
-	public boolean delete(Integer id) {
-
-		boolean deleted = false;
-
-		// TODO delete
-
-		// TODO set value "deleted" variable
-
-		return deleted;
-
-	}
-
-	/**
-	 * Delete all data from table DbHelper.TABLE_NAME
-	 * 
-	 * @return
-	 */
-	public int deleteAll() {
-
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		int amountRows = db.delete(TABLE_NAME, null, null);
-		
-		db.close();
-		
-		return amountRows;
-
-	}
-
 	/**
 	 * Return set number records from database, group by id. If amount is not
 	 * defined or 0, then return all records. If table empty - returns null.
 	 */
 	public ArrayList<SmsRecord> getAll() {
-
+	
 		ArrayList<SmsRecord> recordArray = new ArrayList<SmsRecord>();
-
+	
 		String query = "Select * FROM " + TABLE_NAME + " order by date desc";
 		SQLiteDatabase db = this.getReadableDatabase();
-
+	
 		Cursor cursor = db.rawQuery(query, null);
-
+	
 		if (cursor.moveToFirst()) {
 			do {
 				Calendar date = Calendar.getInstance();
 				date.setTimeInMillis(Long.parseLong(cursor.getString(2)));
-
-				SmsRecord newRecord = new SmsRecord(cursor.getString(1), date,
+	
+				SmsRecord newRecord = new SmsRecord(cursor.getInt(0), cursor.getString(1), date,
 						cursor.getString(3), cursor.getString(4));
 				recordArray.add(newRecord);
 			} while (cursor.moveToNext());
@@ -244,14 +305,102 @@ public class DbHelper extends SQLiteOpenHelper {
 		db.close();
 		
 		return recordArray;
-
-	}
 	
-	 /**
-     * Fetch sms from phone memory using ContentProvider. Look up sms that only received from number 000019. 
-     * @param rowNumReq - number of required sms amount. 
-     * @return ArrayList of SmsRecord.
-     */
+	}
+
+	public static ArrayList<SMS> getSMSArrayList(Context context, Integer rowNumReq) {
+	
+		ArrayList<SMS> array = new ArrayList<SMS>();
+	
+		final String SMS_URI_INBOX = "content://sms/inbox";
+	
+		Uri uri = Uri.parse(SMS_URI_INBOX);
+		String[] projection = new String[] { "_id", "address", "person",
+				"body", "date", "type" };
+	
+		String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER +"\"";
+	
+		ContextWrapper contextWrapper = new android.content.ContextWrapper(context);
+		
+		// fetching sms with order by date
+		Cursor cur = contextWrapper.getContentResolver().query(
+				uri,
+				projection,
+				whereClause,
+				null,
+				" date desc"
+						+ (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString()
+								: ""));
+		if (cur.moveToFirst()) {
+			
+			int index_id = cur.getColumnIndex("_id");
+			int index_Body = cur.getColumnIndex("body");
+			int index_Date = cur.getColumnIndex("date");
+			
+			do {
+				
+				String strId = cur.getString(index_id);
+	
+				String strbody = cur.getString(index_Body);
+				String longDate = cur.getString(index_Date);
+	
+				SMS newSMS = new SMS(strId, strbody, longDate);
+	
+				array.add(newSMS);
+				
+			} while (cur.moveToNext());
+	
+			if (!cur.isClosed()) {
+				
+				cur.close();
+				cur = null;
+				
+			}
+		}
+	
+		return array;
+	}
+
+	/**
+	 * Fetch sms id of all records from table DbHelper.TableEntry.TABLE_NAME
+	 * 
+	 * @return Set of ids.
+	 */
+	public ArrayList<String> getSmsIds() {
+	
+		ArrayList<String> ids = new ArrayList<String>();
+	
+		String query = "Select distinct " + TableEntry.COLUMN_NAME_ID
+				+ " FROM " + TABLE_NAME;
+	
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+	
+		if (cursor.moveToFirst()) {
+	
+			do {
+	
+				ids.add(cursor.getString(0));
+	
+			} while (cursor.moveToNext());
+	
+		}
+		if (!cursor.isClosed()) {
+			cursor.close();
+			cursor = null;
+		}
+		
+		db.close();
+		
+		return ids;
+	
+	}
+
+	/**
+	 * Fetch sms from phone memory using ContentProvider. Look up sms that only received from number 000019. 
+	 * @param rowNumReq - number of required sms amount. 
+	 * @return ArrayList of SmsRecord.
+	 */
 	public ArrayList<SmsRecord> getSMSRecordArrayList(Context context, Integer rowNumReq) {
 		ArrayList<SmsRecord> array = new ArrayList<SmsRecord>();
 		final String SMS_URI_INBOX = "content://sms/inbox";
@@ -259,10 +408,10 @@ public class DbHelper extends SQLiteOpenHelper {
 			Uri uri = Uri.parse(SMS_URI_INBOX);
 			String[] projection = new String[] { "_id", "address", "person",
 					"body", "date", "type" };
-
+	
 			// interesting sms only from 000019
 			String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER +"\"";
-
+	
 			// fetching sms with order by date
 			
 			ContextWrapper contextWrapper = new android.content.ContextWrapper(context);
@@ -285,11 +434,11 @@ public class DbHelper extends SQLiteOpenHelper {
 					currentCalendarDate.setTimeInMillis(longDate);
 					SmsRecord newSMS = new SmsRecord("1", currentCalendarDate,
 							"name", "value");
-
+	
 					array.add(newSMS);
 					
 				} while (cur.moveToNext());
-
+	
 				if (!cur.isClosed()) {
 					cur.close();
 					cur = null;
@@ -300,49 +449,8 @@ public class DbHelper extends SQLiteOpenHelper {
 		} catch (NullPointerException ex) {
 			System.out.println("null pointer exception occured");
 		}
-
+	
 		return array;
-	}
-
-	public static int getDBVersion() {
-
-		return DATABASE_VERSION;
-
-	}
-
-	/**
-	 * Fetch sms id of all records from table DbHelper.TableEntry.TABLE_NAME
-	 * 
-	 * @return Set of ids.
-	 */
-	public ArrayList<String> getSmsIds() {
-
-		ArrayList<String> ids = new ArrayList<String>();
-
-		String query = "Select distinct " + TableEntry.COLUMN_NAME_ID
-				+ " FROM " + TABLE_NAME;
-
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery(query, null);
-
-		if (cursor.moveToFirst()) {
-
-			do {
-
-				ids.add(cursor.getString(0));
-
-			} while (cursor.moveToNext());
-
-		}
-		if (!cursor.isClosed()) {
-			cursor.close();
-			cursor = null;
-		}
-		
-		db.close();
-		
-		return ids;
-
 	}
 
 	public ArrayList<SMS> getNewSms(Context context) {
@@ -412,100 +520,6 @@ public class DbHelper extends SQLiteOpenHelper {
 		}
 		return messages;
 
-	}
-
-	public int addAll(Context context) {
-
-		ArrayList<SMS> SMSArray = new ArrayList<SMS>();
-		SMSArray = getSMSArrayList(context, 0);
-
-		int rowsAddedAmount = 0;
-
-		ArrayList<String> ids = new ArrayList<String>();
-		ids = getSmsIds();
-		ArrayList<SmsRecord> globalArray = new ArrayList<SmsRecord>();
-		for (SMS currentSms : SMSArray) {
-
-			// check, that current sms is not already in database
-			if (!ids.contains(currentSms.getId())) {
-
-				ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
-				for (SmsRecord cur : recordsArray) {
-					globalArray.add(cur);
-				}
-
-				for (SmsRecord currentRecord : recordsArray) {
-
-					addRecord(currentRecord);
-					rowsAddedAmount++;
-
-				}
-
-			}
-
-			// TODO delete this now
-			if (rowsAddedAmount == 100) {
-
-				break;
-
-			}
-
-		}
-
-		return rowsAddedAmount;
-	}
-	
-	public static ArrayList<SMS> getSMSArrayList(Context context, Integer rowNumReq) {
-
-		ArrayList<SMS> array = new ArrayList<SMS>();
-
-		final String SMS_URI_INBOX = "content://sms/inbox";
-
-		Uri uri = Uri.parse(SMS_URI_INBOX);
-		String[] projection = new String[] { "_id", "address", "person",
-				"body", "date", "type" };
-
-		String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER +"\"";
-
-		ContextWrapper contextWrapper = new android.content.ContextWrapper(context);
-		
-		// fetching sms with order by date
-		Cursor cur = contextWrapper.getContentResolver().query(
-				uri,
-				projection,
-				whereClause,
-				null,
-				" date desc"
-						+ (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString()
-								: ""));
-		if (cur.moveToFirst()) {
-			
-			int index_id = cur.getColumnIndex("_id");
-			int index_Body = cur.getColumnIndex("body");
-			int index_Date = cur.getColumnIndex("date");
-			
-			do {
-				
-				String strId = cur.getString(index_id);
-
-				String strbody = cur.getString(index_Body);
-				String longDate = cur.getString(index_Date);
-
-				SMS newSMS = new SMS(strId, strbody, longDate);
-
-				array.add(newSMS);
-				
-			} while (cur.moveToNext());
-
-			if (!cur.isClosed()) {
-				
-				cur.close();
-				cur = null;
-				
-			}
-		}
-
-		return array;
 	}
 	
 	

@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
 		
 		DbHelper dbHelper = new DbHelper(this, null, null, DbHelper.getDBVersion());
 		Integer deletedRows = dbHelper.deleteAll();
-		Toast.makeText(this, deletedRows > 0 ? "deleted" + deletedRows.toString() + "rows" : "table already empty" , Toast.LENGTH_LONG).show();
+		Toast.makeText(this, deletedRows > 0 ? "deleted " + deletedRows.toString() + " rows" : "table already empty" , Toast.LENGTH_LONG).show();
 		
 	}
 	
@@ -77,7 +77,51 @@ public class MainActivity extends Activity {
         
 	}
 	
+	public void deleteSms (View view) {
+		
+		EditText editText = (EditText) findViewById(R.id.edit_message);
+    	Integer reqId = 0;
+    	try {
+    		reqId = Integer.parseInt(editText.getText().toString());
+    	}
+    	catch (NumberFormatException ex) {
+    		
+    	}
+    	
+		DbHelper dbHelper = new DbHelper(this, null, null, DbHelper.getDBVersion());
+		
+		Integer rowsDeleted = 0;
+		
+		if (reqId > 0) {
+			rowsDeleted = dbHelper.deleteBySmsId(reqId);
+		}
+				
+        Toast.makeText(this, "deleted " + rowsDeleted + " rows", Toast.LENGTH_LONG).show();
+        
+	}
 	
+	public void deleteRecord (View view) {
+		
+		EditText editText = (EditText) findViewById(R.id.edit_message);
+    	Integer reqId = 0;
+    	try {
+    		reqId = Integer.parseInt(editText.getText().toString());
+    	}
+    	catch (NumberFormatException ex) {
+    		
+    	}
+    	
+		DbHelper dbHelper = new DbHelper(this, null, null, DbHelper.getDBVersion());
+		
+		Integer rowsDeleted = 0;
+		
+		if (reqId > 0) {
+			rowsDeleted = dbHelper.deleteById(reqId);
+		}
+				
+        Toast.makeText(this, "deleted " + rowsDeleted + " rows", Toast.LENGTH_LONG).show();
+        
+	}
 	
 	public void dropDatabase(View view) {
 		
