@@ -15,6 +15,8 @@ public class MainActivity extends Activity {
 
 	public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 	public final static Integer COLUMN_REQ_AMOUNT = 0;
+	public final static String TELEPHONE_NUMBER = "000019";
+	//public final static String TELEPHONE_NUMBER = "15555215556";
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,20 +35,20 @@ public class MainActivity extends Activity {
     
     /** Called when the user clicks the Send button */
     public void showMessages(View view) {
-    	Intent intent = new Intent(this, DisplayMessageActivity.class);
+    	/*Intent intent = new Intent(this, DisplayMessageActivity.class);
     	EditText editText = (EditText) findViewById(R.id.edit_message);
     	Integer rowNumReq = 0;
     	try {
     		rowNumReq = Integer.parseInt(editText.getText().toString());
     	}
     	catch (NumberFormatException ex) {
-    		/*rowNumReq = 0;*/
-    		//action not required
+    		
     	}
     	Test testClass = new Test();
-    	String message = testClass.getSMS(rowNumReq);
+    	String message = testClass.getSMS(this, rowNumReq);
     	intent.putExtra(EXTRA_MESSAGE, message);
-    	startActivity(intent);
+    	startActivity(intent);*/
+    	Toast.makeText(this, String.valueOf(SmsReceiver.amount), Toast.LENGTH_LONG).show();
     }
     
     public void showTable(View view) {

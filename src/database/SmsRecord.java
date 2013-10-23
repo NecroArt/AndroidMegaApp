@@ -2,25 +2,7 @@ package database;
 
 import java.util.Calendar;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
-
-public class SmsRecord implements Parcelable {
-
-	public class SmsRecordCreator implements Parcelable.Creator<SmsRecord> {
-
-		@Override
-		public SmsRecord createFromParcel(Parcel source) {
-			return new SmsRecord(source);
-		}
-
-		@Override
-		public SmsRecord[] newArray(int size) {
-			return new SmsRecord[size];
-		}
-
-	}
+public class SmsRecord {
 
 	private int id;
 	private String smsId;
@@ -31,7 +13,7 @@ public class SmsRecord implements Parcelable {
 	public SmsRecord(int id, String smsId, Calendar date, String parameterName,
 			String parameterValue) {
 
-		this.id = id;
+		this.setId(id);
 		this.smsId = smsId;
 		this.date = date;
 		this.parameterName = parameterName;
@@ -54,26 +36,12 @@ public class SmsRecord implements Parcelable {
 	public SmsRecord(String smsId, Calendar date, String parameterName,
 			String parameterValue) {
 
-		this.id = 0;
+		this.setId(0);
 		this.smsId = smsId;
 		this.date = date;
 		this.parameterName = parameterName;
 		this.parameterValue = parameterValue;
 
-	}
-
-	/**
-	 * Deserializer.
-	 * 
-	 * @param source
-	 */
-	public SmsRecord(Parcel source) {
-		id = source.readInt();
-		smsId = source.readString();
-		Calendar buf = Calendar.getInstance();
-		buf.setTimeInMillis(source.readLong());
-		date = buf;
-		parameterValue = source.readString();
 	}
 
 	public String getSmsId() {
@@ -104,28 +72,18 @@ public class SmsRecord implements Parcelable {
 		this.parameterValue = value;
 	}
 
-	@Override
-	public int describeContents() {
-		return hashCode();
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
 	}
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(id);
-		dest.writeLong(date.getTimeInMillis());
-		dest.writeString(parameterName);
-		dest.writeString(parameterValue);
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public class MyCreator implements Parcelable.Creator<SmsRecord> {
-
-		public SmsRecord createFromParcel(Parcel source) {
-			return new SmsRecord(source);
-		}
-
-		@Override
-		public SmsRecord[] newArray(int size) {
-			return new SmsRecord[size];
-		}
-	}
 }

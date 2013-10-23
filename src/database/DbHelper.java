@@ -3,10 +3,10 @@ package database;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.view.MainActivity;
 import com.view.SMS;
 
 import smsParsing.Parser;
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -73,6 +73,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		onDelete(db);
 		onCreate(db);
+		db.close();
 
 	}
 
@@ -94,6 +95,7 @@ public class DbHelper extends SQLiteOpenHelper {
 			throw ex;
 		}
 		onCreate(db);
+		db.close();
 	}
 
 	@Override
@@ -104,6 +106,7 @@ public class DbHelper extends SQLiteOpenHelper {
 			throw ex;
 		}
 		onCreate(db);
+		db.close();
 	}
 
 	/**
@@ -146,8 +149,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		String query = "Select * FROM " + TABLE_NAME + " WHERE "
 				+ COLUMN_NAME_PARAMETER + " = \"" + name + "\"";
-		// TODO delete this
-		// String query = "Select * FROM " + TABLE_NAME;
 
 		SQLiteDatabase db = this.getWritableDatabase();
 
@@ -165,7 +166,13 @@ public class DbHelper extends SQLiteOpenHelper {
 				rec.add(newRecord);
 			} while (cursor.moveToNext());
 		}
+		if (!cursor.isClosed()) {
+			cursor.close();
+			cursor = null;
+		}
 
+		db.close();
+		
 		return rec;
 
 	}
@@ -198,7 +205,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		SQLiteDatabase db = this.getWritableDatabase();
 
-		return db.delete(TABLE_NAME, null, null);
+		int amountRows = db.delete(TABLE_NAME, null, null);
+		
+		db.close();
+		
+		return amountRows;
 
 	}
 
@@ -210,7 +221,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		ArrayList<SmsRecord> recordArray = new ArrayList<SmsRecord>();
 
-		String query = "Select * FROM " + TABLE_NAME;
+		String query = "Select * FROM " + TABLE_NAME + " order by date desc";
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		Cursor cursor = db.rawQuery(query, null);
@@ -225,7 +236,13 @@ public class DbHelper extends SQLiteOpenHelper {
 				recordArray.add(newRecord);
 			} while (cursor.moveToNext());
 		}
-
+		if (!cursor.isClosed()) {
+			cursor.close();
+			cursor = null;
+		}
+		
+		db.close();
+		
 		return recordArray;
 
 	}
@@ -244,7 +261,7 @@ public class DbHelper extends SQLiteOpenHelper {
 					"body", "date", "type" };
 
 			// interesting sms only from 000019
-			String whereClause = "address=\"000019\"";
+			String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER +"\"";
 
 			// fetching sms with order by date
 			
@@ -317,7 +334,13 @@ public class DbHelper extends SQLiteOpenHelper {
 			} while (cursor.moveToNext());
 
 		}
-
+		if (!cursor.isClosed()) {
+			cursor.close();
+			cursor = null;
+		}
+		
+		db.close();
+		
 		return ids;
 
 	}
@@ -333,13 +356,33 @@ public class DbHelper extends SQLiteOpenHelper {
 			String[] projection = new String[] { "_id", "address", "person",
 					"body", "date", "type" };
 			String smsIdsList = null;
+			
 			for (String id : smsIds) {
-				smsIdsList += ", " + id;
+				if (smsIdsList == null) {
+					
+					smsIdsList = id;
+				} else {
+					
+					smsIdsList += ", " + id;
+					
+				}
+				
 			}
-			String whereClause = "address=\"000019\"" + " and _id not in ("
+			String whereClause = null;
+			if (smsIdsList != null) {
+				
+			whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER +"\"" + " and _id not in ("
 					+ smsIdsList + ")";
-
+			
+			} else {
+				
+				whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER +"\"";
+				
+			}
+			
 			ContextWrapper contextWrapper = new android.content.ContextWrapper(context);
+			
+			//TODO delete limit
 			Cursor cursor = contextWrapper.getContentResolver().query(uri, projection,
 					whereClause, null, " date desc");
 
@@ -376,7 +419,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		ArrayList<SMS> SMSArray = new ArrayList<SMS>();
 		SMSArray = getSMSArrayList(context, 0);
 
-		int rowsAdded = 0;
+		int rowsAddedAmount = 0;
 
 		ArrayList<String> ids = new ArrayList<String>();
 		ids = getSmsIds();
@@ -394,14 +437,14 @@ public class DbHelper extends SQLiteOpenHelper {
 				for (SmsRecord currentRecord : recordsArray) {
 
 					addRecord(currentRecord);
-					rowsAdded++;
+					rowsAddedAmount++;
 
 				}
 
 			}
 
 			// TODO delete this now
-			if (rowsAdded == 10) {
+			if (rowsAddedAmount == 100) {
 
 				break;
 
@@ -409,7 +452,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		}
 
-		return rowsAdded;
+		return rowsAddedAmount;
 	}
 	
 	public static ArrayList<SMS> getSMSArrayList(Context context, Integer rowNumReq) {
@@ -422,14 +465,11 @@ public class DbHelper extends SQLiteOpenHelper {
 		String[] projection = new String[] { "_id", "address", "person",
 				"body", "date", "type" };
 
-		// interesting sms only from 000019
-		// TODO clear this
-		String whereClause = "address=\"000019\"";
-		// String whereClause = "address=\"15555215554\"";
+		String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER +"\"";
 
-		// fetching sms with order by date
 		ContextWrapper contextWrapper = new android.content.ContextWrapper(context);
 		
+		// fetching sms with order by date
 		Cursor cur = contextWrapper.getContentResolver().query(
 				uri,
 				projection,
@@ -439,37 +479,29 @@ public class DbHelper extends SQLiteOpenHelper {
 						+ (rowNumReq > 0 ? " limit 0, " + rowNumReq.toString()
 								: ""));
 		if (cur.moveToFirst()) {
+			
 			int index_id = cur.getColumnIndex("_id");
 			int index_Body = cur.getColumnIndex("body");
 			int index_Date = cur.getColumnIndex("date");
+			
 			do {
+				
 				String strId = cur.getString(index_id);
 
 				String strbody = cur.getString(index_Body);
 				String longDate = cur.getString(index_Date);
 
-				// TODO clear this
-				/*
-				 * String [] stringArray = strbody.split("\n"); SMS newSMS = new
-				 * SMS(stringArray[2], currentCalendarDate);
-				 */
-
 				SMS newSMS = new SMS(strId, strbody, longDate);
 
 				array.add(newSMS);
-				// TODO clear this
-				/*
-				 * smsBuilder.append("[ "); smsBuilder.append(strAddress +
-				 * ", "); smsBuilder.append(intPerson + ", ");
-				 * smsBuilder.append(strbody + ", "); smsBuilder.append(new
-				 * Date(longDate)+ ", "); smsBuilder.append(int_Type);
-				 * smsBuilder.append(" ]\n\n");
-				 */
+				
 			} while (cur.moveToNext());
 
 			if (!cur.isClosed()) {
+				
 				cur.close();
 				cur = null;
+				
 			}
 		}
 

@@ -1,7 +1,5 @@
 package com.view;
 
-import java.util.Calendar;
-
 public class SMS {
 	
 	private String smsId;

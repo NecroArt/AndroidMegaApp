@@ -35,7 +35,7 @@ public class DisplayTableActivity extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         
-        DbHelper dbHelper = new DbHelper(this, null, null, 2);
+        DbHelper dbHelper = new DbHelper(this, null, null, DbHelper.getDBVersion());
         
         ArrayList<SmsRecord> recordsArray = dbHelper.getAll();
         
@@ -99,11 +99,39 @@ public class DisplayTableActivity extends Activity {
 
 			// TODO change this to parameter
 			i++;
-			if (i == 10 * 10 /*rownum * 10*/) {
+			if (i == 10 * 10 /*=> rownum * 10*/) {
 				break;
 			}
-
 		}
+		
+		/*for (SmsRecord currentSMS : recordsArray) {
+
+			TableRow currentRow = new TableRow(this);
+			currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
+
+			TextView SMSDateView = new TextView(this);
+			SMSDateView.setText(currentSMS.getDate().get(Calendar.DAY_OF_MONTH)
+					+ " "
+					+ new SimpleDateFormat("MMMM").format(currentSMS.getDate()
+							.getTime())
+					+ " "
+					+ String.format("%02d:%02d",
+							currentSMS.getDate().get(Calendar.HOUR_OF_DAY),
+							currentSMS.getDate().get(Calendar.MINUTE)));
+			currentRow.addView(SMSDateView);
+
+			TextView SMSParamName = new TextView(this);
+			SMSParamName.setText(currentSMS.getParameterName());
+			currentRow.addView(SMSParamName);
+
+			TextView SMSParamValue = new TextView(this);
+			SMSParamValue.setText(currentSMS.getParameterValue());
+			currentRow.addView(SMSParamValue);
+
+			SMSTable.addView(currentRow);
+
+			
+		}*/
         
         ScrollView tableScrollView = new ScrollView(this);
         tableScrollView.addView(SMSTable);

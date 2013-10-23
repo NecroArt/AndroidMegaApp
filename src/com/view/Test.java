@@ -2,13 +2,14 @@ package com.view;
 
 import java.util.Date;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 
-public class Test extends Activity {
-	public String getSMS(Integer rowNumReq) {
+public class Test {
+	public String getSMS(Context context, Integer rowNumReq) {
 
 		StringBuilder smsBuilder = new StringBuilder();
 		final String SMS_URI_INBOX = "content://sms/inbox";
@@ -18,10 +19,12 @@ public class Test extends Activity {
 					"body", "date", "type" };
 
 			// interesting sms only from 000019
-			String whereClause = "address=\"000019\"";
+			String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER + "\"";
 
+			ContextWrapper contextWrapper = new android.content.ContextWrapper(context);
+			
 			// fetching sms with order by date
-			Cursor cur = getContentResolver().query(
+			Cursor cur = contextWrapper.getContentResolver().query(
 					uri,
 					projection,
 					whereClause,

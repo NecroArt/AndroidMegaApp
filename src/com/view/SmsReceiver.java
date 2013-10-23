@@ -1,10 +1,9 @@
 package com.view;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.Calendar;
 
 import smsParsing.Parser;
-
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -22,11 +21,12 @@ import database.SmsRecord;
 public class SmsReceiver extends BroadcastReceiver {
 	private SharedPreferences preferences;
 	private static Context context = null;
+	public static int amount = 0; 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
 
-		
+		this.context = context;
+		boolean threadRun = false;
 		Bundle bundle = intent.getExtras(); // ---get the SMS message passed
 											// in---
 		SmsMessage[] msgs = null;
@@ -36,39 +36,30 @@ public class SmsReceiver extends BroadcastReceiver {
 			try {
 				Object[] pdus = (Object[]) bundle.get("pdus");
 				msgs = new SmsMessage[pdus.length];
+				
 				String allMessages = "";
+				
 				for (int i = 0; i < msgs.length; i++) {
 					msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
 					msg_from = msgs[i].getOriginatingAddress();
+					
 					String msgBody = msgs[i].getMessageBody();
 					
-					if (msg_from.equals("000019")) {
-						
+					if (!threadRun && msg_from.equals(MainActivity.TELEPHONE_NUMBER)) {
+						threadRun = true;
 						(new Thread(new HandleIncommingSms())).start();
 						
 					}
 
 					allMessages += msgBody;
-				}
-
-				// TODO wait some time while sms insret into database, get and
-				// invoke parser of this sms
-				/*try {
-					System.out.println("go to sleep");
-					Thread.sleep(30 * 1000); // in milliseconds
-					System.out.println("waiked up");
-					//wake up and look up new sms in database
-
-					DbHelper dbHelper = new DbHelper(context, null, null, DbHelper.getDBVersion());
-					//TODO get new sms and parse it
 					
-				} catch (Exception ex) {
-					Toast.makeText(context,
-							"exception on try sleep when sms was received",
-							Toast.LENGTH_LONG).show();
-				}*/
+				}
+				
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(msgs[0].getTimestampMillis());
+				
 				Toast.makeText(context,
-						(allMessages.length() == 0 ? "no text" : allMessages),
+						(allMessages.length() == 0 ? "no text" : allMessages + String.valueOf(cal.getTime())),
 						Toast.LENGTH_LONG).show();
 			} catch (Exception e) {
 				Toast.makeText(context,
@@ -122,34 +113,45 @@ public class SmsReceiver extends BroadcastReceiver {
 	}
 	
 	public class HandleIncommingSms implements Runnable {
-
-	    public void run() {
+		
+		public void run() {
 	    	
+	    	int addedRows = 0;
 	    	int iterationsOccured = 0;
-	    	boolean smsFind = false;
+	    	boolean isSmsFound = false;
 	    	
 	    	try {
 	    		
-	    		while(!smsFind && iterationsOccured < 10) {
+				while(!isSmsFound && iterationsOccured < 10) {
 	    			
-	    			iterationsOccured++;
-	    			
-		    		//wait while sms will store in database
-		    		Thread.sleep(30000);
+					iterationsOccured++;
+	    			//wait while sms will store in database
+		    		Thread.sleep(10000);
 		    		
-		    		//TODO get new sms
 		    		DbHelper dbHelper = new DbHelper(SmsReceiver.getContext(), null, null, DbHelper.getDBVersion());
 		    		ArrayList<SMS> smsArrayList = dbHelper.getNewSms(getContext());
 		    		
 		    		if (smsArrayList.size() > 0) {
 		    			
+		    			isSmsFound = true;
+		    			
+		    			int smsHandled = 0;
 		    			for (SMS currentSms: smsArrayList) {
 		    				
+		    				smsHandled++;
 		    				ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
 		    				
 		    				for (SmsRecord currentRecord : recordsArray) {
 		    					
+		    					System.out.println("added " + String.valueOf(addedRows));
 		    					dbHelper.addRecord(currentRecord);
+		    					addedRows++;
+		    					
+		    				}
+		    				
+		    				if (smsHandled == 5) {
+		    					
+		    					break;
 		    					
 		    				}
 		    				
@@ -157,12 +159,15 @@ public class SmsReceiver extends BroadcastReceiver {
 		    			
 		    		}
 		    		
-		    		//TODO parse sms and store to database
-		    		
 	    		}
+	    		
+	    		
 	    	}
 	    	catch (Exception ex) {
+	    		
 	    		System.out.println("exception on sleep of thread");
+	    		ex.printStackTrace();
+	    		
 	    	}
 	        
 	    }

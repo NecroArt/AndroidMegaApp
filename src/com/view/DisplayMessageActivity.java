@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DisplayMessageActivity extends Activity {
 
@@ -25,6 +26,7 @@ public class DisplayMessageActivity extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         Intent intent = getIntent();
+        
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         
         // Create the text view
