@@ -139,4 +139,10 @@ public class MainActivity extends Activity {
 		
 	}
 	
+	public void findByName (View view) {
+		
+		DbHelper dbHelper = new DbHelper(this, null, null, DbHelper.getDBVersion());
+		
+	}
+	
 }
