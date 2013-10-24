@@ -67,17 +67,28 @@ public class DbHelper extends SQLiteOpenHelper {
 		db.execSQL(SQL_CREATE_ENTRIES);
 	}
 
+	/**
+	 * Execute delete statement.
+	 * @param db - Database object linked on application database.
+	 */
 	public void onDelete(SQLiteDatabase db) {
 
 		db.execSQL(SQL_DELETE_ENTRIES);
 	}
 
+	/**
+	 * Allow get database object for work with it.
+	 * @return Current SQLite Database object.
+	 */
 	public SQLiteDatabase getDatabase() {
 
 		return this.getWritableDatabase();
 
 	}
 
+	/**
+	 * Execute delete and create statements.
+	 */
 	public void recreateDatabase() {
 
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -109,12 +120,21 @@ public class DbHelper extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	/**
+	 * Return database version. This is a number hardcoded in DbHelper class as static int.
+	 * @return Version of database in DbHelper class.
+	 */
 	public static int getDBVersion() {
 	
 		return DATABASE_VERSION;
 	
 	}
 
+	/**
+	 * Fetch all sms from phone number, parse it and insert result in database.
+	 * @param context - Context where function use.
+	 * @return Number of inserted rows.
+	 */
 	public int addAll(Context context) {
 	
 		ArrayList<SMS> SMSArray = new ArrayList<SMS>();
@@ -124,17 +144,14 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 		ArrayList<String> ids = new ArrayList<String>();
 		ids = getSmsIds();
-		ArrayList<SmsRecord> globalArray = new ArrayList<SmsRecord>();
+		
 		for (SMS currentSms : SMSArray) {
 	
 			// check, that current sms is not already in database
 			if (!ids.contains(currentSms.getId())) {
 	
 				ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
-				for (SmsRecord cur : recordsArray) {
-					globalArray.add(cur);
-				}
-	
+				
 				for (SmsRecord currentRecord : recordsArray) {
 	
 					addRecord(currentRecord);
@@ -185,11 +202,15 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
+	/**
+	 * Delete SmsRecord by id parameter.
+	 * @param id - Id of SmsRecord which must be delete.
+	 * @return The number of rows affected.
+	 */
 	public int deleteById(Integer id) {
 	
 		int rowsDeleted = 0;
 	
-		// TODO test
 		SQLiteDatabase db = this.getWritableDatabase();
 		String [] args = new String [] {String.valueOf(id)};
 		rowsDeleted = db.delete(TABLE_NAME, TableEntry.COLUMN_NAME_ID + " = ?", args);
@@ -198,11 +219,15 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 	}
 	
+	/**
+	 * Delete SmsRecord by id parameter.
+	 * @param id - Id of Sms which contained in SmsRecord that must be delete.
+	 * @return The number of rows affected.
+	 */
 	public int deleteBySmsId(Integer id) {
 		
 		int rowsDeleted = 0;
 		
-		// TODO delete
 		SQLiteDatabase db = this.getWritableDatabase();
 		String [] args = new String [] {String.valueOf(id)};
 		rowsDeleted = db.delete(TABLE_NAME, TableEntry.COLUMN_NAME_SMS_ID + " = ?", args);
@@ -230,13 +255,20 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	public SmsRecord findByDate(Calendar date) {
 
+		//TODO work out
 		SmsRecord rec = null;
 		return rec;
 
 	}
 
+	/**
+	 * Fetch SmsRecords from application database, which parameter name equal "name" 
+	 * @param name - Name of interesting parameter.
+	 * @return Array list of SmsRecord.
+	 */
 	public ArrayList<SmsRecord> findByParameterName(String name) {
 
+		//TODO test
 		String query = "Select * FROM " + TABLE_NAME + " WHERE "
 				+ COLUMN_NAME_PARAMETER + " = \"" + name + "\"";
 
@@ -268,7 +300,8 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	public SmsRecord findByParameterValue(String value) {
-
+		
+		//TODO work out
 		SmsRecord rec = null;
 		return rec;
 
@@ -308,6 +341,12 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 	}
 
+	/**
+	 * Fetch sms from phone memory.
+	 * @param context - Context where function use.
+	 * @param rowNumReq
+	 * @return
+	 */
 	public static ArrayList<SMS> getSMSArrayList(Context context, Integer rowNumReq) {
 	
 		ArrayList<SMS> array = new ArrayList<SMS>();
@@ -370,7 +409,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 		ArrayList<String> ids = new ArrayList<String>();
 	
-		String query = "Select distinct " + TableEntry.COLUMN_NAME_ID
+		String query = "Select distinct " + TableEntry.COLUMN_NAME_SMS_ID
 				+ " FROM " + TABLE_NAME;
 	
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -397,7 +436,8 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * Fetch sms from phone memory using ContentProvider. Look up sms that only received from number 000019. 
+	 * Fetch sms from phone memory using ContentProvider. Look up sms that only received from number 000019.
+	 * @param context -  Context where function use.
 	 * @param rowNumReq - number of required sms amount. 
 	 * @return ArrayList of SmsRecord.
 	 */
@@ -453,6 +493,11 @@ public class DbHelper extends SQLiteOpenHelper {
 		return array;
 	}
 
+	/**
+	 * Fetch sms from phone memory, which have ids have not contained in application database. 
+	 * @param context - Context where function use.
+	 * @return Array list of sms, which _id fields not in application database.
+	 */
 	public ArrayList<SMS> getNewSms(Context context) {
 
 		ArrayList<SMS> messages = new ArrayList<SMS>();

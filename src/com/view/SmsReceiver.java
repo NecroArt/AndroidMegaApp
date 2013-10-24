@@ -17,7 +17,8 @@ import android.widget.Toast;
 public class SmsReceiver extends BroadcastReceiver {
 	private SharedPreferences preferences;
 	private static Context context = null;
-	public static int amount = 0; 
+	public static int amount = 0;
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
@@ -31,55 +32,60 @@ public class SmsReceiver extends BroadcastReceiver {
 			try {
 				Object[] pdus = (Object[]) bundle.get("pdus");
 				msgs = new SmsMessage[pdus.length];
-				
+
 				String allMessages = "";
-				
+
+				// if full message body will be contained in several
+				// sms-messages, than msgs.length will > 1
 				for (int i = 0; i < msgs.length; i++) {
 					msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
 					msg_from = msgs[i].getOriginatingAddress();
-					
+
 					String msgBody = msgs[i].getMessageBody();
-					
-					if (HandleIncommingSms.getNumberRunning() == 0 && msg_from.equals(MainActivity.TELEPHONE_NUMBER)) {
-						
+
+					if (HandleIncommingSms.getNumberRunning() == 0
+							&& msg_from.equals(MainActivity.TELEPHONE_NUMBER)) {
+
+						HandleIncommingSms.incNumberRunning();
 						(new HandleIncommingSms()).start();
-						
+
 					}
 
 					allMessages += msgBody;
-					
+
 				}
-				
+
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(msgs[0].getTimestampMillis());
-				
-				Toast.makeText(context,
-						(allMessages.length() == 0 ? "no text" : allMessages + String.valueOf(cal.getTime())),
+
+				Toast.makeText(
+						context,
+						(allMessages.length() == 0 ? "no text" : allMessages
+								+ String.valueOf(cal.getTime())),
 						Toast.LENGTH_LONG).show();
+
 			} catch (Exception e) {
-				Toast.makeText(context,
-						"exception on sms catch",
+
+				Toast.makeText(context, "exception on sms catch",
 						Toast.LENGTH_LONG).show();
+
 			}
 		}
-		
+
 	}
 
 	public static Context getContext() {
-		
+
 		return context;
-		
+
 	}
+
 	private String markMessageRead(Context context, String number, String body) {
 
 		String result = "";
 		Uri uri = Uri.parse("content://sms/inbox");
 		String whereClause = "address=\"" + number + "\"";
-		/*
-		 * try { Thread.sleep(10000); } catch (InterruptedException e) { result
-		 * = "faild when try sleep; "; }
-		 */
-
+		
 		Cursor cursor = context.getContentResolver().query(uri, null,
 				whereClause, null, null);
 		try {
@@ -105,5 +111,5 @@ public class SmsReceiver extends BroadcastReceiver {
 		}
 		return result;
 	}
-	
+
 }

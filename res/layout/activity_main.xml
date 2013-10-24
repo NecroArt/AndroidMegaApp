@@ -18,11 +18,6 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_send" 
-        android:onClick="showMessages"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/button_table" 
         android:onClick="showTable"/>
     
@@ -55,5 +50,12 @@
         android:layout_height="wrap_content"
         android:text="@string/title_activity_delete_record_by_id" 
         android:onClick="deleteRecord"/>
+    
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_test" 
+        android:onClick="showMessages"/>
+    
 
 </LinearLayout>

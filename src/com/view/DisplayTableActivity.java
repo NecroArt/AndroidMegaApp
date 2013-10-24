@@ -74,13 +74,13 @@ public class DisplayTableActivity extends Activity {
 			TableRow currentRow = new TableRow(this);
 			currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
 
-			TextView SMSSmsIdView = new TextView(this);
+			/*TextView SMSSmsIdView = new TextView(this);
 			SMSSmsIdView.setText(currentSMS.getSmsId());
 			currentRow.addView(SMSSmsIdView);
 			
 			TextView SMSIdView = new TextView(this);
 			SMSIdView.setText(String.valueOf(currentSMS.getId()));
-			currentRow.addView(SMSIdView);
+			currentRow.addView(SMSIdView);*/
 			
 			TextView SMSDateView = new TextView(this);
 			SMSDateView.setText(currentSMS.getDate().get(Calendar.DAY_OF_MONTH)
