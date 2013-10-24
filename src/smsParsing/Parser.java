@@ -67,29 +67,6 @@ public class Parser {
 
 			}
 
-			/*
-			 * for (int i = 0; i < arrayPhrases.length; i++) {
-			 * 
-			 * boolean added = false;
-			 * 
-			 * for (int j = 0; j < keyWords.size() && !added; j++) {
-			 * 
-			 * if (arrayPhrases[i].indexOf(":") != -1 &&
-			 * arrayPhrases[i].substring(0,
-			 * arrayPhrases[i].indexOf(":")).equals( keyWords.get(j))) {
-			 * 
-			 * SmsRecord newRecord = new SmsRecord(sms.getId(), sms.getDate(),
-			 * keyWords.get(j), arrayPhrases[i].substring(
-			 * arrayPhrases[i].indexOf(":") + 2, arrayPhrases[i].length()));
-			 * recordsArray.add(newRecord); added = true;
-			 * 
-			 * }
-			 * 
-			 * }
-			 * 
-			 * }
-			 */
-
 		}
 
 		return recordsArray;
