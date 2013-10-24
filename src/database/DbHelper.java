@@ -279,12 +279,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
 			ContextWrapper contextWrapper = new android.content.ContextWrapper(
 					context);
+			String startWith = "Статус критичных процессов REP_COMM%";
+			//String startWith = "GoldenGate%";
 			String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
-					+ "\""/* + " and date = " + date.toString()*/;
+					+ "\" and body like " + "\"" + startWith + "\"";
 			String[] projection = new String[] { "_id", "address", "person",
 					"body", "date", "type" };
 			Cursor cursor = contextWrapper.getContentResolver().query(uri,
-					projection, whereClause, null, null);
+					projection, whereClause, null, "date desc");
 
 			if (cursor.moveToFirst()) {
 
@@ -296,6 +298,9 @@ public class DbHelper extends SQLiteOpenHelper {
 						cursor.getString(index_Body),
 						cursor.getString(index_Date));
 
+				//TODO delete this
+				SmsReceiver.db = Long.valueOf(cursor.getString(index_Date));
+				
 			}
 
 		} catch (SQLiteException ex) {
@@ -435,7 +440,7 @@ public class DbHelper extends SQLiteOpenHelper {
 			if (smsIdsList != null) {
 
 				whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
-						+ "\"" + " and _id not in (" + smsIdsList + ")";
+						+ "\""/* + " and _id not in (" + smsIdsList + ")"*/;
 
 			} else {
 
@@ -461,7 +466,7 @@ public class DbHelper extends SQLiteOpenHelper {
 					SMS newSms = new SMS(cursor.getString(index_id),
 							cursor.getString(index_Body),
 							cursor.getString(index_Date));
-
+					
 					messages.add(newSms);
 
 				} while (cursor.moveToNext());

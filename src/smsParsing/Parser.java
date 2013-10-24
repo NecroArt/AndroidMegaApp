@@ -14,9 +14,9 @@ public class Parser {
 		ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
 
 		// check that sms contain what will
-		if (smsText.startsWith("Статус критичных процесов REP_COMM")) {
+		if (smsText.startsWith("Статус критичных процессов REP_COMM")) {
 			// TODO delete this
-			// if (smsText.startsWith("G")) {
+			 //if (smsText.startsWith("G")) {
 
 			String goldenGate = "GoldenGate";
 			String otrabotalo = "ОТРАБОТАЛО";

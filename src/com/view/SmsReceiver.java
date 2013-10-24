@@ -18,6 +18,10 @@ public class SmsReceiver extends BroadcastReceiver {
 	private SharedPreferences preferences;
 	private static Context context = null;
 	public static int amount = 0;
+	
+	//TODO delete this
+	public static Long sms = 0L;
+	public static Long db = 0L;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -57,6 +61,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(msgs[0].getTimestampMillis());
+				sms = msgs[0].getTimestampMillis();
 
 				Toast.makeText(
 						context,

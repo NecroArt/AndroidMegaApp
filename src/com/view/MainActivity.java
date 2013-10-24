@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
     	String message = testClass.getSMS(this, rowNumReq);
     	intent.putExtra(EXTRA_MESSAGE, message);
     	startActivity(intent);*/
-    	Toast.makeText(this, String.valueOf(SmsReceiver.amount), Toast.LENGTH_LONG).show();
+    	Toast.makeText(this, String.valueOf(SmsReceiver.sms) + " = " + String.valueOf(SmsReceiver.db), Toast.LENGTH_LONG).show();
     }
     
     public void showTable(View view) {
