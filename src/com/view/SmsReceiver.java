@@ -47,7 +47,7 @@ public class SmsReceiver extends BroadcastReceiver {
 							&& msg_from.equals(MainActivity.TELEPHONE_NUMBER)) {
 
 						HandleIncommingSms.incNumberRunning();
-						(new HandleIncommingSms()).start();
+						(new HandleIncommingSms(msgs[0].getTimestampMillis())).start();
 
 					}
 
@@ -60,7 +60,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
 				Toast.makeText(
 						context,
-						(allMessages.length() == 0 ? "no text" : allMessages
+						(allMessages.length() == 0 ? "no text" : allMessages + "\n"
 								+ String.valueOf(cal.getTime())),
 						Toast.LENGTH_LONG).show();
 

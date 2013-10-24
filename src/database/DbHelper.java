@@ -261,12 +261,54 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
-	public SmsRecord findByDate(Calendar date) {
+	public SmsRecord findRecordByDate(Long date) {
 
 		// TODO work out
 		SmsRecord rec = null;
 		return rec;
 
+	}
+
+	public SMS findSmsByDate(Context context, Long date) {
+
+		SMS sms = null;
+
+		try {
+
+			Uri uri = Uri.parse(SMS_URI_INBOX);
+
+			ContextWrapper contextWrapper = new android.content.ContextWrapper(
+					context);
+			String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
+					+ "\""/* + " and date = " + date.toString()*/;
+			String[] projection = new String[] { "_id", "address", "person",
+					"body", "date", "type" };
+			Cursor cursor = contextWrapper.getContentResolver().query(uri,
+					projection, whereClause, null, null);
+
+			if (cursor.moveToFirst()) {
+
+				int index_id = cursor.getColumnIndex("_id");
+				int index_Body = cursor.getColumnIndex("body");
+				int index_Date = cursor.getColumnIndex("date");
+
+				sms = new SMS(cursor.getString(index_id),
+						cursor.getString(index_Body),
+						cursor.getString(index_Date));
+
+			}
+
+		} catch (SQLiteException ex) {
+
+			// TODO write log
+
+		} catch (NullPointerException e) {
+
+			// TODO: handle exception
+
+		}
+
+		return sms;
 	}
 
 	/**
@@ -370,6 +412,8 @@ public class DbHelper extends SQLiteOpenHelper {
 		try {
 
 			Uri uri = Uri.parse(SMS_URI_INBOX);
+
+			// TODO clear this
 			String[] projection = new String[] { "_id", "address", "person",
 					"body", "date", "type" };
 			String smsIdsList = null;
@@ -403,7 +447,6 @@ public class DbHelper extends SQLiteOpenHelper {
 			ContextWrapper contextWrapper = new android.content.ContextWrapper(
 					context);
 
-			// TODO delete limit
 			Cursor cursor = contextWrapper.getContentResolver().query(uri,
 					projection, whereClause, null, " date desc");
 
@@ -434,8 +477,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		} catch (SQLiteException ex) {
 
-			// TODO do something
-			System.out.println("sql-exception occured");
+			// TODO write log
+
+		} catch (NullPointerException e) {
+
+			// TODO: handle exception
 
 		}
 

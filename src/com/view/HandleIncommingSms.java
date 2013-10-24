@@ -10,6 +10,28 @@ public class HandleIncommingSms extends Thread {
 
 	private static int runningThreadAmount = 0;
 
+	private Long timeInMillis = 0L;
+
+	/**
+	 * Create new thread and set time of interesting sms.
+	 * 
+	 * @param timeInMillis
+	 *            - Time which will be compare with sms time.
+	 */
+	public HandleIncommingSms(Long timeInMillis) {
+
+		this.timeInMillis = timeInMillis;
+
+	}
+
+	/**
+	 * Default constructor.
+	 */
+	/*
+	 * public HandleIncommingSms () {
+	 * 
+	 * }
+	 */
 	public void run() {
 
 		// check that programmer sure that tread run
@@ -29,34 +51,21 @@ public class HandleIncommingSms extends Thread {
 
 					DbHelper dbHelper = new DbHelper(SmsReceiver.getContext(),
 							null, null, DbHelper.getDBVersion());
-					ArrayList<SMS> smsArrayList = dbHelper
-							.getNewSms(SmsReceiver.getContext());
+					SMS sms = dbHelper.findSmsByDate(SmsReceiver.getContext(),
+							timeInMillis);
 
-					if (smsArrayList.size() > 0) {
+					if (sms != null) {
 
 						isSmsFound = true;
 
-						int smsHandled = 0;
-						for (SMS currentSms : smsArrayList) {
+						ArrayList<SmsRecord> recordsArray = Parser.parse(sms);
 
-							smsHandled++;
-							ArrayList<SmsRecord> recordsArray = Parser
-									.parse(currentSms);
+						for (SmsRecord currentRecord : recordsArray) {
 
-							for (SmsRecord currentRecord : recordsArray) {
+							// TODO delete this
+							SmsReceiver.amount++;
 
-								// TODO delete this
-								SmsReceiver.amount++;
-
-								dbHelper.addRecord(currentRecord);
-
-							}
-
-							if (smsHandled == 5) {
-
-								break;
-
-							}
+							dbHelper.addRecord(currentRecord);
 
 						}
 
