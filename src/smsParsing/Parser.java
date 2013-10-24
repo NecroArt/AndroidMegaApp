@@ -4,78 +4,91 @@ import java.util.ArrayList;
 
 import com.view.SMS;
 
-
 import database.SmsRecord;
 
 public class Parser {
 
-	/*
-	 * private static Set<String> keyWords = new Set<String>();
-	 * 
-	 * public static boolean addKeyWord (String word) { boolean wordAdded =
-	 * false;
-	 * 
-	 * keyWords.add(word); return wordAdded; }
-	 */
-
 	public static ArrayList<SmsRecord> parse(SMS sms) {
 
+		String smsText = sms.getContent();
 		ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
 
-		String smsText = sms.getContent();
+		// check that sms contain what will
+		if (smsText.startsWith("Ñòàòóñ êğèòè÷íûõ ïğîöåñîâ REP_COMM")) {
+			// TODO delete this
+			// if (smsText.startsWith("G")) {
 
-		String goldenGate = "GoldenGate";
-		String otrabotalo = "ÎÒĞÀÁÎÒÀËÎ";
-		String nochyuUpalo = "ÍÎ×ÜŞ_ÓÏÀËÎ";
-		String AbonToday = "ABONTODAY";
-		String viruchka = "ÂÛĞÓ×ÊÀ";
-		String operativniy = "ÎÏÅĞÀÒÈÂÍÛÉ";
-		String SEND_IMSI = "SEND_IMSI";
-		String vcheraUpalo = "Â×ÅĞÀ_ÓÏÀËÎ";
-		String padalo = "ÏÀÄÀËÎ_7_ÄÍÅÉ";
-		String svobodno = "ÑÂÎÁÎÄÍÎ";
+			String goldenGate = "GoldenGate";
+			String otrabotalo = "ÎÒĞÀÁÎÒÀËÎ";
+			String nochyuUpalo = "ÍÎ×ÜŞ_ÓÏÀËÎ";
+			String AbonToday = "ABONTODAY";
+			String viruchka = "ÂÛĞÓ×ÊÀ";
+			String operativniy = "ÎÏÅĞÀÒÈÂÍÛÉ";
+			String SEND_IMSI = "SEND_IMSI";
+			String vcheraUpalo = "Â×ÅĞÀ_ÓÏÀËÎ";
+			String padalo = "ÏÀÄÀËÎ_7_ÄÍÅÉ";
+			String svobodno = "ÑÂÎÁÎÄÍÎ";
 
-		ArrayList<String> keyWords = new ArrayList<String>();
-		keyWords.add(goldenGate);
-		keyWords.add(otrabotalo);
-		keyWords.add(nochyuUpalo);
-		keyWords.add(AbonToday);
-		keyWords.add(viruchka);
-		keyWords.add(operativniy);
-		keyWords.add(SEND_IMSI);
-		keyWords.add(vcheraUpalo);
-		keyWords.add(padalo);
-		keyWords.add(svobodno);
+			ArrayList<String> keyWords = new ArrayList<String>();
+			keyWords.add(goldenGate);
+			keyWords.add(otrabotalo);
+			keyWords.add(nochyuUpalo);
+			keyWords.add(AbonToday);
+			keyWords.add(viruchka);
+			keyWords.add(operativniy);
+			keyWords.add(SEND_IMSI);
+			keyWords.add(vcheraUpalo);
+			keyWords.add(padalo);
+			keyWords.add(svobodno);
 
-		String[] arrayPhrases = smsText.split("\n");
+			String[] arrayPhrases = smsText.split("\n");
 
-		for (int i = 0; i < arrayPhrases.length; i++) {
-			boolean added = false;
-			// parameter name
-			// arrayPhrases[i].substring(0, arrayPhrases[i].indexOf(":"));
+			for (String currentString : arrayPhrases) {
 
-			// value
-			// arrayPhrases[i].substring(arrayPhrases[i].indexOf(":"),
-			// arrayPhrases[i].length());
+				boolean added = false;
 
-			for (int j = 0; j < keyWords.size() && !added; j++) {
+				for (int j = 0; j < keyWords.size() && !added; j++) {
 
-				if (arrayPhrases[i].indexOf(":") != -1
-						&& arrayPhrases[i].substring(0,
-								arrayPhrases[i].indexOf(":")).equals(
-								keyWords.get(j))) {
+					if (currentString.indexOf(":") != -1
+							&& currentString.substring(0,
+									currentString.indexOf(":")).equals(
+									keyWords.get(j))) {
 
-					SmsRecord newRecord = new SmsRecord(sms.getId(),
-							sms.getDate(), keyWords.get(j),
-							arrayPhrases[i].substring(
-									arrayPhrases[i].indexOf(":") + 2,
-									arrayPhrases[i].length()));
-					recordsArray.add(newRecord);
-					added = true;
+						SmsRecord newRecord = new SmsRecord(sms.getId(),
+								sms.getDate(), keyWords.get(j),
+								currentString.substring(
+										currentString.indexOf(":") + 2,
+										currentString.length()));
+						recordsArray.add(newRecord);
+						added = true;
 
+					}
 				}
 
 			}
+
+			/*
+			 * for (int i = 0; i < arrayPhrases.length; i++) {
+			 * 
+			 * boolean added = false;
+			 * 
+			 * for (int j = 0; j < keyWords.size() && !added; j++) {
+			 * 
+			 * if (arrayPhrases[i].indexOf(":") != -1 &&
+			 * arrayPhrases[i].substring(0,
+			 * arrayPhrases[i].indexOf(":")).equals( keyWords.get(j))) {
+			 * 
+			 * SmsRecord newRecord = new SmsRecord(sms.getId(), sms.getDate(),
+			 * keyWords.get(j), arrayPhrases[i].substring(
+			 * arrayPhrases[i].indexOf(":") + 2, arrayPhrases[i].length()));
+			 * recordsArray.add(newRecord); added = true;
+			 * 
+			 * }
+			 * 
+			 * }
+			 * 
+			 * }
+			 */
 
 		}
 
