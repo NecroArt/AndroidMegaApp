@@ -269,7 +269,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
-	public SMS findSmsByDate(Context context, Long date) {
+	public SMS findLastSms(Context context) {
 
 		SMS sms = null;
 
@@ -298,9 +298,6 @@ public class DbHelper extends SQLiteOpenHelper {
 						cursor.getString(index_Body),
 						cursor.getString(index_Date));
 
-				//TODO delete this
-				SmsReceiver.db = Long.valueOf(cursor.getString(index_Date));
-				
 			}
 
 		} catch (SQLiteException ex) {

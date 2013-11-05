@@ -27,13 +27,18 @@ public class DisplayMessageActivity extends Activity {
         }
         Intent intent = getIntent();
         
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        /*String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);*/
         
         // Create the text view
         setContentView(R.layout.activity_display_message);
         TextView textView = (TextView) findViewById(R.id.sms_text);
         textView.setTextSize(12);
-        textView.setText(message);
+        /*textView.setText(message);*/
+        String not_my_text = "";
+        for (int i = 0; i < MainActivity.text.length() && i < MainActivity.my_text.length(); i++) {
+        	not_my_text += MainActivity.text.charAt(i) + " " + (int) MainActivity.text.charAt(i) + " = " + MainActivity.my_text.charAt(i) + " " + (int) MainActivity.my_text.charAt(i) + "\n";
+        }
+        textView.setText(not_my_text);
 
 	}
 

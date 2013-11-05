@@ -37,6 +37,7 @@ public class DisplayTableActivity extends Activity {
         
         DbHelper dbHelper = new DbHelper(this, null, null, DbHelper.getDBVersion());
         
+        //TODO create method with parameter - amount required records
         ArrayList<SmsRecord> recordsArray = dbHelper.getAll();
         
         TableLayout SMSTable = new TableLayout(this);
@@ -74,13 +75,23 @@ public class DisplayTableActivity extends Activity {
 			TableRow currentRow = new TableRow(this);
 			currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
 
-			/*TextView SMSSmsIdView = new TextView(this);
+			TextView SMSSmsIdView = new TextView(this);
+			SMSSmsIdView.setGravity(Gravity.LEFT);
 			SMSSmsIdView.setText(currentSMS.getSmsId());
 			currentRow.addView(SMSSmsIdView);
+
+			TextView Delimeter1 = new TextView(this);
+			Delimeter1.setText("|");
+			currentRow.addView(Delimeter1);
 			
 			TextView SMSIdView = new TextView(this);
+			SMSIdView.setGravity(Gravity.CENTER);
 			SMSIdView.setText(String.valueOf(currentSMS.getId()));
-			currentRow.addView(SMSIdView);*/
+			currentRow.addView(SMSIdView);
+			
+			TextView Delimeter2 = new TextView(this);
+			Delimeter2.setText("|");
+			currentRow.addView(Delimeter2);
 			
 			TextView SMSDateView = new TextView(this);
 			SMSDateView.setText(currentSMS.getDate().get(Calendar.DAY_OF_MONTH)
@@ -98,6 +109,7 @@ public class DisplayTableActivity extends Activity {
 			currentRow.addView(SMSParamName);
 
 			TextView SMSParamValue = new TextView(this);
+			SMSParamValue.setGravity(Gravity.RIGHT);
 			SMSParamValue.setText(currentSMS.getParameterValue());
 			currentRow.addView(SMSParamValue);
 
@@ -142,6 +154,7 @@ public class DisplayTableActivity extends Activity {
 		}*/
         
         ScrollView tableScrollView = new ScrollView(this);
+        tableScrollView.setFillViewport(true);
         tableScrollView.addView(SMSTable);
         
         setContentView(tableScrollView);

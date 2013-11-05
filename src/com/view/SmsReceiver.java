@@ -18,8 +18,8 @@ public class SmsReceiver extends BroadcastReceiver {
 	private SharedPreferences preferences;
 	private static Context context = null;
 	public static int amount = 0;
-	
-	//TODO delete this
+
+	// TODO delete this
 	public static Long sms = 0L;
 	public static Long db = 0L;
 
@@ -30,7 +30,7 @@ public class SmsReceiver extends BroadcastReceiver {
 		Bundle bundle = intent.getExtras(); // ---get the SMS message passed
 											// in---
 		SmsMessage[] msgs = null;
-		String msg_from;
+		String msg_from = null;
 		if (bundle != null) {
 			// ---retrieve the SMS message received---
 			try {
@@ -51,7 +51,7 @@ public class SmsReceiver extends BroadcastReceiver {
 							&& msg_from.equals(MainActivity.TELEPHONE_NUMBER)) {
 
 						HandleIncommingSms.incNumberRunning();
-						(new HandleIncommingSms(msgs[0].getTimestampMillis())).start();
+						(new HandleIncommingSms()).start();
 
 					}
 
@@ -65,9 +65,8 @@ public class SmsReceiver extends BroadcastReceiver {
 
 				Toast.makeText(
 						context,
-						(allMessages.length() == 0 ? "no text" : allMessages + "\n"
-								+ String.valueOf(cal.getTime())),
-						Toast.LENGTH_LONG).show();
+						(allMessages.length() == 0 ? "no text" : allMessages
+								+ "\n" + msg_from), Toast.LENGTH_LONG).show();
 
 			} catch (Exception e) {
 
@@ -90,7 +89,7 @@ public class SmsReceiver extends BroadcastReceiver {
 		String result = "";
 		Uri uri = Uri.parse("content://sms/inbox");
 		String whereClause = "address=\"" + number + "\"";
-		
+
 		Cursor cursor = context.getContentResolver().query(uri, null,
 				whereClause, null, null);
 		try {

@@ -16,7 +16,12 @@ public class MainActivity extends Activity {
 	public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 	public final static Integer COLUMN_REQ_AMOUNT = 0;
 	public final static String TELEPHONE_NUMBER = "000019";
+	public final static Integer PARAMETERS_AMOUNT = 10;
 	//public final static String TELEPHONE_NUMBER = "15555215556";
+	//public final static String TELEPHONE_NUMBER = "+79244360943";
+	
+	public static String my_text = null;
+	public static String text = null;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +40,10 @@ public class MainActivity extends Activity {
     
     /** Called when the user clicks the Send button */
     public void showMessages(View view) {
-    	/*Intent intent = new Intent(this, DisplayMessageActivity.class);
-    	EditText editText = (EditText) findViewById(R.id.edit_message);
+    	
+    	//Intent intent = new Intent(this, DisplayMessageActivity.class);
+    	Intent intent = new Intent(this, Test.class);
+    	/*EditText editText = (EditText) findViewById(R.id.edit_message);
     	Integer rowNumReq = 0;
     	try {
     		rowNumReq = Integer.parseInt(editText.getText().toString());
@@ -46,9 +53,10 @@ public class MainActivity extends Activity {
     	}
     	Test testClass = new Test();
     	String message = testClass.getSMS(this, rowNumReq);
-    	intent.putExtra(EXTRA_MESSAGE, message);
-    	startActivity(intent);*/
-    	Toast.makeText(this, String.valueOf(SmsReceiver.sms) + " = " + String.valueOf(SmsReceiver.db), Toast.LENGTH_LONG).show();
+    	intent.putExtra(EXTRA_MESSAGE, message);*/
+    	startActivity(intent);
+    	//Toast.makeText(this, String.valueOf(SmsReceiver.sms) + " = " + String.valueOf(SmsReceiver.db), Toast.LENGTH_LONG).show();
+    	
     }
     
     public void showTable(View view) {
@@ -142,6 +150,13 @@ public class MainActivity extends Activity {
 	public void findByName (View view) {
 		
 		DbHelper dbHelper = new DbHelper(this, null, null, DbHelper.getDBVersion());
+		
+	}
+	
+	public void showPanes(View view) {
+		
+		Intent intent = new Intent(this, DisplayPanesActivity.class);
+		startActivity(intent);
 		
 	}
 	

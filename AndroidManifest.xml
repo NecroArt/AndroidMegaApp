@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.view"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionCode="0"
+    android:versionName="0.001" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -36,6 +36,15 @@
         <activity
             android:name="com.view.DisplayTableActivity"
             android:label="@string/title_activity_display_table"
+            android:parentActivityName="com.view.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.view.MainActivity" />
+        </activity>
+        
+        <activity
+            android:name="com.view.Test"
+            android:label="@string/title_activity_display_message"
             android:parentActivityName="com.view.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -13,18 +13,6 @@ public class HandleIncommingSms extends Thread {
 	private Long timeInMillis = 0L;
 
 	/**
-	 * Create new thread and set time of interesting sms.
-	 * 
-	 * @param timeInMillis
-	 *            - Time which will be compare with sms time.
-	 */
-	public HandleIncommingSms(Long timeInMillis) {
-
-		this.timeInMillis = timeInMillis;
-
-	}
-
-	/**
 	 * Default constructor.
 	 */
 	/*
@@ -51,8 +39,7 @@ public class HandleIncommingSms extends Thread {
 
 					DbHelper dbHelper = new DbHelper(SmsReceiver.getContext(),
 							null, null, DbHelper.getDBVersion());
-					SMS sms = dbHelper.findSmsByDate(SmsReceiver.getContext(),
-							timeInMillis);
+					SMS sms = dbHelper.findLastSms(SmsReceiver.getContext());
 
 					if (sms != null) {
 

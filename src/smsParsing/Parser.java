@@ -2,6 +2,7 @@ package smsParsing;
 
 import java.util.ArrayList;
 
+import com.view.MainActivity;
 import com.view.SMS;
 
 import database.SmsRecord;
@@ -14,7 +15,7 @@ public class Parser {
 		ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
 
 		// check that sms contain what will
-		if (smsText.startsWith("Статус критичных процессов REP_COMM")) {
+		if (smsText.startsWith("Статус критичных процессов REP-COMM")) {
 			// TODO delete this
 			 //if (smsText.startsWith("G")) {
 
@@ -42,8 +43,12 @@ public class Parser {
 			keyWords.add(svobodno);
 
 			String[] arrayPhrases = smsText.split("\n");
+			
+			//TODO delete this
+			MainActivity.text = arrayPhrases[0];
+			MainActivity.my_text = "Статус критичных процессов REP_COMM";
 
-			for (String currentString : arrayPhrases) {
+			for (String currentString: arrayPhrases) {
 
 				boolean added = false;
 
