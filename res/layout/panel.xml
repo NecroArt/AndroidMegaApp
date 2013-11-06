@@ -2,38 +2,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <RelativeLayout
-        android:id="@+id/relative_layout"
-        android:layout_width="200dip"
-        android:layout_height="200dip"
-        android:layout_gravity="center"
-        android:background="#1F33CCFF" >
-
-        <TextView
-            android:id="@+id/test_button_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:text="Relative layout"
-            android:textSize="20sp" >
-        </TextView>
-
-        <ImageView
-            android:id="@+id/test_button_image1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/test_button_text"
-            android:src="@drawable/ic_launcher" >
-        </ImageView>
-
-        <ImageView
-            android:id="@+id/test_button_image2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/test_button_text"
-            android:layout_toRightOf="@+id/test_button_image1"
-            android:src="@drawable/pailoid" >
-        </ImageView>
-    </RelativeLayout>
+  
 
 </ScrollView>

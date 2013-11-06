@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class Test extends Activity {
@@ -20,126 +21,84 @@ public class Test extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.panel);
 
+		int childId = 0;
+
 		LinearLayout linearLayout = new LinearLayout(this);
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-		// оперативный
-		RelativeLayout relativeLayout = new RelativeLayout(this);
-		relativeLayout.setBackgroundColor(Color.parseColor("#883399FF"));
-		relativeLayout.setId(1);
-		relativeLayout.setGravity(Gravity.CENTER);
+		//
+		// РѕРїРµСЂР°С‚РёРІРЅС‹Р№
+		//
 
-		int childId = 0;
+		// label
+		TextView textView = new TextView(this);
+		textView.setText("РћРїРµСЂР°С‚РёРІРЅС‹Р№");
+		textView.setBackgroundColor(Color.parseColor("#8800CCFF"));
+		textView.setGravity(Gravity.CENTER);
+		linearLayout.addView(textView);
 
-		TableLayout.LayoutParams rlp = new TableLayout.LayoutParams(
+		TableLayout table = new TableLayout(this);
+		table.setStretchAllColumns(true);
+		table.setShrinkAllColumns(true);
+
+		// images
+		TableRow currentRow = new TableRow(this);
+		TableLayout.LayoutParams relativeLayoutParameters = new TableLayout.LayoutParams(
 				TableLayout.LayoutParams.WRAP_CONTENT,
 				TableLayout.LayoutParams.WRAP_CONTENT, 1f);
-
-		RelativeLayout.LayoutParams textViewParameters = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		
-		TextView textView = new TextView(this);
-		textView.setId(++childId);
-		textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-		textView.setText("Оперативный");
-		textView.setLayoutParams(textViewParameters);
-		relativeLayout.addView(textView);
-
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
-		
-		
+		currentRow = new TableRow(this);
 		for (int i = 1; i <= getDaysAmount(); i++) {
-			
+
 			ImageView imageView = new ImageView(this);
 			imageView.setId(++childId);
-			imageView.setImageResource(R.drawable.green_disk);
-			
-			innerLinearLayout.addView(imageView);
-			
+			imageView.setPadding(0, 0, 0, 0);
+			imageView.setImageResource(R.drawable.test);
+			currentRow.addView(imageView);
+
 		}
+		// add images
+		table.addView(currentRow);
 
-		RelativeLayout.LayoutParams imageViewParameters = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		imageViewParameters.addRule(RelativeLayout.BELOW, textView.getId());
-		relativeLayout.addView(innerLinearLayout, imageViewParameters);
-		
-		ImageView imageView1 = new ImageView(this);
-//		imageView1.setId(++childId);
-//		imageView1.setImageResource(R.drawable.green_disk);
-//
-//		RelativeLayout.LayoutParams imageViewParameters = new RelativeLayout.LayoutParams(
-//				RelativeLayout.LayoutParams.WRAP_CONTENT,
-//				RelativeLayout.LayoutParams.WRAP_CONTENT);
-//		imageViewParameters.addRule(RelativeLayout.BELOW, textView.getId());
-//		relativeLayout.addView(imageView1, imageViewParameters);
-//
-		ImageView imageView2 = new ImageView(this);
-//		imageView2.setImageResource(R.drawable.green_disk_red_and_white_rings);
-//		imageView2.setId(++childId);
-		RelativeLayout.LayoutParams imageViewParameters2 = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-//		imageViewParameters2.addRule(RelativeLayout.BELOW, textView.getId());
-//		imageViewParameters2.addRule(RelativeLayout.RIGHT_OF,
-//				imageView1.getId());
-//		imageView2.setLayoutParams(imageViewParameters2);
-//		relativeLayout.addView(imageView2);
+		table.setBackgroundColor(Color.parseColor("#8800CCFF"));
 
-		linearLayout.addView(relativeLayout, rlp);
+		linearLayout.addView(table, relativeLayoutParameters);
 
-		// выручка
-		relativeLayout = new RelativeLayout(this);
-		relativeLayout.setGravity(Gravity.CENTER);
-		// relativeLayout.setBackgroundColor(Color.BLUE);
-		relativeLayout.setBackgroundColor(Color.parseColor("#CCFFCC"));
+		//
+		// РІС‹СЂСѓС‡РєР°
+		//
 
-		relativeLayout.setId(2);
+		// label
+		textView = new TextView(this);
+		textView.setText("Р’С‹СЂСѓС‡РєР°");
+		textView.setBackgroundColor(Color.parseColor("#8800CCCC"));
+		textView.setGravity(Gravity.CENTER);
+		linearLayout.addView(textView);
 
-		childId = 0;
+		table = new TableLayout(this);
+		table.setStretchAllColumns(true);
+		table.setShrinkAllColumns(true);
 
-		rlp = new TableLayout.LayoutParams(
+		// images
+		currentRow = new TableRow(this);
+		relativeLayoutParameters = new TableLayout.LayoutParams(
 				TableLayout.LayoutParams.WRAP_CONTENT,
 				TableLayout.LayoutParams.WRAP_CONTENT, 1f);
+		currentRow = new TableRow(this);
+		for (int i = 1; i <= getDaysAmount(); i++) {
 
-		textViewParameters = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
+			ImageView imageView = new ImageView(this);
+			imageView.setId(++childId);
+			imageView.setPadding(0, 0, 0, 0);
+			imageView.setImageResource(R.drawable.test);
+			currentRow.addView(imageView);
 
-		textView = new TextView(this);
-		textView.setId(++childId);
-		textView.setText("Выручка");
-		// textView.setGravity(Gravity.CENTER_HORIZONTAL);
-		textView.setLayoutParams(textViewParameters);
-		relativeLayout.addView(textView);
+		}
+		// add images
+		table.addView(currentRow);
 
-		imageView1 = new ImageView(this);
-		imageView1.setId(++childId);
-		imageView1.setImageResource(R.drawable.red_ring_and_exclamation_mark);
+		table.setBackgroundColor(Color.parseColor("#8800CCCC"));
 
-		imageViewParameters = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		imageViewParameters.addRule(RelativeLayout.BELOW, textView.getId());
-		relativeLayout.addView(imageView1, imageViewParameters);
-
-		imageView2 = new ImageView(this);
-		imageView2.setImageResource(R.drawable.green_disk);
-		imageView2.setId(++childId);
-		imageViewParameters2 = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		imageViewParameters2.addRule(RelativeLayout.BELOW, textView.getId());
-		imageViewParameters2.addRule(RelativeLayout.RIGHT_OF,
-				imageView1.getId());
-		imageView2.setLayoutParams(imageViewParameters2);
-		relativeLayout.addView(imageView2);
-
-		linearLayout.addView(relativeLayout, rlp);
-		// ///////
-
+		linearLayout.addView(table, relativeLayoutParameters);
 		ScrollView scrollView = new ScrollView(this);
 		scrollView.setFillViewport(true);
 		scrollView.addView(linearLayout);
