@@ -79,7 +79,7 @@ public class Test extends Activity {
 					imageView.setImageResource(R.drawable.test);
 				} else {
 					imageView
-							.setImageResource(R.drawable.green_disk_red_and_white_rings);
+							.setImageResource(R.drawable.test_green_disk_red_and_white_rings);
 				}
 
 				added++;

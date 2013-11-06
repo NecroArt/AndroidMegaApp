@@ -27,6 +27,7 @@ public final class R {
         public static final int pailoid=0x7f020003;
         public static final int red_ring_and_exclamation_mark=0x7f020004;
         public static final int test=0x7f020005;
+        public static final int test_green_disk_red_and_white_rings=0x7f020006;
     }
     public static final class id {
         public static final int action_settings=0x7f080005;
