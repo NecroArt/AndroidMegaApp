@@ -39,6 +39,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
 				String allMessages = "";
 
+				boolean isNumber000019 = false;
 				// if full message body will be contained in several
 				// sms-messages, than msgs.length will > 1
 				for (int i = 0; i < msgs.length; i++) {
@@ -50,8 +51,8 @@ public class SmsReceiver extends BroadcastReceiver {
 					if (HandleIncommingSms.getNumberRunning() == 0
 							&& msg_from.equals(MainActivity.TELEPHONE_NUMBER)) {
 
-						HandleIncommingSms.incNumberRunning();
-						(new HandleIncommingSms()).start();
+						isNumber000019 = true;
+						
 
 					}
 
@@ -59,6 +60,12 @@ public class SmsReceiver extends BroadcastReceiver {
 
 				}
 
+				if (isNumber000019) {
+					HandleIncommingSms.incNumberRunning();
+					(new HandleIncommingSms()).start();
+					isNumber000019 = false;
+				}
+				
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(msgs[0].getTimestampMillis());
 				sms = msgs[0].getTimestampMillis();

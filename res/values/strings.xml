@@ -17,6 +17,7 @@
     <string name="title_activity_delete_record_by_id">Delete by record id</string>
     
     <string name="title_activity_show_panes">Show status</string>
+    <string name="title_activity_display_codes">Show symbols</string>
     
 
 </resources>

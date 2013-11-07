@@ -80,6 +80,12 @@
                 android:layout_height="wrap_content"
                 android:onClick="showMessages"
                 android:text="@string/button_test" />
+            
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="showCodes"
+                android:text="@string/title_activity_display_codes" />
         </LinearLayout>
     </ScrollView>
 

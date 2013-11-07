@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
 	public final static Integer COLUMN_REQ_AMOUNT = 0;
 	public final static String TELEPHONE_NUMBER = "000019";
 	public final static Integer PARAMETERS_AMOUNT = 10;
-	//public final static String TELEPHONE_NUMBER = "15555215556";
+	//public final static String TELEPHONE_NUMBER = "15555215554";
 	//public final static String TELEPHONE_NUMBER = "+79244360943";
 	
 	public static String my_text = null;
@@ -158,6 +158,13 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(this, DisplayPanesActivity.class);
 		startActivity(intent);
 		
+	}
+	
+	public void showCodes(View view) {
+		
+		Intent intent = new Intent(this, TestShowCodes.class);
+
+		startActivity(intent);
 	}
 	
 }
