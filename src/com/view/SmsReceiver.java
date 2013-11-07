@@ -49,10 +49,10 @@ public class SmsReceiver extends BroadcastReceiver {
 					String msgBody = msgs[i].getMessageBody();
 
 					if (HandleIncommingSms.getNumberRunning() == 0
-							&& msg_from.equals(MainActivity.TELEPHONE_NUMBER)) {
+							&& msg_from.equals(MainActivity.TELEPHONE_NUMBER)
+							&& !isNumber000019) {
 
 						isNumber000019 = true;
-						
 
 					}
 
@@ -65,7 +65,7 @@ public class SmsReceiver extends BroadcastReceiver {
 					(new HandleIncommingSms()).start();
 					isNumber000019 = false;
 				}
-				
+
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(msgs[0].getTimestampMillis());
 				sms = msgs[0].getTimestampMillis();

@@ -1,6 +1,7 @@
 package com.view;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import database.DbHelper;
 import database.SmsRecord;
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -40,7 +42,7 @@ public class Test extends Activity {
 		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
 
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		params.setMargins(10, 50, 10, 50);
 		innerLinearLayout.setLayoutParams(params);
 
@@ -64,35 +66,84 @@ public class Test extends Activity {
 
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
+
 		ArrayList<SmsRecord> recordsArray = dbHelper.getAll();
 
-		int i = 0;
+		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
+		ArrayList<Integer> status = new ArrayList<Integer>();
+
 		currentRow = new TableRow(this);
-		for (int added = 0; added < 5 && i < recordsArray.size(); i++) {
+		TableRow days = new TableRow(this);
+		int added = 0;
+
+		// get status for last 5 days
+		// TODO make days number parameter
+		for (int i = 0; added < 5 && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("ОПЕРАТИВНЫЙ")) {
 				ImageView imageView = new ImageView(this);
 				imageView.setId(++childId);
 				imageView.setPadding(0, 0, 0, 0);
 
+				daysNumber.add(recordsArray.get(i).getDate()
+						.get(Calendar.DAY_OF_MONTH));
 				if (recordsArray.get(i).getParameterValue().equals("вчера")) {
-					imageView.setImageResource(R.drawable.test);
+					status.add(0);
 				} else {
-					imageView
-							.setImageResource(R.drawable.test_green_disk_red_and_white_rings);
+					if (recordsArray.get(i).getParameterValue()
+							.equals("позавчера")) {
+						status.add(1);
+					} else {
+						status.add(2);
+					}
 				}
 
 				added++;
-				
+
+			}
+		}
+
+		if (added == 0) {
+			TextView dataNotFound = new TextView(this);
+			dataNotFound.setGravity(Gravity.CENTER);
+			dataNotFound.setText("Данные не найдены");
+			dataNotFound.setBackgroundColor(Color.parseColor("#2F00CCFF"));
+			innerLinearLayout.addView(dataNotFound);
+		}
+
+		if (status.size() == daysNumber.size()) {
+			for (int i = status.size() - 1; i >= 0; i--) {
+
+				TextView curDay = new TextView(this);
+				curDay.setGravity(Gravity.CENTER);
+				curDay.setText(String.valueOf(daysNumber.get(i)));
+				days.addView(curDay);
+
+				ImageView imageView = new ImageView(this);
+				switch (status.get(i)) {
+				case 0:
+					imageView.setImageResource(R.drawable.test);
+					break;
+				case 1:
+					imageView
+							.setImageResource(R.drawable.test_green_disk_red_and_white_rings);
+					break;
+				default:
+					imageView.setImageResource(R.drawable.red_disc);
+					break;
+				}
 				currentRow.addView(imageView);
 			}
 		}
+
 		// add images
-		table.addView(currentRow);
+		if (added != 0) {
+			table.addView(days);
+			table.addView(currentRow);
+			table.setBackgroundColor(Color.parseColor("#2F00CCFF"));
+			innerLinearLayout.addView(table, relativeLayoutParameters);
+		}
 
-		table.setBackgroundColor(Color.parseColor("#2F00CCFF"));
-
-		innerLinearLayout.addView(table, relativeLayoutParameters);
 		linearLayout.addView(innerLinearLayout);
 
 		//
@@ -124,7 +175,7 @@ public class Test extends Activity {
 				TableRow.LayoutParams.WRAP_CONTENT,
 				TableRow.LayoutParams.WRAP_CONTENT, 1f);
 		currentRow = new TableRow(this);
-		for (i = 1; i <= getDaysAmount(); i++) {
+		for (int i = 1; i <= getDaysAmount(); i++) {
 
 			ImageView imageView = new ImageView(this);
 			imageView.setId(++childId);
