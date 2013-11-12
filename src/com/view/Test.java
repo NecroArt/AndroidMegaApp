@@ -27,6 +27,12 @@ public class Test extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		DbHelper dbHelper = new DbHelper(this, null, null,
+				DbHelper.getDBVersion());
+		dbHelper.getLastRecords(5);
+	}
+	public void onCreate1(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.panel);
 
 		int childId = 0;
@@ -78,7 +84,7 @@ public class Test extends Activity {
 
 		// get status for last 5 days
 		// TODO make days number parameter
-		for (int i = 0; added < 5 && i < recordsArray.size(); i++) {
+		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("ОПЕРАТИВНЫЙ")) {
 				ImageView imageView = new ImageView(this);
@@ -160,7 +166,7 @@ public class Test extends Activity {
 
 		// label
 		textView = new TextView(this);
-		textView.setText("Выручка");
+		textView.setText("Выручка (статично)");
 		textView.setBackgroundColor(Color.parseColor("#8800CCCC"));
 		textView.setGravity(Gravity.CENTER);
 		innerLinearLayout.addView(textView);

@@ -16,6 +16,7 @@ public class Parser {
 
 		// check that sms contain what will
 		if (smsText.startsWith("Статус критичных процессов REP-COMM")) {
+			
 			// TODO delete this
 			 //if (smsText.startsWith("G")) {
 
@@ -29,6 +30,7 @@ public class Parser {
 			String vcheraUpalo = "ВЧЕРА_УПАЛО";
 			String padalo = "ПАДАЛО_7_ДНЕЙ";
 			String svobodno = "СВОБОДНО";
+			String FTP_Upl = "FTP Upl";
 
 			ArrayList<String> keyWords = new ArrayList<String>();
 			keyWords.add(goldenGate);
@@ -41,6 +43,7 @@ public class Parser {
 			keyWords.add(vcheraUpalo);
 			keyWords.add(padalo);
 			keyWords.add(svobodno);
+			keyWords.add(FTP_Upl);
 
 			String[] arrayPhrases = smsText.split("\n");
 			
