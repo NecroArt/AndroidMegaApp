@@ -437,7 +437,7 @@ public class DbHelper extends SQLiteOpenHelper {
 			if (smsIdsList != null) {
 
 				whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
-						+ "\"" + " and _id not in (" + smsIdsList + ")" ;
+						+ "\"" + " and _id not in (" + smsIdsList + ")";
 
 			} else {
 
@@ -558,7 +558,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	/**
 	 * Fetch sms id of all records from table DbHelper.TableEntry.TABLE_NAME
 	 * 
-	 * @return Set of ids.
+	 * @return Array list of ids.
 	 */
 	public ArrayList<String> getSmsIds() {
 
@@ -657,51 +657,115 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	public ArrayList<SmsRecord> getLastRecords(Integer rowNumReq) {
 
-		// --------------------------------------------------------------------------
+		// -------------------------------------------------------------
 		Calendar cal = Calendar.getInstance();
 		SmsRecord addingRecord1 = new SmsRecord("1", String.valueOf(cal.getTimeInMillis()), "param1", "value1");
 		addRecord(addingRecord1);
-		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) +1);
 		SmsRecord addingRecord2 = new SmsRecord("2", String.valueOf(cal.getTimeInMillis()+100L), "param2", "value2");
 		addRecord(addingRecord2);
-		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) +1);
 		SmsRecord addingRecord3 = new SmsRecord("3", String.valueOf(cal.getTimeInMillis()+200L), "param3", "value3");
 		addRecord(addingRecord3);
-		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) +1);
 		SmsRecord addingRecord4 = new SmsRecord("4", String.valueOf(cal.getTimeInMillis()+300L), "param4", "value4");
 		addRecord(addingRecord4);
-		// --------------------------------------------------------------------------
-
-		ArrayList<SmsRecord> records = new ArrayList<SmsRecord>();
-
-		String query = "select " + TableEntry.COLUMN_NAME_SMS_ID
-				+ ", q_time.f_date, " + TableEntry.COLUMN_NAME_PARAMETER + ", "
-				+ TableEntry.COLUMN_NAME_VALUE + " " + "from " + TABLE_NAME
-				+ " tt " + "join " + "( " + "select * from " + "( "
-				+ "select max(" + TableEntry.COLUMN_NAME_DATE + ") f_date "
-				+ "from " + TABLE_NAME + " " + "group by strftime('%d', "
-				+ TableEntry.COLUMN_NAME_DATE + ") " + "order by "
-				+ TableEntry.COLUMN_NAME_DATE + " desc " + ") q_time "
-				+ "limit " + String.valueOf(rowNumReq) + " " + ") q_time "
-				+ "on q_time.f_date = tt.f_date";
-
+		// -------------------------------------------------------------
+		
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery(query, null);
 
+		// TODO get last sms time
+		String lastSmsDateQuery = "select max(date) from "
+				+ TableEntry.TABLE_NAME;
+
+		Cursor cursor = db.rawQuery(lastSmsDateQuery, null);
+
+		Long maxDate = null;
 		if (cursor.moveToFirst()) {
-
-			do {
-				SmsRecord newSmsRecrd = new SmsRecord(cursor.getString(0),
-						cursor.getString(1), cursor.getString(2),
-						cursor.getString(3));
-				records.add(newSmsRecrd);
-			} while (cursor.moveToNext());
-
+			maxDate = cursor.getLong(0);
 		}
 		if (!cursor.isClosed()) {
 			cursor.close();
 			cursor = null;
 		}
+
+		if (maxDate != null) {
+
+			// TODO cast rowNumReq time intervals below last sms time
+			Calendar lastCal = Calendar.getInstance();
+			lastCal.setTimeInMillis(maxDate);
+
+			// TODO cast sql queries for all intervals by union operator
+			String query = "";
+
+			for (int i = 0; i < rowNumReq; i++) {
+				Calendar startCalendar = Calendar.getInstance();
+				startCalendar.setTimeInMillis(maxDate);
+				startCalendar.set(Calendar.HOUR_OF_DAY, 0);
+				startCalendar.set(Calendar.MINUTE, 0);
+				startCalendar.set(Calendar.SECOND, 0);
+				startCalendar.set(Calendar.MILLISECOND, 0);
+				startCalendar.add(Calendar.DAY_OF_MONTH, -i);
+
+				Calendar endCalendar = Calendar.getInstance();
+				endCalendar.setTimeInMillis(maxDate);
+				endCalendar.set(Calendar.HOUR_OF_DAY, 23);
+				endCalendar.set(Calendar.MINUTE, 59);
+				endCalendar.set(Calendar.SECOND, 59);
+				endCalendar.set(Calendar.MILLISECOND, 99);
+				endCalendar.add(Calendar.DAY_OF_MONTH, -i);
+
+				query += " select max(" + TableEntry.COLUMN_NAME_DATE
+						+ ") from " + TABLE_NAME + " where date between "
+						+ String.valueOf(startCalendar.getTimeInMillis())
+						+ " and "
+						+ String.valueOf(endCalendar.getTimeInMillis());
+				if (i < rowNumReq - 1) {
+					query += " union ";
+				}
+			}
+
+			ArrayList<Calendar> arrayCal = new ArrayList<Calendar>();
+
+			cursor = db.rawQuery(query, null);
+			if (cursor.moveToFirst()) {
+
+				do {
+					Calendar curCal = Calendar.getInstance();
+					curCal.setTimeInMillis(cursor.getLong(0));
+					arrayCal.add(curCal);
+				} while (cursor.moveToNext());
+
+			}
+			if (!cursor.isClosed()) {
+				cursor.close();
+				cursor = null;
+			}
+		}
+
+		ArrayList<SmsRecord> records = new ArrayList<SmsRecord>();
+
+		/*
+		 * query = "select " + TableEntry.COLUMN_NAME_SMS_ID +
+		 * ", q_time.f_date, " + TableEntry.COLUMN_NAME_PARAMETER + ", " +
+		 * TableEntry.COLUMN_NAME_VALUE + " " + "from " + TABLE_NAME + " tt " +
+		 * "join " + "( " + "select * from " + "( " + "select max(" +
+		 * TableEntry.COLUMN_NAME_DATE + ") f_date " + "from " + TABLE_NAME +
+		 * " " + "group by strftime('%d', " + TableEntry.COLUMN_NAME_DATE + ") "
+		 * + "order by f_date desc " + ") q_time " + "limit " +
+		 * String.valueOf(rowNumReq) + " " + ") q_time " +
+		 * "on q_time.f_date = tt." + TableEntry.COLUMN_NAME_DATE;
+		 * 
+		 * 
+		 * if (cursor.moveToFirst()) {
+		 * 
+		 * do { SmsRecord newSmsRecrd = new SmsRecord(cursor.getString(0),
+		 * cursor.getString(1), cursor.getString(2), cursor.getString(3));
+		 * records.add(newSmsRecrd); } while (cursor.moveToNext());
+		 * 
+		 * } if (!cursor.isClosed()) { cursor.close(); cursor = null; }
+		 */
+
 		db.close();
 		return records;
 	}

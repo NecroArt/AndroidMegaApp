@@ -20,6 +20,7 @@ public class Parser {
 			// TODO delete this
 			 //if (smsText.startsWith("G")) {
 
+			//TODO move this strings in static array
 			String goldenGate = "GoldenGate";
 			String otrabotalo = "нрпюанрюкн";
 			String nochyuUpalo = "мнвэч_союкн";
@@ -30,7 +31,7 @@ public class Parser {
 			String vcheraUpalo = "бвепю_союкн";
 			String padalo = "оюдюкн_7_дмеи";
 			String svobodno = "ябнандмн";
-			String FTP_Upl = "FTP Upl";
+			String FTP_Upl = "FTP_UPL";
 
 			ArrayList<String> keyWords = new ArrayList<String>();
 			keyWords.add(goldenGate);

@@ -39,9 +39,10 @@ public class HandleIncommingSms extends Thread {
 
 					DbHelper dbHelper = new DbHelper(SmsReceiver.getContext(),
 							null, null, DbHelper.getDBVersion());
+					ArrayList<String> smsIds = dbHelper.getSmsIds();
 					SMS sms = dbHelper.findLastSms(SmsReceiver.getContext());
 
-					if (sms != null) {
+					if (sms != null && !smsIds.contains(sms.getId())) {
 
 						isSmsFound = true;
 

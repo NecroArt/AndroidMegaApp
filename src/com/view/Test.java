@@ -29,7 +29,7 @@ public class Test extends Activity {
 		super.onCreate(savedInstanceState);
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
-		dbHelper.getLastRecords(5);
+		ArrayList<SmsRecord> mass = dbHelper.getLastRecords(5);
 	}
 	public void onCreate1(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

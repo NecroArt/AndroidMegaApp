@@ -30,7 +30,7 @@
                 android:layout_height="0dip"
                 android:layout_weight="1"
                 android:hint="@string/edit_message"
-                android:inputType="number" >
+                android:inputType="number">
             </EditText>
 
             <Button
