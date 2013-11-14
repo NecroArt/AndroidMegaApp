@@ -27,16 +27,10 @@ public class Test extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		DbHelper dbHelper = new DbHelper(this, null, null,
-				DbHelper.getDBVersion());
-		ArrayList<SmsRecord> mass = dbHelper.getLastRecords(5);
-	}
-	public void onCreate1(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setContentView(R.layout.panel);
 
 		int childId = 0;
-
+		
 		LinearLayout linearLayout = new LinearLayout(this);
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
 
@@ -73,7 +67,9 @@ public class Test extends Activity {
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
 
-		ArrayList<SmsRecord> recordsArray = dbHelper.getAll();
+		//TODO change parameter names
+		String [] parameters = {"ОПЕРАТИВНЫЙ", "ADONTODAY"};
+		ArrayList<SmsRecord> recordsArray = dbHelper.getLastRecords(5, parameters);
 
 		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
 		ArrayList<Integer> status = new ArrayList<Integer>();
@@ -91,9 +87,11 @@ public class Test extends Activity {
 				imageView.setId(++childId);
 				imageView.setPadding(0, 0, 0, 0);
 
+				//TODO return to days of month
 				daysNumber.add(recordsArray.get(i).getDate()
 						.get(Calendar.DAY_OF_MONTH));
-				if (recordsArray.get(i).getParameterValue().equals("вчера")) {
+				
+				if (recordsArray.get(i).getParameterValue().matches("вчера")) {
 					status.add(0);
 				} else {
 					if (recordsArray.get(i).getParameterValue()

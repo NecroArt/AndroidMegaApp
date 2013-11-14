@@ -655,23 +655,27 @@ public class DbHelper extends SQLiteOpenHelper {
 		return array;
 	}
 
-	public ArrayList<SmsRecord> getLastRecords(Integer rowNumReq) {
+	public ArrayList<SmsRecord> getLastRecords(Integer rowNumReq, String [] parameterNames) {
 
+		ArrayList<SmsRecord> records = new ArrayList<SmsRecord>();
 		// -------------------------------------------------------------
-		Calendar cal = Calendar.getInstance();
-		SmsRecord addingRecord1 = new SmsRecord("1", String.valueOf(cal.getTimeInMillis()), "param1", "value1");
-		addRecord(addingRecord1);
-		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) +1);
-		SmsRecord addingRecord2 = new SmsRecord("2", String.valueOf(cal.getTimeInMillis()+100L), "param2", "value2");
-		addRecord(addingRecord2);
-		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) +1);
-		SmsRecord addingRecord3 = new SmsRecord("3", String.valueOf(cal.getTimeInMillis()+200L), "param3", "value3");
-		addRecord(addingRecord3);
-		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) +1);
-		SmsRecord addingRecord4 = new SmsRecord("4", String.valueOf(cal.getTimeInMillis()+300L), "param4", "value4");
-		addRecord(addingRecord4);
+		/*
+		 * Calendar cal = Calendar.getInstance(); SmsRecord addingRecord1 = new
+		 * SmsRecord("1", String.valueOf(cal .getTimeInMillis()), "param1",
+		 * "value1"); addRecord(addingRecord1); cal.set(Calendar.DAY_OF_MONTH,
+		 * cal.get(Calendar.DAY_OF_MONTH) + 1); SmsRecord addingRecord2 = new
+		 * SmsRecord("2", String.valueOf(cal .getTimeInMillis() + 100L),
+		 * "param2", "value2"); addRecord(addingRecord2);
+		 * cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+		 * SmsRecord addingRecord3 = new SmsRecord("3", String.valueOf(cal
+		 * .getTimeInMillis() + 200L), "param3", "value3");
+		 * addRecord(addingRecord3); cal.set(Calendar.DAY_OF_MONTH,
+		 * cal.get(Calendar.DAY_OF_MONTH) + 1); SmsRecord addingRecord4 = new
+		 * SmsRecord("4", String.valueOf(cal .getTimeInMillis() + 300L),
+		 * "param4", "value4"); addRecord(addingRecord4);
+		 */
 		// -------------------------------------------------------------
-		
+
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		// TODO get last sms time
@@ -725,15 +729,58 @@ public class DbHelper extends SQLiteOpenHelper {
 				}
 			}
 
-			ArrayList<Calendar> arrayCal = new ArrayList<Calendar>();
+			ArrayList<Long> arrayCal = new ArrayList<Long>();
 
+			if (!query.equals("")) {
+				cursor = db.rawQuery(query, null);
+				if (cursor.moveToFirst()) {
+
+					do {
+						arrayCal.add(cursor.getLong(0));
+					} while (cursor.moveToNext());
+
+				}
+				if (!cursor.isClosed()) {
+					cursor.close();
+					cursor = null;
+				}
+			}
+			String dates = "";
+			for (int i = 0; i < arrayCal.size(); i++) {
+				if(i < arrayCal.size() -1) {
+					dates += arrayCal.get(i) + ", ";
+				}
+				else {
+					dates += arrayCal.get(i);
+				}
+			}
+			
+
+			String parameters = "";
+			for (int i = 0; i < parameterNames.length; i++) {
+				if (i < parameterNames.length - 1) {
+					parameters += "\'" + parameterNames[i] + "\', ";
+				} else {
+					parameters += "\'" + parameterNames[i] + "\'";
+				}
+			}
+			
+			query = "select " + 
+					TableEntry.COLUMN_NAME_SMS_ID + ", " + 
+					TableEntry.COLUMN_NAME_DATE + ", " + 
+					TableEntry.COLUMN_NAME_PARAMETER + ", " + 
+					TableEntry.COLUMN_NAME_VALUE  + 
+					" from " + TABLE_NAME + 
+					" where " + 
+					TableEntry.COLUMN_NAME_DATE + " in (" + dates +") and " + TableEntry.COLUMN_NAME_PARAMETER + " in (" + parameters +") order by " + TableEntry.COLUMN_NAME_DATE + " desc";
 			cursor = db.rawQuery(query, null);
 			if (cursor.moveToFirst()) {
 
 				do {
-					Calendar curCal = Calendar.getInstance();
-					curCal.setTimeInMillis(cursor.getLong(0));
-					arrayCal.add(curCal);
+					SmsRecord newSmsRecrd = new SmsRecord(cursor.getString(0),
+							cursor.getString(1), cursor.getString(2),
+							cursor.getString(3));
+					records.add(newSmsRecrd);
 				} while (cursor.moveToNext());
 
 			}
@@ -741,33 +788,11 @@ public class DbHelper extends SQLiteOpenHelper {
 				cursor.close();
 				cursor = null;
 			}
+
+			db.close();
 		}
 
-		ArrayList<SmsRecord> records = new ArrayList<SmsRecord>();
-
-		/*
-		 * query = "select " + TableEntry.COLUMN_NAME_SMS_ID +
-		 * ", q_time.f_date, " + TableEntry.COLUMN_NAME_PARAMETER + ", " +
-		 * TableEntry.COLUMN_NAME_VALUE + " " + "from " + TABLE_NAME + " tt " +
-		 * "join " + "( " + "select * from " + "( " + "select max(" +
-		 * TableEntry.COLUMN_NAME_DATE + ") f_date " + "from " + TABLE_NAME +
-		 * " " + "group by strftime('%d', " + TableEntry.COLUMN_NAME_DATE + ") "
-		 * + "order by f_date desc " + ") q_time " + "limit " +
-		 * String.valueOf(rowNumReq) + " " + ") q_time " +
-		 * "on q_time.f_date = tt." + TableEntry.COLUMN_NAME_DATE;
-		 * 
-		 * 
-		 * if (cursor.moveToFirst()) {
-		 * 
-		 * do { SmsRecord newSmsRecrd = new SmsRecord(cursor.getString(0),
-		 * cursor.getString(1), cursor.getString(2), cursor.getString(3));
-		 * records.add(newSmsRecrd); } while (cursor.moveToNext());
-		 * 
-		 * } if (!cursor.isClosed()) { cursor.close(); cursor = null; }
-		 */
-
-		db.close();
+		
 		return records;
 	}
-
 }

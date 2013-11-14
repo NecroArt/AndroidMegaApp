@@ -11,6 +11,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class TestShowCodes extends Activity {
+	public static String str1 = "";
+	public static String str2 = "вчера";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,7 @@ public class TestShowCodes extends Activity {
 		LinearLayout linearLayout = new LinearLayout(this);
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-		DbHelper dbHelper = new DbHelper(this, null, null,
+		/*DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
 		ArrayList<SmsRecord> recordsArray = dbHelper.getAll();
 
@@ -36,6 +38,18 @@ public class TestShowCodes extends Activity {
 				}
 			}
 
+		}*/
+		for (char c: str1.toCharArray()) {
+			TextView curText = new TextView(this);
+			curText.setText(c + " = " + String.valueOf((int) c));
+			linearLayout.addView(curText);
+		}
+		TextView empty = new TextView(this);
+		linearLayout.addView(empty);
+		for (char c: str2.toCharArray()) {
+			TextView curText = new TextView(this);
+			curText.setText(c + " = " + String.valueOf((int) c));
+			linearLayout.addView(curText);
 		}
 		scrollView.addView(linearLayout);
 		setContentView(scrollView);

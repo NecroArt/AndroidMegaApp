@@ -46,7 +46,7 @@ public class Parser {
 			keyWords.add(svobodno);
 			keyWords.add(FTP_Upl);
 
-			String[] arrayPhrases = smsText.split("\n");
+			String[] arrayPhrases = smsText.split((char) 10 + "|" + (char) 13);
 			
 			//TODO delete this
 			MainActivity.text = arrayPhrases[0];
