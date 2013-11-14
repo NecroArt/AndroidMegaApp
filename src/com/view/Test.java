@@ -116,7 +116,7 @@ public class Test extends Activity {
 		}
 
 		if (status.size() == daysNumber.size()) {
-			for (int i = status.size() - 1; i >= 0; i--) {
+			for (int i = 0; i < status.size(); i++) {
 
 				TextView curDay = new TextView(this);
 				curDay.setGravity(Gravity.CENTER);

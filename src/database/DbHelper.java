@@ -772,7 +772,7 @@ public class DbHelper extends SQLiteOpenHelper {
 					TableEntry.COLUMN_NAME_VALUE  + 
 					" from " + TABLE_NAME + 
 					" where " + 
-					TableEntry.COLUMN_NAME_DATE + " in (" + dates +") and " + TableEntry.COLUMN_NAME_PARAMETER + " in (" + parameters +") order by " + TableEntry.COLUMN_NAME_DATE + " desc";
+					TableEntry.COLUMN_NAME_DATE + " in (" + dates +") and " + TableEntry.COLUMN_NAME_PARAMETER + " in (" + parameters +") order by " + TableEntry.COLUMN_NAME_DATE + " asc";
 			cursor = db.rawQuery(query, null);
 			if (cursor.moveToFirst()) {
 
