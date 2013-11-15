@@ -16,6 +16,8 @@ public class Parser {
 
 		// check that sms contain what will
 		if (smsText.startsWith("Статус критичных процессов REP-COMM")) {
+			//TODO delete this
+				//true){
 			
 			// TODO delete this
 			 //if (smsText.startsWith("G")) {
