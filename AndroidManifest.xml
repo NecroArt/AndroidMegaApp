@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.view"
     android:versionCode="0"
-    android:versionName="0.048" >
+    android:versionName="0.051" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -45,6 +45,15 @@
         <activity
             android:name="com.view.Test"
             android:label="@string/title_activity_display_message"
+            android:parentActivityName="com.view.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.view.MainActivity" />
+        </activity>
+        
+        <activity
+            android:name="com.view.DisplayPanesActivity"
+            android:label="@string/title_activity_show_panes"
             android:parentActivityName="com.view.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
