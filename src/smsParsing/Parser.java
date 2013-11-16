@@ -17,50 +17,32 @@ public class Parser {
 		// check that sms contain what will
 		if (smsText.startsWith("Ñòàòóñ êğèòè÷íûõ ïğîöåññîâ REP-COMM")) {
 			// TODO delete this
-			 //if (smsText.startsWith("G")) {
+			// if (smsText.startsWith("G")) {
 
-			String goldenGate = "GoldenGate";
-			String otrabotalo = "ÎÒĞÀÁÎÒÀËÎ";
-			String nochyuUpalo = "ÍÎ×ÜŞ_ÓÏÀËÎ";
-			String AbonToday = "ABONTODAY";
-			String viruchka = "ÂÛĞÓ×ÊÀ";
-			String operativniy = "ÎÏÅĞÀÒÈÂÍÛÉ";
-			String SEND_IMSI = "SEND_IMSI";
-			String vcheraUpalo = "Â×ÅĞÀ_ÓÏÀËÎ";
-			String padalo = "ÏÀÄÀËÎ_7_ÄÍÅÉ";
-			String svobodno = "ÑÂÎÁÎÄÍÎ";
-
-			ArrayList<String> keyWords = new ArrayList<String>();
-			keyWords.add(goldenGate);
-			keyWords.add(otrabotalo);
-			keyWords.add(nochyuUpalo);
-			keyWords.add(AbonToday);
-			keyWords.add(viruchka);
-			keyWords.add(operativniy);
-			keyWords.add(SEND_IMSI);
-			keyWords.add(vcheraUpalo);
-			keyWords.add(padalo);
-			keyWords.add(svobodno);
+			String[] parameterNames = { "GoldenGate", "ÎÒĞÀÁÎÒÀËÎ",
+					"ÍÎ×ÜŞ_ÓÏÀËÎ", "ABONTODAY", "ÂÛĞÓ×ÊÀ", "ÂÛĞÓ×ÊÀ",
+					"ÎÏÅĞÀÒÈÂÍÛÉ", "SEND_IMSI", "Â×ÅĞÀ_ÓÏÀËÎ", "ÏÀÄÀËÎ_7_ÄÍÅÉ",
+					"ÑÂÎÁÎÄÍÎ" };
 
 			String[] arrayPhrases = smsText.split("\n");
-			
-			//TODO delete this
+
+			// TODO delete this
 			MainActivity.text = arrayPhrases[0];
 			MainActivity.my_text = "Ñòàòóñ êğèòè÷íûõ ïğîöåññîâ REP_COMM";
 
-			for (String currentString: arrayPhrases) {
+			for (String currentString : arrayPhrases) {
 
 				boolean added = false;
 
-				for (int j = 0; j < keyWords.size() && !added; j++) {
+				for (int j = 0; j < parameterNames.length && !added; j++) {
 
 					if (currentString.indexOf(":") != -1
 							&& currentString.substring(0,
 									currentString.indexOf(":")).equals(
-									keyWords.get(j))) {
+									parameterNames[j])) {
 
 						SmsRecord newRecord = new SmsRecord(sms.getId(),
-								sms.getDate(), keyWords.get(j),
+								sms.getDate(), parameterNames[j],
 								currentString.substring(
 										currentString.indexOf(":") + 2,
 										currentString.length()));
