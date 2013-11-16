@@ -19,54 +19,26 @@ public class Parser {
 			//TODO delete this
 				//true){
 			
-			// TODO delete this
-			 //if (smsText.startsWith("G")) {
-
-			//TODO move this strings in static array
-			String goldenGate = "GoldenGate";
-			String otrabotalo = "нрпюанрюкн";
-			String nochyuUpalo = "мнвэч_союкн";
-			String AbonToday = "ABONTODAY";
-			String viruchka = "бшпсвйю";
-			String operativniy = "ноепюрхбмши";
-			String SEND_IMSI = "SEND_IMSI";
-			String vcheraUpalo = "бвепю_союкн";
-			String padalo = "оюдюкн_7_дмеи";
-			String svobodno = "ябнандмн";
-			String FTP_Upl = "FTP_UPL";
-
-			ArrayList<String> keyWords = new ArrayList<String>();
-			keyWords.add(goldenGate);
-			keyWords.add(otrabotalo);
-			keyWords.add(nochyuUpalo);
-			keyWords.add(AbonToday);
-			keyWords.add(viruchka);
-			keyWords.add(operativniy);
-			keyWords.add(SEND_IMSI);
-			keyWords.add(vcheraUpalo);
-			keyWords.add(padalo);
-			keyWords.add(svobodno);
-			keyWords.add(FTP_Upl);
-
 			String[] arrayPhrases = smsText.split((char) 10 + "|" + (char) 13);
-			
-			//TODO delete this
-			MainActivity.text = arrayPhrases[0];
-			MainActivity.my_text = "яРЮРСЯ ЙПХРХВМШУ ОПНЖЕЯЯНБ REP_COMM";
 
-			for (String currentString: arrayPhrases) {
+			String[] parameterNames = { "GoldenGate", "нрпюанрюкн",
+					"мнвэч_союкн", "ABONTODAY", "бшпсвйю", "бшпсвйю",
+					"ноепюрхбмши", "SEND_IMSI", "бвепю_союкн", "оюдюкн_7_дмеи",
+					"ябнандмн", "FTP_UPL"};
+
+			for (String currentString : arrayPhrases) {
 
 				boolean added = false;
 
-				for (int j = 0; j < keyWords.size() && !added; j++) {
+				for (int j = 0; j < parameterNames.length && !added; j++) {
 
 					if (currentString.indexOf(":") != -1
 							&& currentString.substring(0,
 									currentString.indexOf(":")).equals(
-									keyWords.get(j))) {
+									parameterNames[j])) {
 
 						SmsRecord newRecord = new SmsRecord(sms.getId(),
-								sms.getDate(), keyWords.get(j),
+								sms.getDate(), parameterNames[j],
 								currentString.substring(
 										currentString.indexOf(":") + 2,
 										currentString.length()));
