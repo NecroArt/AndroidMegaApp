@@ -765,14 +765,14 @@ public class DbHelper extends SQLiteOpenHelper {
 				}
 			}
 			
-			query = "select " + 
+			query = "select * from (select " + 
 					TableEntry.COLUMN_NAME_SMS_ID + ", " + 
 					TableEntry.COLUMN_NAME_DATE + ", " + 
 					TableEntry.COLUMN_NAME_PARAMETER + ", " + 
 					TableEntry.COLUMN_NAME_VALUE  + 
 					" from " + TABLE_NAME + 
 					" where " + 
-					TableEntry.COLUMN_NAME_DATE + " in (" + dates +") and " + TableEntry.COLUMN_NAME_PARAMETER + " in (" + parameters +") order by " + TableEntry.COLUMN_NAME_DATE + " asc";
+					TableEntry.COLUMN_NAME_DATE + " in (" + dates +") and " + TableEntry.COLUMN_NAME_PARAMETER + " in (" + parameters +") order by " + TableEntry.COLUMN_NAME_DATE + " asc) q limit " + String.valueOf(rowNumReq);
 			cursor = db.rawQuery(query, null);
 			if (cursor.moveToFirst()) {
 

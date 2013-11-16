@@ -202,7 +202,6 @@ public class DisplayPanesActivity extends Activity {
 					imageView.setId(++childId);
 					imageView.setPadding(0, 0, 0, 0);
 
-					// TODO return to days of month
 					daysNumber.add(recordsArray.get(i).getDate()
 							.get(Calendar.DAY_OF_MONTH));
 
@@ -269,6 +268,7 @@ public class DisplayPanesActivity extends Activity {
 			//
 			// add all in layout
 		} catch (Exception ex) {
+			//TODO handle exceptions correctly way
 			StackTraceElement[] s = ex.getStackTrace();
 			String str = "";
 			for (int i = 0; i < s.length; i++) {
