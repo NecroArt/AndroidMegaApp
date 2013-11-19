@@ -16,7 +16,6 @@ public class MainActivity extends Activity {
 	public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 	public final static Integer COLUMN_REQ_AMOUNT = 0;
 	public final static String TELEPHONE_NUMBER = "000019";
-	public final static Integer PARAMETERS_AMOUNT = 10;
 	//public final static String TELEPHONE_NUMBER = "15555215556";
 	//public final static String TELEPHONE_NUMBER = "+79244360943";
 	

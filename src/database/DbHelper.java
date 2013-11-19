@@ -397,6 +397,148 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
+	public ArrayList<SmsRecord> getLastRecords(Integer rowNumReq, String [] parameterNames) {
+	
+		ArrayList<SmsRecord> records = new ArrayList<SmsRecord>();
+		// -------------------------------------------------------------
+		/*
+		 * Calendar cal = Calendar.getInstance(); SmsRecord addingRecord1 = new
+		 * SmsRecord("1", String.valueOf(cal .getTimeInMillis()), "param1",
+		 * "value1"); addRecord(addingRecord1); cal.set(Calendar.DAY_OF_MONTH,
+		 * cal.get(Calendar.DAY_OF_MONTH) + 1); SmsRecord addingRecord2 = new
+		 * SmsRecord("2", String.valueOf(cal .getTimeInMillis() + 100L),
+		 * "param2", "value2"); addRecord(addingRecord2);
+		 * cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+		 * SmsRecord addingRecord3 = new SmsRecord("3", String.valueOf(cal
+		 * .getTimeInMillis() + 200L), "param3", "value3");
+		 * addRecord(addingRecord3); cal.set(Calendar.DAY_OF_MONTH,
+		 * cal.get(Calendar.DAY_OF_MONTH) + 1); SmsRecord addingRecord4 = new
+		 * SmsRecord("4", String.valueOf(cal .getTimeInMillis() + 300L),
+		 * "param4", "value4"); addRecord(addingRecord4);
+		 */
+		// -------------------------------------------------------------
+	
+		SQLiteDatabase db = this.getReadableDatabase();
+	
+		// TODO get last sms time
+		String lastSmsDateQuery = "select max(date) from "
+				+ TableEntry.TABLE_NAME;
+	
+		Cursor cursor = db.rawQuery(lastSmsDateQuery, null);
+	
+		Long maxDate = null;
+		if (cursor.moveToFirst()) {
+			maxDate = cursor.getLong(0);
+		}
+		if (!cursor.isClosed()) {
+			cursor.close();
+			cursor = null;
+		}
+	
+		if (maxDate != null) {
+	
+			// TODO cast rowNumReq time intervals below last sms time
+			Calendar lastCal = Calendar.getInstance();
+			lastCal.setTimeInMillis(maxDate);
+	
+			// TODO cast sql queries for all intervals by union operator
+			String query = "";
+	
+			for (int i = 0; i < rowNumReq; i++) {
+				Calendar startCalendar = Calendar.getInstance();
+				startCalendar.setTimeInMillis(maxDate);
+				startCalendar.set(Calendar.HOUR_OF_DAY, 0);
+				startCalendar.set(Calendar.MINUTE, 0);
+				startCalendar.set(Calendar.SECOND, 0);
+				startCalendar.set(Calendar.MILLISECOND, 0);
+				startCalendar.add(Calendar.DAY_OF_MONTH, -i);
+	
+				Calendar endCalendar = Calendar.getInstance();
+				endCalendar.setTimeInMillis(maxDate);
+				endCalendar.set(Calendar.HOUR_OF_DAY, 23);
+				endCalendar.set(Calendar.MINUTE, 59);
+				endCalendar.set(Calendar.SECOND, 59);
+				endCalendar.set(Calendar.MILLISECOND, 99);
+				endCalendar.add(Calendar.DAY_OF_MONTH, -i);
+	
+				query += " select max(" + TableEntry.COLUMN_NAME_DATE
+						+ ") from " + TABLE_NAME + " where date between "
+						+ String.valueOf(startCalendar.getTimeInMillis())
+						+ " and "
+						+ String.valueOf(endCalendar.getTimeInMillis());
+				if (i < rowNumReq - 1) {
+					query += " union ";
+				}
+			}
+	
+			ArrayList<Long> arrayCal = new ArrayList<Long>();
+	
+			if (!query.equals("")) {
+				cursor = db.rawQuery(query, null);
+				if (cursor.moveToFirst()) {
+	
+					do {
+						arrayCal.add(cursor.getLong(0));
+					} while (cursor.moveToNext());
+	
+				}
+				if (!cursor.isClosed()) {
+					cursor.close();
+					cursor = null;
+				}
+			}
+			String dates = "";
+			for (int i = 0; i < arrayCal.size(); i++) {
+				if(i < arrayCal.size() -1) {
+					dates += arrayCal.get(i) + ", ";
+				}
+				else {
+					dates += arrayCal.get(i);
+				}
+			}
+			
+	
+			String parameters = "";
+			for (int i = 0; i < parameterNames.length; i++) {
+				if (i < parameterNames.length - 1) {
+					parameters += "\'" + parameterNames[i] + "\', ";
+				} else {
+					parameters += "\'" + parameterNames[i] + "\'";
+				}
+			}
+			
+			query = "select * from (select " + 
+					TableEntry.COLUMN_NAME_SMS_ID + ", " + 
+					TableEntry.COLUMN_NAME_DATE + ", " + 
+					TableEntry.COLUMN_NAME_PARAMETER + ", " + 
+					TableEntry.COLUMN_NAME_VALUE  + 
+					" from " + TABLE_NAME + 
+					" where " + 
+					TableEntry.COLUMN_NAME_DATE + " in (" + dates +") and " +
+					TableEntry.COLUMN_NAME_PARAMETER + " in (" + parameters +") order by " + TableEntry.COLUMN_NAME_DATE + " asc) q limit " + String.valueOf(rowNumReq*parameterNames.length);
+			cursor = db.rawQuery(query, null);
+			if (cursor.moveToFirst()) {
+	
+				do {
+					SmsRecord newSmsRecrd = new SmsRecord(cursor.getString(0),
+							cursor.getString(1), cursor.getString(2),
+							cursor.getString(3));
+					records.add(newSmsRecrd);
+				} while (cursor.moveToNext());
+	
+			}
+			if (!cursor.isClosed()) {
+				cursor.close();
+				cursor = null;
+			}
+	
+			db.close();
+		}
+	
+		
+		return records;
+	}
+
 	/**
 	 * Fetch sms from phone memory, which have ids have not contained in
 	 * application database.
@@ -653,146 +795,5 @@ public class DbHelper extends SQLiteOpenHelper {
 		}
 
 		return array;
-	}
-
-	public ArrayList<SmsRecord> getLastRecords(Integer rowNumReq, String [] parameterNames) {
-
-		ArrayList<SmsRecord> records = new ArrayList<SmsRecord>();
-		// -------------------------------------------------------------
-		/*
-		 * Calendar cal = Calendar.getInstance(); SmsRecord addingRecord1 = new
-		 * SmsRecord("1", String.valueOf(cal .getTimeInMillis()), "param1",
-		 * "value1"); addRecord(addingRecord1); cal.set(Calendar.DAY_OF_MONTH,
-		 * cal.get(Calendar.DAY_OF_MONTH) + 1); SmsRecord addingRecord2 = new
-		 * SmsRecord("2", String.valueOf(cal .getTimeInMillis() + 100L),
-		 * "param2", "value2"); addRecord(addingRecord2);
-		 * cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
-		 * SmsRecord addingRecord3 = new SmsRecord("3", String.valueOf(cal
-		 * .getTimeInMillis() + 200L), "param3", "value3");
-		 * addRecord(addingRecord3); cal.set(Calendar.DAY_OF_MONTH,
-		 * cal.get(Calendar.DAY_OF_MONTH) + 1); SmsRecord addingRecord4 = new
-		 * SmsRecord("4", String.valueOf(cal .getTimeInMillis() + 300L),
-		 * "param4", "value4"); addRecord(addingRecord4);
-		 */
-		// -------------------------------------------------------------
-
-		SQLiteDatabase db = this.getReadableDatabase();
-
-		// TODO get last sms time
-		String lastSmsDateQuery = "select max(date) from "
-				+ TableEntry.TABLE_NAME;
-
-		Cursor cursor = db.rawQuery(lastSmsDateQuery, null);
-
-		Long maxDate = null;
-		if (cursor.moveToFirst()) {
-			maxDate = cursor.getLong(0);
-		}
-		if (!cursor.isClosed()) {
-			cursor.close();
-			cursor = null;
-		}
-
-		if (maxDate != null) {
-
-			// TODO cast rowNumReq time intervals below last sms time
-			Calendar lastCal = Calendar.getInstance();
-			lastCal.setTimeInMillis(maxDate);
-
-			// TODO cast sql queries for all intervals by union operator
-			String query = "";
-
-			for (int i = 0; i < rowNumReq; i++) {
-				Calendar startCalendar = Calendar.getInstance();
-				startCalendar.setTimeInMillis(maxDate);
-				startCalendar.set(Calendar.HOUR_OF_DAY, 0);
-				startCalendar.set(Calendar.MINUTE, 0);
-				startCalendar.set(Calendar.SECOND, 0);
-				startCalendar.set(Calendar.MILLISECOND, 0);
-				startCalendar.add(Calendar.DAY_OF_MONTH, -i);
-
-				Calendar endCalendar = Calendar.getInstance();
-				endCalendar.setTimeInMillis(maxDate);
-				endCalendar.set(Calendar.HOUR_OF_DAY, 23);
-				endCalendar.set(Calendar.MINUTE, 59);
-				endCalendar.set(Calendar.SECOND, 59);
-				endCalendar.set(Calendar.MILLISECOND, 99);
-				endCalendar.add(Calendar.DAY_OF_MONTH, -i);
-
-				query += " select max(" + TableEntry.COLUMN_NAME_DATE
-						+ ") from " + TABLE_NAME + " where date between "
-						+ String.valueOf(startCalendar.getTimeInMillis())
-						+ " and "
-						+ String.valueOf(endCalendar.getTimeInMillis());
-				if (i < rowNumReq - 1) {
-					query += " union ";
-				}
-			}
-
-			ArrayList<Long> arrayCal = new ArrayList<Long>();
-
-			if (!query.equals("")) {
-				cursor = db.rawQuery(query, null);
-				if (cursor.moveToFirst()) {
-
-					do {
-						arrayCal.add(cursor.getLong(0));
-					} while (cursor.moveToNext());
-
-				}
-				if (!cursor.isClosed()) {
-					cursor.close();
-					cursor = null;
-				}
-			}
-			String dates = "";
-			for (int i = 0; i < arrayCal.size(); i++) {
-				if(i < arrayCal.size() -1) {
-					dates += arrayCal.get(i) + ", ";
-				}
-				else {
-					dates += arrayCal.get(i);
-				}
-			}
-			
-
-			String parameters = "";
-			for (int i = 0; i < parameterNames.length; i++) {
-				if (i < parameterNames.length - 1) {
-					parameters += "\'" + parameterNames[i] + "\', ";
-				} else {
-					parameters += "\'" + parameterNames[i] + "\'";
-				}
-			}
-			
-			query = "select * from (select " + 
-					TableEntry.COLUMN_NAME_SMS_ID + ", " + 
-					TableEntry.COLUMN_NAME_DATE + ", " + 
-					TableEntry.COLUMN_NAME_PARAMETER + ", " + 
-					TableEntry.COLUMN_NAME_VALUE  + 
-					" from " + TABLE_NAME + 
-					" where " + 
-					TableEntry.COLUMN_NAME_DATE + " in (" + dates +") and " + TableEntry.COLUMN_NAME_PARAMETER + " in (" + parameters +") order by " + TableEntry.COLUMN_NAME_DATE + " asc) q limit " + String.valueOf(rowNumReq);
-			cursor = db.rawQuery(query, null);
-			if (cursor.moveToFirst()) {
-
-				do {
-					SmsRecord newSmsRecrd = new SmsRecord(cursor.getString(0),
-							cursor.getString(1), cursor.getString(2),
-							cursor.getString(3));
-					records.add(newSmsRecrd);
-				} while (cursor.moveToNext());
-
-			}
-			if (!cursor.isClosed()) {
-				cursor.close();
-				cursor = null;
-			}
-
-			db.close();
-		}
-
-		
-		return records;
 	}
 }
