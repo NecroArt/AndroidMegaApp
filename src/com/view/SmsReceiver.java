@@ -70,10 +70,10 @@ public class SmsReceiver extends BroadcastReceiver {
 				cal.setTimeInMillis(msgs[0].getTimestampMillis());
 				sms = msgs[0].getTimestampMillis();
 
-				Toast.makeText(
+				/*Toast.makeText(
 						context,
 						(allMessages.length() == 0 ? "no text" : allMessages
-								+ "\n" + msg_from), Toast.LENGTH_LONG).show();
+								+ "\n" + msg_from), Toast.LENGTH_LONG).show();*/
 
 			} catch (Exception e) {
 

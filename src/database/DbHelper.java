@@ -150,6 +150,40 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		int rowsAddedAmount = 0;
 
+		for (SMS currentSms: smsArrayList) {
+
+			// check, that current sms is not already in database
+
+			ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
+
+			for (SmsRecord currentRecord: recordsArray) {
+
+				addRecord(currentRecord);
+				rowsAddedAmount++;
+
+			}
+			
+		}
+
+		return rowsAddedAmount;
+	}
+	
+	/**
+	 * Fetch all sms from phone number, parse it and insert result in database.
+	 * 
+	 * @param context
+	 *            - Context where function use.
+	 * @param addingSmsNumber -  оличество смс, которое нужно обработать. ≈сли значение меньше 1, то будут добавлены все соотвествующие смс.
+	 * @return Number of inserted rows.
+	 */
+	public int addAll(Context context, Integer addingSmsNumber) {
+
+		DbHelper dbHelper = new DbHelper(context, null, null,
+				DbHelper.getDBVersion());
+		ArrayList<SMS> smsArrayList = dbHelper.getNewSms(context, addingSmsNumber);
+
+		int rowsAddedAmount = 0;
+
 		for (SMS currentSms : smsArrayList) {
 
 			// check, that current sms is not already in database
@@ -162,14 +196,7 @@ public class DbHelper extends SQLiteOpenHelper {
 				rowsAddedAmount++;
 
 			}
-
-			// TODO delete this
-			if (rowsAddedAmount > 100) {
-
-				break;
-
-			}
-
+			
 		}
 
 		return rowsAddedAmount;
@@ -261,10 +288,15 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
-	public SmsRecord findRecordByDate(Long date) {
+	/**
+	 * »звлекает из базы данных массив записей с указанной датой.
+	 * @param date - ƒата получени€ сообщени€.
+	 * @return ћассив найденных записей.
+	 */
+	public ArrayList <SmsRecord> findRecordByDate(Long date) {
 
 		// TODO work out
-		SmsRecord rec = null;
+		ArrayList<SmsRecord> rec = null;
 		return rec;
 
 	}
@@ -354,14 +386,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
-	public SmsRecord findByParameterValue(String value) {
-
-		// TODO work out
-		SmsRecord rec = null;
-		return rec;
-
-	}
-
 	/**
 	 * Return set number records from database, group by id. If amount is not
 	 * defined or 0, then return all records. If table empty - returns null.
@@ -397,27 +421,16 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
+	/**
+	 * ѕолучает из базы данных приложени€ строки, названи€ параметров которых содержитс€ в parameterNames. 
+	 * @param rowNumReq - количество строк дл€ каждого параметра, которое нужно получить.
+	 * @param parameterNames - названи€ параметров, которые движок будет искать в базе.
+	 * @return ћассив соответствующих записей в количестве, не более чем количество_строк * количество_имЄн_параметров.
+	 */
 	public ArrayList<SmsRecord> getLastRecords(Integer rowNumReq, String [] parameterNames) {
 	
 		ArrayList<SmsRecord> records = new ArrayList<SmsRecord>();
-		// -------------------------------------------------------------
-		/*
-		 * Calendar cal = Calendar.getInstance(); SmsRecord addingRecord1 = new
-		 * SmsRecord("1", String.valueOf(cal .getTimeInMillis()), "param1",
-		 * "value1"); addRecord(addingRecord1); cal.set(Calendar.DAY_OF_MONTH,
-		 * cal.get(Calendar.DAY_OF_MONTH) + 1); SmsRecord addingRecord2 = new
-		 * SmsRecord("2", String.valueOf(cal .getTimeInMillis() + 100L),
-		 * "param2", "value2"); addRecord(addingRecord2);
-		 * cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
-		 * SmsRecord addingRecord3 = new SmsRecord("3", String.valueOf(cal
-		 * .getTimeInMillis() + 200L), "param3", "value3");
-		 * addRecord(addingRecord3); cal.set(Calendar.DAY_OF_MONTH,
-		 * cal.get(Calendar.DAY_OF_MONTH) + 1); SmsRecord addingRecord4 = new
-		 * SmsRecord("4", String.valueOf(cal .getTimeInMillis() + 300L),
-		 * "param4", "value4"); addRecord(addingRecord4);
-		 */
-		// -------------------------------------------------------------
-	
+		
 		SQLiteDatabase db = this.getReadableDatabase();
 	
 		// TODO get last sms time
@@ -556,7 +569,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		try {
 
 			Uri uri = Uri.parse(SMS_URI_INBOX);
-
+			
 			// TODO clear this
 			String[] projection = new String[] { "_id", "address", "person",
 					"body", "date", "type" };
@@ -631,6 +644,104 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		return messages;
 
+	}
+
+	/**
+	 * Fetch sms from phone memory, which have ids have not contained in
+	 * application database.
+	 * @param context
+	 *            - Context where function use.
+	 * @param smsNumber -  оличество смс, которое нужно получить. ≈сли меньше 1, то произведЄт попытку поиска 1 смс.
+	 * @return Array list of sms, which _id fields not in application database.
+	 */
+	//TODO test
+	private ArrayList<SMS> getNewSms(Context context, Integer smsNumber) {
+		
+		if (smsNumber < 1) {
+			smsNumber = 1;
+		}
+		
+		ArrayList<SMS> messages = new ArrayList<SMS>();
+
+		ArrayList<String> smsIds = getSmsIds();
+
+		try {
+
+			Uri uri = Uri.parse(SMS_URI_INBOX);
+
+			// TODO clear this
+			String[] projection = new String[] { "_id", "address", "person",
+					"body", "date", "type" };
+			String smsIdsList = null;
+
+			for (String id : smsIds) {
+
+				if (smsIdsList == null) {
+
+					smsIdsList = id;
+				} else {
+
+					smsIdsList += ", " + id;
+
+				}
+
+			}
+
+			String whereClause = null;
+			if (smsIdsList != null) {
+
+				whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
+						+ "\"" + " and _id not in (" + smsIdsList + ")";
+
+			} else {
+
+				whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
+						+ "\"";
+
+			}
+
+			ContextWrapper contextWrapper = new android.content.ContextWrapper(
+					context);
+
+			Cursor cursor = contextWrapper.getContentResolver().query(uri,
+					projection, whereClause, null, " date desc limit " + String.valueOf(smsNumber));
+
+			if (cursor.moveToFirst()) {
+
+				int index_id = cursor.getColumnIndex("_id");
+				int index_Body = cursor.getColumnIndex("body");
+				int index_Date = cursor.getColumnIndex("date");
+
+				do {
+
+					SMS newSms = new SMS(cursor.getString(index_id),
+							cursor.getString(index_Body),
+							cursor.getString(index_Date));
+
+					messages.add(newSms);
+
+				} while (cursor.moveToNext());
+
+			}
+
+			if (!cursor.isClosed()) {
+
+				cursor.close();
+				cursor = null;
+
+			}
+
+		} catch (SQLiteException ex) {
+
+			// TODO write log
+
+		} catch (NullPointerException e) {
+
+			// TODO: handle exception
+
+		}
+
+		return messages;
 	}
 
 	/**

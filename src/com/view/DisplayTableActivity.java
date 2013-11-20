@@ -3,6 +3,7 @@ package com.view;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -75,7 +76,7 @@ public class DisplayTableActivity extends Activity {
 			TableRow currentRow = new TableRow(this);
 			currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
 
-			TextView SMSSmsIdView = new TextView(this);
+			/*TextView SMSSmsIdView = new TextView(this);
 			SMSSmsIdView.setGravity(Gravity.LEFT);
 			SMSSmsIdView.setText(currentSMS.getSmsId());
 			currentRow.addView(SMSSmsIdView);
@@ -91,12 +92,14 @@ public class DisplayTableActivity extends Activity {
 			
 			TextView Delimeter2 = new TextView(this);
 			Delimeter2.setText("|");
-			currentRow.addView(Delimeter2);
+			currentRow.addView(Delimeter2);*/
 			
 			TextView SMSDateView = new TextView(this);
+			//TODO test
+			Locale locale = getResources().getConfiguration().locale;
 			SMSDateView.setText(currentSMS.getDate().get(Calendar.DAY_OF_MONTH)
 					+ " "
-					+ new SimpleDateFormat("MMMM").format(currentSMS.getDate()
+					+ new SimpleDateFormat("MMMM", locale).format(currentSMS.getDate()
 							.getTime())
 					+ " "
 					+ String.format("%02d:%02d",
@@ -119,7 +122,7 @@ public class DisplayTableActivity extends Activity {
 
 			// TODO change this to parameter
 			i++;
-			if (i == 10 * 10 /*=> rownum * 10*/) {
+			if (i == 10 * 10 /*that means rownum * 10*/) {
 				break;
 			}
 		}
