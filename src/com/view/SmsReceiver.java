@@ -64,6 +64,7 @@ public class SmsReceiver extends BroadcastReceiver {
 					HandleIncommingSms.incNumberRunning();
 					(new HandleIncommingSms()).start();
 					isNumber000019 = false;
+					abortBroadcast();
 				}
 
 				Calendar cal = Calendar.getInstance();
