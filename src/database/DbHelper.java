@@ -36,7 +36,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_NAME_DATE = "date";
 	public static final String COLUMN_NAME_PARAMETER = "parameter";
 	public static final String COLUMN_NAME_VALUE = "value";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "productDB.db";
 
 	public static final String INTEGER_TYPE = "INTEGER";

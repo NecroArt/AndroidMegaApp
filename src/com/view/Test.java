@@ -129,14 +129,14 @@ public class Test extends Activity {
 				ImageView imageView = new ImageView(this);
 				switch (status.get(i)) {
 				case 0:
-					imageView.setImageResource(R.drawable.test);
+					imageView.setImageResource(R.drawable.success);
 					break;
 				case 1:
 					imageView
-							.setImageResource(R.drawable.test_green_disk_red_and_white_rings);
+							.setImageResource(R.drawable.warning);
 					break;
 				default:
-					imageView.setImageResource(R.drawable.red_disc);
+					imageView.setImageResource(R.drawable.error);
 					break;
 				}
 				currentRow.addView(imageView);
@@ -238,14 +238,14 @@ public class Test extends Activity {
 						ImageView imageView = new ImageView(this);
 						switch (status.get(i)) {
 						case 0:
-							imageView.setImageResource(R.drawable.test);
+							imageView.setImageResource(R.drawable.success);
 							break;
 						case 1:
 							imageView
-									.setImageResource(R.drawable.test_green_disk_red_and_white_rings);
+									.setImageResource(R.drawable.warning);
 							break;
 						default:
-							imageView.setImageResource(R.drawable.red_disc);
+							imageView.setImageResource(R.drawable.error);
 							break;
 						}
 						currentRow.addView(imageView);

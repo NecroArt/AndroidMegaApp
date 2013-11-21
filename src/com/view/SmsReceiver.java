@@ -64,7 +64,7 @@ public class SmsReceiver extends BroadcastReceiver {
 					HandleIncommingSms.incNumberRunning();
 					(new HandleIncommingSms()).start();
 					isNumber000019 = false;
-					abortBroadcast();
+					//abortBroadcast();
 				}
 
 				Calendar cal = Calendar.getInstance();
@@ -92,11 +92,11 @@ public class SmsReceiver extends BroadcastReceiver {
 
 	}
 
-	private String markMessageRead(Context context, String number, String body) {
+	private String markMessageRead(Context context, String body) {
 
 		String result = "";
 		Uri uri = Uri.parse("content://sms/inbox");
-		String whereClause = "address=\"" + number + "\"";
+		String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER + "\"";
 
 		Cursor cursor = context.getContentResolver().query(uri, null,
 				whereClause, null, null);
