@@ -62,8 +62,6 @@ public class MainActivity extends Activity {
 	public void showTable(View view) {
 
 		Intent intent = new Intent(this, DisplayTableActivity.class);
-		EditText editText = (EditText) findViewById(R.id.edit_message);
-		intent.putExtra(EXTRA_MESSAGE, editText.getText().toString());
 		startActivity(intent);
 	}
 
@@ -79,7 +77,7 @@ public class MainActivity extends Activity {
 
 	}
 
-	public void addAll(View view) {
+	/*public void addAll(View view) {
 
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
@@ -149,7 +147,7 @@ public class MainActivity extends Activity {
 		Toast.makeText(this, "deleted " + rowsDeleted + " rows",
 				Toast.LENGTH_LONG).show();
 
-	}
+	}*/
 
 	public void dropDatabase(View view) {
 
