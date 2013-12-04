@@ -1,6 +1,7 @@
 package com.view;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -14,6 +15,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class SmsReceiver extends BroadcastReceiver {
 	private SharedPreferences preferences;
@@ -56,9 +58,17 @@ public class SmsReceiver extends BroadcastReceiver {
 						isNumber000019 = true;
 						Calendar cal = Calendar.getInstance();
 						cal.setTimeInMillis(msgs[i].getTimestampMillis());
-						DateFormat d = DateFormat.getDateInstance();
-						d.setCalendar(cal);
-						MainActivity.lastSmsDate = d.toString();
+						
+						
+						
+						
+						MainActivity.lastSmsDate = cal.get(Calendar.DAY_OF_MONTH)
+								+ " "
+								+ new SimpleDateFormat("MMMM", MainActivity.locale).format(cal.getTime())
+								+ " "
+								+ String.format("%02d:%02d:%02d",
+										cal.get(Calendar.HOUR_OF_DAY),
+										cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
 
 					}
 

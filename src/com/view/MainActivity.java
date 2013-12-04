@@ -1,5 +1,7 @@
 package com.view;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ public class MainActivity extends Activity {
 	
 	public static String my_text = null;
 	public static String text = null;
+	public static Locale locale = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date);
 		lastSmsDateTextView.setText(lastSmsDate);
+		locale = getResources().getConfiguration().locale;
 
 	}
 
