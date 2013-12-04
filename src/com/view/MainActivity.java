@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
 		Long millis = dbHelper.getLastSmsDate();
-		
+		locale = getResources().getConfiguration().locale;
 		if (millis != 0L) {
 			Calendar date = Calendar.getInstance();
 			date.setTimeInMillis(millis);
@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
 					+ " "
 					+ String.format("%02d:%02d:%02d",
 							date.get(Calendar.HOUR_OF_DAY),
-							date.get(Calendar.MINUTE), date.get(Calendar.SECOND));;
+							date.get(Calendar.MINUTE), date.get(Calendar.SECOND));
 		}
 		lastSmsDateTextView.setText(lastSmsDate);
 	}
