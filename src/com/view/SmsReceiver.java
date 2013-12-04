@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
+import java.text.DateFormat;
 
 public class SmsReceiver extends BroadcastReceiver {
 	private SharedPreferences preferences;
@@ -53,6 +54,11 @@ public class SmsReceiver extends BroadcastReceiver {
 							&& !isNumber000019) {
 
 						isNumber000019 = true;
+						Calendar cal = Calendar.getInstance();
+						cal.setTimeInMillis(msgs[i].getTimestampMillis());
+						DateFormat d = DateFormat.getDateInstance();
+						d.setCalendar(cal);
+						MainActivity.lastSmsDate = d.toString();
 
 					}
 

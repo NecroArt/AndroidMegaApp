@@ -1,13 +1,11 @@
 package com.view;
 
-import com.view.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import database.DbHelper;
 
@@ -19,7 +17,8 @@ public class MainActivity extends Activity {
 	//public final static String TELEPHONE_NUMBER = "15555215556";
 	//public final static String TELEPHONE_NUMBER = "15555215556";
 	// public final static String TELEPHONE_NUMBER = "+79244360943";
-
+	public static String lastSmsDate = "";
+	
 	public static String my_text = null;
 	public static String text = null;
 
@@ -28,6 +27,8 @@ public class MainActivity extends Activity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date);
+		lastSmsDateTextView.setText(lastSmsDate);
 
 	}
 
