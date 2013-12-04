@@ -250,6 +250,26 @@ public class DbHelper extends SQLiteOpenHelper {
 		return rowsDeleted;
 
 	}
+	
+	/**
+	 * ¬озвращает дату последней смс из базы данных.
+	 * @return ћиллисекунды, которые можно перевести в календарь.
+	 */
+	public Long getLastSmsDate () {
+		
+		String query = "Select MAX(" + TableEntry.COLUMN_NAME_DATE + ") FROM " + TABLE_NAME;
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		Cursor cursor = db.rawQuery(query, null);
+		
+		if (cursor.moveToFirst() == true) {
+			return cursor.getLong(0);
+		}
+		
+		return null;
+		
+	}
 
 	/**
 	 * Delete SmsRecord by id parameter.

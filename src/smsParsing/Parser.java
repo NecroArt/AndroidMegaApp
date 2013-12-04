@@ -20,17 +20,7 @@ public class Parser {
 		if (smsText.startsWith("Статус критичных процессов REP-COMM")) {
 			//TODO delete this
 				//true){
-			Calendar cal = Calendar.getInstance();
-			cal.setTimeInMillis(Long.valueOf(sms.getDate()));
-			
-			MainActivity.lastSmsDate = cal.get(Calendar.DAY_OF_MONTH)
-					+ " "
-					+ new SimpleDateFormat("MMMM", MainActivity.locale).format(cal.getTime())
-					+ " "
-					+ String.format("%02d:%02d:%02d",
-							cal.get(Calendar.HOUR_OF_DAY),
-							cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
-			
+						
 			String[] arrayPhrases = smsText.split((char) 10 + "|" + (char) 13);
 
 			String[] parameterNames = { "GoldenGate", "ОТРАБОТАЛО",

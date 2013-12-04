@@ -1,5 +1,7 @@
 package com.view;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -19,7 +21,7 @@ public class MainActivity extends Activity {
 	//public final static String TELEPHONE_NUMBER = "15555215556";
 	//public final static String TELEPHONE_NUMBER = "15555215556";
 	// public final static String TELEPHONE_NUMBER = "+79244360943";
-	public static String lastSmsDate = "";
+	public static String lastSmsDate = "Ни одной sms не найдено";
 	
 	public static String my_text = null;
 	public static String text = null;
@@ -30,7 +32,24 @@ public class MainActivity extends Activity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date);
+		
+		DbHelper dbHelper = new DbHelper(this, null, null,
+				DbHelper.getDBVersion());
+		Long millis = dbHelper.getLastSmsDate();
+		
+		if (millis != null) {
+			Calendar date = Calendar.getInstance();
+			date.setTimeInMillis(millis);
+			lastSmsDate = date.get(Calendar.DAY_OF_MONTH)
+					+ " "
+					+ new SimpleDateFormat("MMMM", MainActivity.locale).format(date.getTime())
+					+ " "
+					+ String.format("%02d:%02d:%02d",
+							date.get(Calendar.HOUR_OF_DAY),
+							date.get(Calendar.MINUTE), date.get(Calendar.SECOND));;
+		}
 		lastSmsDateTextView.setText(lastSmsDate);
 	}
 
