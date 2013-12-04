@@ -16,8 +16,8 @@ public class MainActivity extends Activity {
 	public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 	public final static Integer COLUMN_REQ_AMOUNT = 0;
 	public final static String TELEPHONE_NUMBER = "000019";
-	//public final static String TELEPHONE_NUMBER = "15555215556";
-	//public final static String TELEPHONE_NUMBER = "15555215556";
+	// public final static String TELEPHONE_NUMBER = "15555215556";
+	// public final static String TELEPHONE_NUMBER = "15555215556";
 	// public final static String TELEPHONE_NUMBER = "+79244360943";
 
 	public static String my_text = null;
@@ -77,77 +77,58 @@ public class MainActivity extends Activity {
 
 	}
 
-	/*public void addAll(View view) {
+	public void addAll(View view) {
 
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
 
-		EditText editText = (EditText) findViewById(R.id.edit_message);
-		Integer rowsAdded = 0;
-
-		try {
-			Integer smsNumber = Integer.valueOf(editText.getText().toString());
-			if (smsNumber > 0) {
-				rowsAdded = dbHelper.addAll(this, smsNumber);
-			} else {
-				rowsAdded = dbHelper.addAll(this);
-			}
-		} catch (NumberFormatException ex) {
-			rowsAdded = dbHelper.addAll(this);
-		}
-
+		Integer rowsAdded = dbHelper.addAll(this);
 		Toast.makeText(this, "added " + rowsAdded + " rows", Toast.LENGTH_LONG)
 				.show();
 
 	}
 
-	public void deleteSms(View view) {
-
-		EditText editText = (EditText) findViewById(R.id.edit_message);
-		Integer reqId = 0;
-		try {
-			reqId = Integer.parseInt(editText.getText().toString());
-		} catch (NumberFormatException ex) {
-
-		}
-
-		DbHelper dbHelper = new DbHelper(this, null, null,
-				DbHelper.getDBVersion());
-
-		Integer rowsDeleted = 0;
-
-		if (reqId > 0) {
-			rowsDeleted = dbHelper.deleteBySmsId(reqId);
-		}
-
-		Toast.makeText(this, "deleted " + rowsDeleted + " rows",
-				Toast.LENGTH_LONG).show();
-
-	}
-
-	public void deleteRecord(View view) {
-
-		EditText editText = (EditText) findViewById(R.id.edit_message);
-		Integer reqId = 0;
-		try {
-			reqId = Integer.parseInt(editText.getText().toString());
-		} catch (NumberFormatException ex) {
-
-		}
-
-		DbHelper dbHelper = new DbHelper(this, null, null,
-				DbHelper.getDBVersion());
-
-		Integer rowsDeleted = 0;
-
-		if (reqId > 0) {
-			rowsDeleted = dbHelper.deleteById(reqId);
-		}
-
-		Toast.makeText(this, "deleted " + rowsDeleted + " rows",
-				Toast.LENGTH_LONG).show();
-
-	}*/
+	/*
+	 * public void deleteSms(View view) {
+	 * 
+	 * EditText editText = (EditText) findViewById(R.id.edit_message); Integer
+	 * reqId = 0; try { reqId = Integer.parseInt(editText.getText().toString());
+	 * } catch (NumberFormatException ex) {
+	 * 
+	 * }
+	 * 
+	 * DbHelper dbHelper = new DbHelper(this, null, null,
+	 * DbHelper.getDBVersion());
+	 * 
+	 * Integer rowsDeleted = 0;
+	 * 
+	 * if (reqId > 0) { rowsDeleted = dbHelper.deleteBySmsId(reqId); }
+	 * 
+	 * Toast.makeText(this, "deleted " + rowsDeleted + " rows",
+	 * Toast.LENGTH_LONG).show();
+	 * 
+	 * }
+	 * 
+	 * public void deleteRecord(View view) {
+	 * 
+	 * EditText editText = (EditText) findViewById(R.id.edit_message); Integer
+	 * reqId = 0; try { reqId = Integer.parseInt(editText.getText().toString());
+	 * } catch (NumberFormatException ex) {
+	 * 
+	 * }
+	 * 
+	 * DbHelper dbHelper = new DbHelper(this, null, null,
+	 * DbHelper.getDBVersion());
+	 * 
+	 * Integer rowsDeleted = 0;
+	 * 
+	 * if (reqId > 0) { rowsDeleted = dbHelper.deleteById(reqId); }
+	 * 
+	 * Toast.makeText(this, "deleted " + rowsDeleted + " rows",
+	 * Toast.LENGTH_LONG).show();
+	 * 
+	 * }
+	 */
 
 	public void dropDatabase(View view) {
 
