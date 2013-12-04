@@ -32,8 +32,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date);
 		lastSmsDateTextView.setText(lastSmsDate);
-		locale = getResources().getConfiguration().locale;
-
 	}
 
 	@Override
@@ -41,6 +39,20 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	@Override
+	public void onRestart () {
+		/*TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date);
+		lastSmsDateTextView.setText(lastSmsDate);
+		locale = getResources().getConfiguration().locale;*/
+		
+		/*super.onRestart();
+	    Intent in = new Intent(MainActivity.this, MainActivity.class);  //your class
+	    startActivity(in);
+	    finish();*/
+		onCreate(null);
+		
 	}
 
 	/** Called when the user clicks the Send button */
