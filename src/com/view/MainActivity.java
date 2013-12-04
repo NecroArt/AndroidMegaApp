@@ -77,31 +77,31 @@ public class MainActivity extends Activity {
 
 	}
 
-	/*public void addAll(View view) {
+	public void addAll(View view) {
 
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
 
-		EditText editText = (EditText) findViewById(R.id.edit_message);
+		//EditText editText = (EditText) findViewById(R.id.edit_message);
 		Integer rowsAdded = 0;
 
-		try {
+		/*try {
 			Integer smsNumber = Integer.valueOf(editText.getText().toString());
 			if (smsNumber > 0) {
 				rowsAdded = dbHelper.addAll(this, smsNumber);
 			} else {
 				rowsAdded = dbHelper.addAll(this);
 			}
-		} catch (NumberFormatException ex) {
+		} catch (NumberFormatException ex) {*/
 			rowsAdded = dbHelper.addAll(this);
-		}
+		//}
 
 		Toast.makeText(this, "added " + rowsAdded + " rows", Toast.LENGTH_LONG)
 				.show();
 
 	}
 
-	public void deleteSms(View view) {
+	/*public void deleteSms(View view) {
 
 		EditText editText = (EditText) findViewById(R.id.edit_message);
 		Integer reqId = 0;
