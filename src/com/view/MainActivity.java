@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 	//public final static String TELEPHONE_NUMBER = "15555215556";
 	//public final static String TELEPHONE_NUMBER = "15555215556";
 	// public final static String TELEPHONE_NUMBER = "+79244360943";
-	public static String lastSmsDate = "Ни одной sms не найдено";
+	public static String lastSmsDate = "Нет данных об sms";
 	
 	public static String my_text = null;
 	public static String text = null;
@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
 				DbHelper.getDBVersion());
 		Long millis = dbHelper.getLastSmsDate();
 		
-		if (millis != null) {
+		if (millis != 0L) {
 			Calendar date = Calendar.getInstance();
 			date.setTimeInMillis(millis);
 			lastSmsDate = date.get(Calendar.DAY_OF_MONTH)

@@ -267,7 +267,7 @@ public class DbHelper extends SQLiteOpenHelper {
 			return cursor.getLong(0);
 		}
 		
-		return null;
+		return 0L;
 		
 	}
 
