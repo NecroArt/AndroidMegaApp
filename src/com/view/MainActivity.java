@@ -35,6 +35,7 @@ public class MainActivity extends Activity {
 		
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
+		dbHelper.getNewSms(this);
 		Long millis = dbHelper.getLastSmsDate();
 		locale = getResources().getConfiguration().locale;
 		if (millis != 0L) {
@@ -65,7 +66,6 @@ public class MainActivity extends Activity {
 		
 	}
 
-	/** Called when the user clicks the Send button */
 	public void showMessages(View view) {
 
 		// Intent intent = new Intent(this, DisplayMessageActivity.class);

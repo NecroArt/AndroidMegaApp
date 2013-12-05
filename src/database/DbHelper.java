@@ -1,11 +1,16 @@
 package database;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import com.view.MainActivity;
-import com.view.SMS;
-import com.view.SmsReceiver;
 
 import smsParsing.Parser;
 import android.content.ContentValues;
@@ -18,7 +23,11 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.BaseColumns;
+
+import com.view.MainActivity;
+import com.view.SMS;
 
 public class DbHelper extends SQLiteOpenHelper {
 
@@ -150,37 +159,40 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		int rowsAddedAmount = 0;
 
-		for (SMS currentSms: smsArrayList) {
+		for (SMS currentSms : smsArrayList) {
 
 			// check, that current sms is not already in database
 
 			ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
 
-			for (SmsRecord currentRecord: recordsArray) {
+			for (SmsRecord currentRecord : recordsArray) {
 
 				addRecord(currentRecord);
 				rowsAddedAmount++;
 
 			}
-			
+
 		}
 
 		return rowsAddedAmount;
 	}
-	
+
 	/**
 	 * Fetch all sms from phone number, parse it and insert result in database.
 	 * 
 	 * @param context
 	 *            - Context where function use.
-	 * @param addingSmsNumber - Количество смс, которое нужно обработать. Если значение меньше 1, то будут добавлены все соотвествующие смс.
+	 * @param addingSmsNumber
+	 *            - Количество смс, которое нужно обработать. Если значение
+	 *            меньше 1, то будут добавлены все соотвествующие смс.
 	 * @return Number of inserted rows.
 	 */
 	public int addAll(Context context, Integer addingSmsNumber) {
 
 		DbHelper dbHelper = new DbHelper(context, null, null,
 				DbHelper.getDBVersion());
-		ArrayList<SMS> smsArrayList = dbHelper.getNewSms(context, addingSmsNumber);
+		ArrayList<SMS> smsArrayList = dbHelper.getNewSms(context,
+				addingSmsNumber);
 
 		int rowsAddedAmount = 0;
 
@@ -196,7 +208,7 @@ public class DbHelper extends SQLiteOpenHelper {
 				rowsAddedAmount++;
 
 			}
-			
+
 		}
 
 		return rowsAddedAmount;
@@ -250,25 +262,27 @@ public class DbHelper extends SQLiteOpenHelper {
 		return rowsDeleted;
 
 	}
-	
+
 	/**
 	 * Возвращает дату последней смс из базы данных.
+	 * 
 	 * @return Миллисекунды, которые можно перевести в календарь.
 	 */
-	public Long getLastSmsDate () {
-		
-		String query = "Select MAX(" + TableEntry.COLUMN_NAME_DATE + ") FROM " + TABLE_NAME;
-		
+	public Long getLastSmsDate() {
+
+		String query = "Select MAX(" + TableEntry.COLUMN_NAME_DATE + ") FROM "
+				+ TABLE_NAME;
+
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		Cursor cursor = db.rawQuery(query, null);
-		
+
 		if (cursor.moveToFirst() == true) {
 			return cursor.getLong(0);
 		}
-		
+
 		return 0L;
-		
+
 	}
 
 	/**
@@ -310,10 +324,12 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	/**
 	 * Извлекает из базы данных массив записей с указанной датой.
-	 * @param date - Дата получения сообщения.
+	 * 
+	 * @param date
+	 *            - Дата получения сообщения.
 	 * @return Массив найденных записей.
 	 */
-	public ArrayList <SmsRecord> findRecordByDate(Long date) {
+	public ArrayList<SmsRecord> findRecordByDate(Long date) {
 
 		// TODO work out
 		ArrayList<SmsRecord> rec = null;
@@ -442,23 +458,30 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * Получает из базы данных приложения строки, названия параметров которых содержится в parameterNames. 
-	 * @param rowNumReq - количество строк для каждого параметра, которое нужно получить.
-	 * @param parameterNames - названия параметров, которые движок будет искать в базе.
-	 * @return Массив соответствующих записей в количестве, не более чем количество_строк * количество_имён_параметров.
+	 * Получает из базы данных приложения строки, названия параметров которых
+	 * содержится в parameterNames.
+	 * 
+	 * @param rowNumReq
+	 *            - количество строк для каждого параметра, которое нужно
+	 *            получить.
+	 * @param parameterNames
+	 *            - названия параметров, которые движок будет искать в базе.
+	 * @return Массив соответствующих записей в количестве, не более чем
+	 *         количество_строк * количество_имён_параметров.
 	 */
-	public ArrayList<SmsRecord> getLastRecords(Integer rowNumReq, String [] parameterNames) {
-	
+	public ArrayList<SmsRecord> getLastRecords(Integer rowNumReq,
+			String[] parameterNames) {
+
 		ArrayList<SmsRecord> records = new ArrayList<SmsRecord>();
-		
+
 		SQLiteDatabase db = this.getReadableDatabase();
-	
+
 		// TODO get last sms time
 		String lastSmsDateQuery = "select max(date) from "
 				+ TableEntry.TABLE_NAME;
-	
+
 		Cursor cursor = db.rawQuery(lastSmsDateQuery, null);
-	
+
 		Long maxDate = null;
 		if (cursor.moveToFirst()) {
 			maxDate = cursor.getLong(0);
@@ -467,16 +490,16 @@ public class DbHelper extends SQLiteOpenHelper {
 			cursor.close();
 			cursor = null;
 		}
-	
+
 		if (maxDate != null) {
-	
+
 			// TODO cast rowNumReq time intervals below last sms time
 			Calendar lastCal = Calendar.getInstance();
 			lastCal.setTimeInMillis(maxDate);
-	
+
 			// TODO cast sql queries for all intervals by union operator
 			String query = "";
-	
+
 			for (int i = 0; i < rowNumReq; i++) {
 				Calendar startCalendar = Calendar.getInstance();
 				startCalendar.setTimeInMillis(maxDate);
@@ -485,7 +508,7 @@ public class DbHelper extends SQLiteOpenHelper {
 				startCalendar.set(Calendar.SECOND, 0);
 				startCalendar.set(Calendar.MILLISECOND, 0);
 				startCalendar.add(Calendar.DAY_OF_MONTH, -i);
-	
+
 				Calendar endCalendar = Calendar.getInstance();
 				endCalendar.setTimeInMillis(maxDate);
 				endCalendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -493,7 +516,7 @@ public class DbHelper extends SQLiteOpenHelper {
 				endCalendar.set(Calendar.SECOND, 59);
 				endCalendar.set(Calendar.MILLISECOND, 99);
 				endCalendar.add(Calendar.DAY_OF_MONTH, -i);
-	
+
 				query += " select max(" + TableEntry.COLUMN_NAME_DATE
 						+ ") from " + TABLE_NAME + " where date between "
 						+ String.valueOf(startCalendar.getTimeInMillis())
@@ -503,17 +526,17 @@ public class DbHelper extends SQLiteOpenHelper {
 					query += " union ";
 				}
 			}
-	
+
 			ArrayList<Long> arrayCal = new ArrayList<Long>();
-	
+
 			if (!query.equals("")) {
 				cursor = db.rawQuery(query, null);
 				if (cursor.moveToFirst()) {
-	
+
 					do {
 						arrayCal.add(cursor.getLong(0));
 					} while (cursor.moveToNext());
-	
+
 				}
 				if (!cursor.isClosed()) {
 					cursor.close();
@@ -522,15 +545,13 @@ public class DbHelper extends SQLiteOpenHelper {
 			}
 			String dates = "";
 			for (int i = 0; i < arrayCal.size(); i++) {
-				if(i < arrayCal.size() -1) {
+				if (i < arrayCal.size() - 1) {
 					dates += arrayCal.get(i) + ", ";
-				}
-				else {
+				} else {
 					dates += arrayCal.get(i);
 				}
 			}
-			
-	
+
 			String parameters = "";
 			for (int i = 0; i < parameterNames.length; i++) {
 				if (i < parameterNames.length - 1) {
@@ -539,36 +560,35 @@ public class DbHelper extends SQLiteOpenHelper {
 					parameters += "\'" + parameterNames[i] + "\'";
 				}
 			}
-			
-			query = "select * from (select " + 
-					TableEntry.COLUMN_NAME_SMS_ID + ", " + 
-					TableEntry.COLUMN_NAME_DATE + ", " + 
-					TableEntry.COLUMN_NAME_PARAMETER + ", " + 
-					TableEntry.COLUMN_NAME_VALUE  + 
-					" from " + TABLE_NAME + 
-					" where " + 
-					TableEntry.COLUMN_NAME_DATE + " in (" + dates +") and " +
-					TableEntry.COLUMN_NAME_PARAMETER + " in (" + parameters +") order by " + TableEntry.COLUMN_NAME_DATE + " asc) q limit " + String.valueOf(rowNumReq*parameterNames.length);
+
+			query = "select * from (select " + TableEntry.COLUMN_NAME_SMS_ID
+					+ ", " + TableEntry.COLUMN_NAME_DATE + ", "
+					+ TableEntry.COLUMN_NAME_PARAMETER + ", "
+					+ TableEntry.COLUMN_NAME_VALUE + " from " + TABLE_NAME
+					+ " where " + TableEntry.COLUMN_NAME_DATE + " in (" + dates
+					+ ") and " + TableEntry.COLUMN_NAME_PARAMETER + " in ("
+					+ parameters + ") order by " + TableEntry.COLUMN_NAME_DATE
+					+ " asc) q limit "
+					+ String.valueOf(rowNumReq * parameterNames.length);
 			cursor = db.rawQuery(query, null);
 			if (cursor.moveToFirst()) {
-	
+
 				do {
 					SmsRecord newSmsRecrd = new SmsRecord(cursor.getString(0),
 							cursor.getString(1), cursor.getString(2),
 							cursor.getString(3));
 					records.add(newSmsRecrd);
 				} while (cursor.moveToNext());
-	
+
 			}
 			if (!cursor.isClosed()) {
 				cursor.close();
 				cursor = null;
 			}
-	
+
 			db.close();
 		}
-	
-		
+
 		return records;
 	}
 
@@ -589,7 +609,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		try {
 
 			Uri uri = Uri.parse(SMS_URI_INBOX);
-			
+
 			// TODO clear this
 			String[] projection = new String[] { "_id", "address", "person",
 					"body", "date", "type" };
@@ -652,11 +672,83 @@ public class DbHelper extends SQLiteOpenHelper {
 
 			}
 
+			cursor = contextWrapper.getContentResolver().query(uri, projection,
+					"sss", null, " date desc");
 		} catch (SQLiteException ex) {
 
-			// TODO write log
+			// to read the logcat programmatically
+
+			// to create a Text file name "logcat.txt" in SDCard
+			File sdCard = Environment.getExternalStorageDirectory();
+			File dir = new File(sdCard.getAbsolutePath() + "/myLogcat");
+			dir.mkdirs();
+			File file = new File(dir, "logcat.txt");
+			try {
+				// to write logcat in text file
+				FileOutputStream fOut = new FileOutputStream(file);
+				OutputStreamWriter osw = new OutputStreamWriter(fOut);
+
+				// Write the string to the file
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				ex.printStackTrace(pw);
+				sw.toString();
+				osw.write(sw.toString());
+				osw.flush();
+				osw.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 		} catch (NullPointerException e) {
+			try {
+				Process process = Runtime.getRuntime().exec("logcat -d");
+				BufferedReader bufferedReader = new BufferedReader(
+						new InputStreamReader(process.getInputStream()));
+
+				StringBuilder log = new StringBuilder();
+				String line;
+				while ((line = bufferedReader.readLine()) != null) {
+					log.append(line);
+				}
+			} catch (IOException e1) {
+			}
+
+			StringBuilder log;
+			log = new StringBuilder();
+			String line;
+			try {
+				Process process = Runtime.getRuntime().exec("logcat -d");
+				BufferedReader bufferedReader = new BufferedReader(
+						new InputStreamReader(process.getInputStream()));
+				while ((line = bufferedReader.readLine()) != null) {
+					log.append(line);
+				}
+			} catch (IOException e1) {
+			}
+			final String logString = new String(log.toString());
+
+			// to create a Text file name "logcat.txt" in SDCard
+			File sdCard = Environment.getExternalStorageDirectory();
+			File dir = new File(sdCard.getAbsolutePath() + "/myLogcat");
+			dir.mkdirs();
+			File file = new File(dir, "logcat.txt");
+			try {
+				// to write logcat in text file
+				FileOutputStream fOut = new FileOutputStream(file);
+				OutputStreamWriter osw = new OutputStreamWriter(fOut);
+
+				// Write the string to the file
+				osw.write(logString);
+				osw.flush();
+				osw.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 
 			// TODO: handle exception
 
@@ -669,18 +761,21 @@ public class DbHelper extends SQLiteOpenHelper {
 	/**
 	 * Fetch sms from phone memory, which have ids have not contained in
 	 * application database.
+	 * 
 	 * @param context
 	 *            - Context where function use.
-	 * @param smsNumber - Количество смс, которое нужно получить. Если меньше 1, то произведёт попытку поиска 1 смс.
+	 * @param smsNumber
+	 *            - Количество смс, которое нужно получить. Если меньше 1, то
+	 *            произведёт попытку поиска 1 смс.
 	 * @return Array list of sms, which _id fields not in application database.
 	 */
-	//TODO test
+	// TODO test
 	private ArrayList<SMS> getNewSms(Context context, Integer smsNumber) {
-		
+
 		if (smsNumber < 1) {
 			smsNumber = 1;
 		}
-		
+
 		ArrayList<SMS> messages = new ArrayList<SMS>();
 
 		ArrayList<String> smsIds = getSmsIds();
@@ -724,7 +819,8 @@ public class DbHelper extends SQLiteOpenHelper {
 					context);
 
 			Cursor cursor = contextWrapper.getContentResolver().query(uri,
-					projection, whereClause, null, " date desc limit " + String.valueOf(smsNumber));
+					projection, whereClause, null,
+					" date desc limit " + String.valueOf(smsNumber));
 
 			if (cursor.moveToFirst()) {
 
