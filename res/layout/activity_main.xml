@@ -17,7 +17,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="5"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -25,33 +26,38 @@
                 android:paddingTop="@dimen/activity_vertical_margin" >
                 
                 <TextView 
+                    android:layout_weight="1"
                     android:id="@+id/last_sms_date"
-                    android:text = ""
-                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 </TextView>
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="showPanes"
                     android:text="@string/title_activity_show_panes" />
                 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="addAll"
                     android:text="@string/title_activity_add_all" />
                 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="showTable"
                     android:text="@string/button_table" />
                 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="deleteAll"
                     android:text="@string/title_activity_delete_all" />

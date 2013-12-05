@@ -19,8 +19,6 @@ public class MainActivity extends Activity {
 	public final static Integer COLUMN_REQ_AMOUNT = 0;
 	public final static String TELEPHONE_NUMBER = "000019";
 	//public final static String TELEPHONE_NUMBER = "15555215556";
-	//public final static String TELEPHONE_NUMBER = "15555215556";
-	// public final static String TELEPHONE_NUMBER = "+79244360943";
 	public static String lastSmsDate = "Нет данных об sms";
 	
 	public static String my_text = null;
@@ -62,14 +60,7 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public void onRestart () {
-		/*TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date);
-		lastSmsDateTextView.setText(lastSmsDate);
-		locale = getResources().getConfiguration().locale;*/
 		
-		/*super.onRestart();
-	    Intent in = new Intent(MainActivity.this, MainActivity.class);  //your class
-	    startActivity(in);
-	    finish();*/
 		onCreate(null);
 		
 	}
