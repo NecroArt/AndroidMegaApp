@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
 		
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
-		dbHelper.getNewSms(this);
+		//dbHelper.getNewSms(this);
 		Long millis = dbHelper.getLastSmsDate();
 		locale = getResources().getConfiguration().locale;
 		if (millis != 0L) {

@@ -672,8 +672,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
 			}
 
-			cursor = contextWrapper.getContentResolver().query(uri, projection,
-					"sss", null, " date desc");
+			//cursor = contextWrapper.getContentResolver().query(uri, projection, "sss", null, " date desc");
 		} catch (SQLiteException ex) {
 
 			// to read the logcat programmatically
