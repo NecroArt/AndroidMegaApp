@@ -7,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -370,11 +368,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		} catch (SQLiteException ex) {
 
-			// TODO write log
+			MainActivity.writeLog(ex);
 
-		} catch (NullPointerException e) {
+		} catch (NullPointerException ex) {
 
-			// TODO: handle exception
+			MainActivity.writeLog(ex);
 
 		}
 
@@ -476,7 +474,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		SQLiteDatabase db = this.getReadableDatabase();
 
-		// TODO get last sms time
 		String lastSmsDateQuery = "select max(date) from "
 				+ TableEntry.TABLE_NAME;
 
@@ -672,84 +669,13 @@ public class DbHelper extends SQLiteOpenHelper {
 
 			}
 
-			//cursor = contextWrapper.getContentResolver().query(uri, projection, "sss", null, " date desc");
 		} catch (SQLiteException ex) {
 
-			// to read the logcat programmatically
+			MainActivity.writeLog(ex);
 
-			// to create a Text file name "logcat.txt" in SDCard
-			File sdCard = Environment.getExternalStorageDirectory();
-			File dir = new File(sdCard.getAbsolutePath() + "/myLogcat");
-			dir.mkdirs();
-			File file = new File(dir, "logcat.txt");
-			try {
-				// to write logcat in text file
-				FileOutputStream fOut = new FileOutputStream(file);
-				OutputStreamWriter osw = new OutputStreamWriter(fOut);
-
-				// Write the string to the file
-				StringWriter sw = new StringWriter();
-				PrintWriter pw = new PrintWriter(sw);
-				ex.printStackTrace(pw);
-				sw.toString();
-				osw.write(sw.toString());
-				osw.flush();
-				osw.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		} catch (NullPointerException e) {
-			try {
-				Process process = Runtime.getRuntime().exec("logcat -d");
-				BufferedReader bufferedReader = new BufferedReader(
-						new InputStreamReader(process.getInputStream()));
-
-				StringBuilder log = new StringBuilder();
-				String line;
-				while ((line = bufferedReader.readLine()) != null) {
-					log.append(line);
-				}
-			} catch (IOException e1) {
-			}
-
-			StringBuilder log;
-			log = new StringBuilder();
-			String line;
-			try {
-				Process process = Runtime.getRuntime().exec("logcat -d");
-				BufferedReader bufferedReader = new BufferedReader(
-						new InputStreamReader(process.getInputStream()));
-				while ((line = bufferedReader.readLine()) != null) {
-					log.append(line);
-				}
-			} catch (IOException e1) {
-			}
-			final String logString = new String(log.toString());
-
-			// to create a Text file name "logcat.txt" in SDCard
-			File sdCard = Environment.getExternalStorageDirectory();
-			File dir = new File(sdCard.getAbsolutePath() + "/myLogcat");
-			dir.mkdirs();
-			File file = new File(dir, "logcat.txt");
-			try {
-				// to write logcat in text file
-				FileOutputStream fOut = new FileOutputStream(file);
-				OutputStreamWriter osw = new OutputStreamWriter(fOut);
-
-				// Write the string to the file
-				osw.write(logString);
-				osw.flush();
-				osw.close();
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-
-			// TODO: handle exception
+		} catch (NullPointerException ex) {
+			
+			MainActivity.writeLog(ex);
 
 		}
 
@@ -848,11 +774,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		} catch (SQLiteException ex) {
 
-			// TODO write log
+			MainActivity.writeLog(ex);
 
-		} catch (NullPointerException e) {
+		} catch (NullPointerException ex) {
 
-			// TODO: handle exception
+			MainActivity.writeLog(ex); 
 
 		}
 

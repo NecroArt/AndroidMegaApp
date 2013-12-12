@@ -71,6 +71,15 @@
                 android:value="com.view.MainActivity" />
         </activity>
         
+        <activity
+            android:name="com.view.SettingsActivity"
+            android:label="@string/action_settings"
+            android:parentActivityName="com.view.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.view.MainActivity" />
+        </activity>
+        
         <receiver android:name = "com.view.SmsReceiver">
         	<intent-filter
         	    android:priority="100">

@@ -1,13 +1,28 @@
 package com.view;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.NotificationCompat;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,13 +33,16 @@ public class MainActivity extends Activity {
 	public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 	public final static Integer COLUMN_REQ_AMOUNT = 0;
 	public final static String TELEPHONE_NUMBER = "000019";
+	private static final int RESULT_SETTINGS = 1;
 	//public final static String TELEPHONE_NUMBER = "15555215556";
 	public static String lastSmsDate = "Нет данных об sms";
 	
 	public static String my_text = null;
 	public static String text = null;
 	public static Locale locale = null;
+	private static int mId;
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,6 +68,34 @@ public class MainActivity extends Activity {
 							date.get(Calendar.MINUTE), date.get(Calendar.SECOND));
 		}
 		lastSmsDateTextView.setText(lastSmsDate);
+		
+		
+		//TODO make normal notification
+		NotificationCompat.Builder mBuilder =
+				new NotificationCompat.Builder(this).setSmallIcon(R.drawable.notif).setContentTitle("My notification").setContentText("Hello World!");
+		// Creates an explicit intent for an Activity in your app
+		Intent resultIntent = new Intent(this, MainActivity.class);
+
+		// The stack builder object will contain an artificial back stack for the
+		// started Activity.
+		// This ensures that navigating backward from the Activity leads out of
+		// your application to the Home screen.
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+		// Adds the back stack for the Intent (but not the Intent itself)
+		stackBuilder.addParentStack(MainActivity.class);
+		// Adds the Intent that starts the Activity to the top of the stack
+		stackBuilder.addNextIntent(resultIntent);
+		PendingIntent resultPendingIntent =
+		        stackBuilder.getPendingIntent(
+		            0,
+		            PendingIntent.FLAG_UPDATE_CURRENT
+		        );
+		mBuilder.setContentIntent(resultPendingIntent);
+		NotificationManager mNotificationManager =
+		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(mId, mBuilder.build());
+		
 	}
 
 	@Override
@@ -66,6 +112,32 @@ public class MainActivity extends Activity {
 		
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+	    switch (item.getItemId()){
+	        case R.id.action_settings:
+	        	Intent i = new Intent(this, SettingsActivity.class);
+	        	startActivityForResult(i, RESULT_SETTINGS);
+	        	break;
+
+	    }
+	    //return super.onOptionsItemSelected(item);
+	    return true;
+	}
+	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+ 
+        switch (requestCode) {
+        case RESULT_SETTINGS:
+            
+            break;
+ 
+        }
+ 
+    }
+	
 	public void showMessages(View view) {
 
 		// Intent intent = new Intent(this, DisplayMessageActivity.class);
@@ -213,6 +285,40 @@ public class MainActivity extends Activity {
 	public void showCodes(View view) {
 
 		Intent intent = new Intent(this, TestShowCodes.class);
+
+		startActivity(intent);
+	}
+	
+	public static void writeLog (Exception ex) {
+		
+		File sdCard = Environment.getExternalStorageDirectory();
+		File dir = new File(sdCard.getAbsolutePath() + "/myLogcat");
+		dir.mkdirs();
+		File file = new File(dir, "logcat.txt");
+		try {
+			// to write logcat in text file
+			FileOutputStream fOut = new FileOutputStream(file);
+			OutputStreamWriter osw = new OutputStreamWriter(fOut);
+
+			// Write the string to the file
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			ex.printStackTrace(pw);
+			sw.toString();
+			osw.write(sw.toString());
+			osw.flush();
+			osw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void showPreferences(View view) {
+
+		Intent intent = new Intent(this, SettingsActivity.class);
 
 		startActivity(intent);
 	}
