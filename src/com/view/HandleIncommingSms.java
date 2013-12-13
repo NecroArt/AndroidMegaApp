@@ -3,6 +3,9 @@ package com.view;
 import java.util.ArrayList;
 
 import smsParsing.Parser;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.support.v4.app.NotificationCompat;
 import database.DbHelper;
 import database.SmsRecord;
 
@@ -60,6 +63,14 @@ public class HandleIncommingSms extends Thread {
 					}
 
 				}
+				
+				//TODO make notification if not exist
+				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+						MainActivity.context).setSmallIcon(R.drawable.notif)
+						.setContentTitle("My notification")
+						.setContentText("Hello World!").setAutoCancel(true);
+				NotificationManager mNotifyManager = (NotificationManager) MainActivity.context.getSystemService(MainActivity.context.NOTIFICATION_SERVICE);
+				mNotifyManager.notify(MainActivity.mId, mBuilder.build());
 
 				decNumberRunning();
 

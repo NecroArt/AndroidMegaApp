@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
@@ -78,7 +79,11 @@ public class SmsReceiver extends BroadcastReceiver {
 						context,
 						(allMessages.length() == 0 ? "no text" : allMessages
 								+ "\n" + msg_from), Toast.LENGTH_LONG).show();*/
-
+				
+				/*SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.context);
+				if (prefs.getBoolean("notify_on_sms_receive_endabled", true)) {
+					MainActivity.clas.makeNotification();
+				}*/
 			} catch (Exception e) {
 
 				Toast.makeText(context, "exception on sms catch",

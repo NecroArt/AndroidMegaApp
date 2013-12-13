@@ -3,13 +3,14 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="first_preferencescreen">
     <CheckBoxPreference
-            android:key="wifi enabled"
-            android:title="WiFi" />
-    <PreferenceScreen
+            android:key="notify_on_sms_receive_endabled"
+            android:title="Показывать уведомления"
+            android:summary="При получении смс показывать сообщение в статус-баре" />
+    <!-- <PreferenceScreen
             android:key="second_preferencescreen"
             android:title="WiFi settings">
         <CheckBoxPreference
                 android:key="prefer wifi"
                 android:title="Prefer WiFi" />
-    </PreferenceScreen>
+    </PreferenceScreen>  -->
 </PreferenceScreen> 
