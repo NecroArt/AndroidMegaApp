@@ -3,9 +3,13 @@ package com.view;
 import java.util.ArrayList;
 
 import smsParsing.Parser;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
-import android.support.v4.app.NotificationCompat;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import database.DbHelper;
 import database.SmsRecord;
 
@@ -25,7 +29,7 @@ public class HandleIncommingSms extends Thread {
 	 */
 	public void run() {
 
-		// check that programmer sure that tread run
+		// проверка того, что нет треда, ищущего смс
 		if (runningThreadAmount > 0) {
 
 			int iterationsOccured = 0;
@@ -60,25 +64,50 @@ public class HandleIncommingSms extends Thread {
 
 						}
 
+						// создание нотификации
+						SharedPreferences prefs = PreferenceManager
+								.getDefaultSharedPreferences(MainActivity.context);
+						prefs.getBoolean(
+								"notify_on_sms_receive_endabled", false);
+						if (recordsArray.size() > 0
+								&& prefs.getBoolean(
+										"notify_on_sms_receive_endabled", false)) {
+
+							// TODO make notification if not exist
+							NotificationManager mNotificationManager = (NotificationManager) MainActivity.context
+									.getSystemService(Context.NOTIFICATION_SERVICE);
+
+							@SuppressWarnings("deprecation")
+							Notification notif = new Notification(
+									R.drawable.ic_launcher,
+									"Critical process report",
+									System.currentTimeMillis());
+							notif.flags |= Notification.FLAG_AUTO_CANCEL;
+							Intent notificationIntent = new Intent(
+									MainActivity.context,
+									DisplayPanesActivity.class);
+							PendingIntent contentIntent = PendingIntent
+									.getActivity(MainActivity.context, 0,
+											notificationIntent, 0);
+							notif.setLatestEventInfo(MainActivity.context,
+									"Sms-Report Parser",
+									"Обновление статуса критических процессов",
+									contentIntent);
+							mNotificationManager
+									.notify(MainActivity.mId, notif);
+
+						}
+
 					}
 
 				}
-				
-				//TODO make notification if not exist
-				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-						MainActivity.context).setSmallIcon(R.drawable.notif)
-						.setContentTitle("My notification")
-						.setContentText("Hello World!").setAutoCancel(true);
-				NotificationManager mNotifyManager = (NotificationManager) MainActivity.context.getSystemService(MainActivity.context.NOTIFICATION_SERVICE);
-				mNotifyManager.notify(MainActivity.mId, mBuilder.build());
 
 				decNumberRunning();
 
 			} catch (Exception ex) {
 
 				decNumberRunning();
-				System.out.println("exception on sleep of thread");
-				ex.printStackTrace();
+				MainActivity.writeLog(ex);
 
 			}
 		}

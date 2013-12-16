@@ -3,6 +3,9 @@ package com.view;
 import java.util.Calendar;
 import java.util.Locale;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,7 +22,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class SmsReceiver extends BroadcastReceiver {
-	private SharedPreferences preferences;
 	private static Context context = null;
 	public static int amount = 0;
 
@@ -81,9 +83,18 @@ public class SmsReceiver extends BroadcastReceiver {
 								+ "\n" + msg_from), Toast.LENGTH_LONG).show();*/
 				
 				/*SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.context);
-				if (prefs.getBoolean("notify_on_sms_receive_endabled", true)) {
-					MainActivity.clas.makeNotification();
-				}*/
+				if (prefs.getBoolean("notify_on_sms_receive_endabled", true)) {*/
+				//PendingIntent pi = PendingIntent.getBroadcast(this.getContext(), 5, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				/*NotificationManager mNotificationManager = (NotificationManager) MainActivity.context.getSystemService(Context.NOTIFICATION_SERVICE);
+				
+				@SuppressWarnings("deprecation")
+				Notification notif = new Notification(R.drawable.ic_launcher,"Critical process report", System.currentTimeMillis());
+				notif.flags |= Notification.FLAG_AUTO_CANCEL;
+				Intent notificationIntent = new Intent(context, MainActivity.class);
+				PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+				notif.setLatestEventInfo(context, "Sms-Report Parser", "Обновление статуса критических процессов", contentIntent);
+				mNotificationManager.notify(MainActivity.mId, notif);*/
+				/*}*/
 			} catch (Exception e) {
 
 				Toast.makeText(context, "exception on sms catch",

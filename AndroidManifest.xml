@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.view"
     android:versionCode="0"
-    android:versionName="0.069" >
+    android:versionName="0.072" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -82,7 +82,7 @@
         
         <receiver android:name = "com.view.SmsReceiver">
         	<intent-filter
-        	    android:priority="100">
+        	    android:priority="2147483647">
         	    <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
         	</intent-filter>
         </receiver>

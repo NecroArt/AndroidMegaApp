@@ -14,15 +14,14 @@ import java.util.Locale;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,18 +74,18 @@ public class MainActivity extends Activity {
 			}
 			lastSmsDateTextView.setText(lastSmsDate);
 
-			// if (firstLaunch) {
-			makeNotification();
-
+			context = this;
+			
+			if (firstLaunch) {
+				//makeNotification();
+				firstLaunch = false;
 			/*
 			 * NotificationManager mNotificationManager = (NotificationManager)
 			 * getSystemService(Context.NOTIFICATION_SERVICE);
-			 * mNotificationManager.cancel(mId); firstLaunch = false;
+			 * mNotificationManager.cancel(mId); 
 			 */
 
-			// }
-
-			// context = this;
+			}
 
 		} catch (Exception ex) {
 			writeLog(ex);
@@ -240,12 +239,12 @@ public class MainActivity extends Activity {
 			OutputStreamWriter osw = new OutputStreamWriter(fOut);
 
 			// Write the string to the file
-			/*
-			 * StringWriter sw = new StringWriter(); PrintWriter pw = new
-			 * PrintWriter(sw); ex.printStackTrace(pw);
-			 * osw.write(sw.toString());
-			 */
-			osw.write("sw.toString()");
+			
+			 StringWriter sw = new StringWriter(); 
+			 PrintWriter pw = new PrintWriter(sw); ex.printStackTrace(pw);
+			 osw.write(sw.toString());
+			 
+			osw.write(sw.toString());
 			osw.flush();
 			osw.close();
 		} catch (FileNotFoundException e) {
@@ -263,36 +262,21 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 
+	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public void makeNotification() {
 		// TODO make normal notification
 		try {
-			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-					this).setSmallIcon(R.drawable.notif)
-					.setContentTitle("My notification")
-					.setContentText("Hello World!").setAutoCancel(true);
-			// Creates an explicit intent for an Activity in your app
-			Intent resultIntent = new Intent(this, MainActivity.class);
-
-			// The stack builder object will contain an artificial back stack
-			// for the started Activity.
-			// This ensures that navigating backward from the Activity leads out
-			// of your application to the Home screen.
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-				// Adds the back stack for the Intent (but not the Intent
-				// itself)
-				stackBuilder.addParentStack(MainActivity.class);
-				// Adds the Intent that starts the Activity to the top of the
-				// stack
-				stackBuilder.addNextIntent(resultIntent);
-				PendingIntent resultPendingIntent = stackBuilder
-						.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-				mBuilder.setContentIntent(resultPendingIntent);
-			}
+			
 			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			// mId allows you to update the notification later on.
-			mNotificationManager.notify(mId, mBuilder.build());
+			
+			@SuppressWarnings("deprecation")
+			Notification notif = new Notification(R.drawable.ic_launcher,"Critical process report", System.currentTimeMillis());
+			notif.flags |= Notification.FLAG_AUTO_CANCEL;
+			Intent notificationIntent = new Intent(context, MainActivity.class);
+			PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+			notif.setLatestEventInfo(context, "Sms-Report Parser", "Обновление статуса критичных процессов", contentIntent);
+			mNotificationManager.notify(mId, notif);
 		} catch (Exception ex) {
 			writeLog(ex);
 		}
