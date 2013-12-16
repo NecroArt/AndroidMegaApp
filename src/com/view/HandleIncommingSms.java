@@ -79,8 +79,8 @@ public class HandleIncommingSms extends Thread {
 
 							@SuppressWarnings("deprecation")
 							Notification notif = new Notification(
-									R.drawable.ic_launcher,
-									"Critical process report",
+									R.drawable.notification,
+									"Обновлён статус процессов REP-COMM",
 									System.currentTimeMillis());
 							notif.flags |= Notification.FLAG_AUTO_CANCEL;
 							Intent notificationIntent = new Intent(
