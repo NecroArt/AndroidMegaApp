@@ -33,8 +33,8 @@ public class MainActivity extends Activity {
 
 	public final static Integer COLUMN_REQ_AMOUNT = 0;
 	public final static String TELEPHONE_NUMBER = "000019";
+	//public final static String TELEPHONE_NUMBER = "15555215554";
 	private static final int RESULT_SETTINGS = 1;
-	// public final static String TELEPHONE_NUMBER = "15555215556";
 	public static String lastSmsDate = "Нет данных об sms";
 
 	public static String my_text = null;

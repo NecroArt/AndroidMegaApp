@@ -3,6 +3,7 @@ package com.view;
 import java.util.ArrayList;
 
 import smsParsing.Parser;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,17 +17,12 @@ import database.SmsRecord;
 public class HandleIncommingSms extends Thread {
 
 	private static int runningThreadAmount = 0;
-
-	private Long timeInMillis = 0L;
+	private static Context context = null;
 
 	/**
 	 * Default constructor.
 	 */
-	/*
-	 * public HandleIncommingSms () {
-	 * 
-	 * }
-	 */
+	@SuppressWarnings("deprecation")
 	public void run() {
 
 		// проверка того, что нет треда, ищущего смс
@@ -44,6 +40,7 @@ public class HandleIncommingSms extends Thread {
 					// wait while sms will store in database
 					Thread.sleep(10000);
 
+					// TODO может быть уже использовать свой статичный контекст?
 					DbHelper dbHelper = new DbHelper(SmsReceiver.getContext(),
 							null, null, DbHelper.getDBVersion());
 					ArrayList<String> smsIds = dbHelper.getSmsIds();
@@ -66,30 +63,29 @@ public class HandleIncommingSms extends Thread {
 
 						// создание нотификации
 						SharedPreferences prefs = PreferenceManager
-								.getDefaultSharedPreferences(MainActivity.context);
-						prefs.getBoolean(
-								"notify_on_sms_receive_endabled", false);
-						if (recordsArray.size() > 0
+								.getDefaultSharedPreferences(context);
+						if (/*recordsArray.size() > 0
 								&& prefs.getBoolean(
-										"notify_on_sms_receive_endabled", false)) {
+										"notify_on_sms_receive_enabled", false)*/true) {
 
 							// TODO make notification if not exist
-							NotificationManager mNotificationManager = (NotificationManager) MainActivity.context
+							NotificationManager mNotificationManager = (NotificationManager) context
 									.getSystemService(Context.NOTIFICATION_SERVICE);
 
-							@SuppressWarnings("deprecation")
 							Notification notif = new Notification(
 									R.drawable.notification,
 									"Обновлён статус процессов REP-COMM",
 									System.currentTimeMillis());
 							notif.flags |= Notification.FLAG_AUTO_CANCEL;
+							
 							Intent notificationIntent = new Intent(
-									MainActivity.context,
+									context,
 									DisplayPanesActivity.class);
 							PendingIntent contentIntent = PendingIntent
-									.getActivity(MainActivity.context, 0,
+									.getActivity(context, 0,
 											notificationIntent, 0);
-							notif.setLatestEventInfo(MainActivity.context,
+							
+							notif.setLatestEventInfo(context,
 									"Sms-Report Parser",
 									"Обновление статуса критических процессов",
 									contentIntent);
@@ -129,6 +125,20 @@ public class HandleIncommingSms extends Thread {
 
 		return runningThreadAmount;
 
+	}
+
+	/**
+	 * @return the context
+	 */
+	public static Context getContext() {
+		return context;
+	}
+
+	/**
+	 * @param context the context to set
+	 */
+	public static void setContext(Context context) {
+		HandleIncommingSms.context = context;
 	}
 
 }

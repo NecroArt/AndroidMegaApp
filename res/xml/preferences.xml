@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="first_preferencescreen">
     <CheckBoxPreference
-            android:key="notify_on_sms_receive_endabled"
+            android:key="notify_on_sms_receive_enabled"
             android:title="Показывать уведомления"
             android:summary="При получении смс показывать сообщение в статус-баре" />
     <!-- <PreferenceScreen

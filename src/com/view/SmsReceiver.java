@@ -43,8 +43,6 @@ public class SmsReceiver extends BroadcastReceiver {
 				Object[] pdus = (Object[]) bundle.get("pdus");
 				msgs = new SmsMessage[pdus.length];
 
-				String allMessages = "";
-
 				boolean isNumber000019 = false;
 				// if full message body will be contained in several
 				// sms-messages, than msgs.length will > 1
@@ -62,11 +60,10 @@ public class SmsReceiver extends BroadcastReceiver {
 						
 					}
 
-					allMessages += msgBody;
-
 				}
 
 				if (isNumber000019) {
+					HandleIncommingSms.setContext(context);
 					HandleIncommingSms.incNumberRunning();
 					(new HandleIncommingSms()).start();
 					isNumber000019 = false;
@@ -75,26 +72,8 @@ public class SmsReceiver extends BroadcastReceiver {
 
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(msgs[0].getTimestampMillis());
-				sms = msgs[0].getTimestampMillis();
-
-				/*Toast.makeText(
-						context,
-						(allMessages.length() == 0 ? "no text" : allMessages
-								+ "\n" + msg_from), Toast.LENGTH_LONG).show();*/
+				sms = msgs[0].getTimestampMillis();				
 				
-				/*SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.context);
-				if (prefs.getBoolean("notify_on_sms_receive_endabled", true)) {*/
-				//PendingIntent pi = PendingIntent.getBroadcast(this.getContext(), 5, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-				/*NotificationManager mNotificationManager = (NotificationManager) MainActivity.context.getSystemService(Context.NOTIFICATION_SERVICE);
-				
-				@SuppressWarnings("deprecation")
-				Notification notif = new Notification(R.drawable.ic_launcher,"Critical process report", System.currentTimeMillis());
-				notif.flags |= Notification.FLAG_AUTO_CANCEL;
-				Intent notificationIntent = new Intent(context, MainActivity.class);
-				PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-				notif.setLatestEventInfo(context, "Sms-Report Parser", "Обновление статуса критических процессов", contentIntent);
-				mNotificationManager.notify(MainActivity.mId, notif);*/
-				/*}*/
 			} catch (Exception e) {
 
 				Toast.makeText(context, "exception on sms catch",
