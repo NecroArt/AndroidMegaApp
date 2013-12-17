@@ -66,7 +66,9 @@ public final class R {
         public static final int title_activity_display_table=0x7f060007;
         public static final int title_activity_drop_db=0x7f060009;
         public static final int title_activity_main=0x7f060005;
+        public static final int title_activity_play=0x7f060011;
         public static final int title_activity_show_panes=0x7f06000d;
+        public static final int title_activity_stop=0x7f060012;
     }
     public static final class style {
         /** 

@@ -42,6 +42,8 @@ public class SmsReceiver extends BroadcastReceiver {
 			try {
 				Object[] pdus = (Object[]) bundle.get("pdus");
 				msgs = new SmsMessage[pdus.length];
+				
+				String allMessages = "";
 
 				boolean isNumber000019 = false;
 				// if full message body will be contained in several
@@ -59,6 +61,8 @@ public class SmsReceiver extends BroadcastReceiver {
 						isNumber000019 = true;
 						
 					}
+					
+					allMessages += msgBody;
 
 				}
 
@@ -72,7 +76,19 @@ public class SmsReceiver extends BroadcastReceiver {
 
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(msgs[0].getTimestampMillis());
-				sms = msgs[0].getTimestampMillis();				
+				sms = msgs[0].getTimestampMillis();
+				
+				SharedPreferences prefs = PreferenceManager
+						.getDefaultSharedPreferences(context);
+				if (prefs.getBoolean(
+						"sow_sms_content_on_receive", false)) {
+					
+					Toast.makeText(
+	                        context,
+	                        (allMessages.length() == 0 ? "no text" : allMessages
+	                                        + "\n" + msg_from), Toast.LENGTH_LONG).show();
+					
+				}
 				
 			} catch (Exception e) {
 

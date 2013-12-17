@@ -19,6 +19,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,9 +36,11 @@ public class MainActivity extends Activity {
 
 	public final static Integer COLUMN_REQ_AMOUNT = 0;
 	public final static String TELEPHONE_NUMBER = "000019";
-	//public final static String TELEPHONE_NUMBER = "15555215554";
+	// public final static String TELEPHONE_NUMBER = "15555215554";
 	private static final int RESULT_SETTINGS = 1;
 	public static String lastSmsDate = "Нет данных об sms";
+
+	private static Ringtone r = null;
 
 	public static String my_text = null;
 	public static String text = null;
@@ -75,17 +80,35 @@ public class MainActivity extends Activity {
 			lastSmsDateTextView.setText(lastSmsDate);
 
 			context = this;
-			
+
 			if (firstLaunch) {
-				//makeNotification();
+				// makeNotification();
 				firstLaunch = false;
-			/*
-			 * NotificationManager mNotificationManager = (NotificationManager)
-			 * getSystemService(Context.NOTIFICATION_SERVICE);
-			 * mNotificationManager.cancel(mId); 
-			 */
+				/*
+				 * NotificationManager mNotificationManager =
+				 * (NotificationManager)
+				 * getSystemService(Context.NOTIFICATION_SERVICE);
+				 * mNotificationManager.cancel(mId);
+				 */
 
 			}
+
+			Uri alert = RingtoneManager
+					.getDefaultUri(RingtoneManager.TYPE_ALARM);
+			if (alert == null) {
+				// alert is null, using backup
+				alert = RingtoneManager
+						.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+				if (alert == null) { // I can't see this ever being null (as
+										// always
+										// have a default notification) but just
+										// incase
+					// alert backup is null, using 2nd backup
+					alert = RingtoneManager
+							.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+				}
+			}
+			r = RingtoneManager.getRingtone(getApplicationContext(), alert);
 
 		} catch (Exception ex) {
 			writeLog(ex);
@@ -239,11 +262,12 @@ public class MainActivity extends Activity {
 			OutputStreamWriter osw = new OutputStreamWriter(fOut);
 
 			// Write the string to the file
-			
-			 StringWriter sw = new StringWriter(); 
-			 PrintWriter pw = new PrintWriter(sw); ex.printStackTrace(pw);
-			 osw.write(sw.toString());
-			 
+
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			ex.printStackTrace(pw);
+			osw.write(sw.toString());
+
 			osw.write(sw.toString());
 			osw.flush();
 			osw.close();
@@ -267,19 +291,42 @@ public class MainActivity extends Activity {
 	public void makeNotification() {
 		// TODO make normal notification
 		try {
-			
+
 			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			
+
 			@SuppressWarnings("deprecation")
-			Notification notif = new Notification(R.drawable.ic_launcher,"Critical process report", System.currentTimeMillis());
+			Notification notif = new Notification(R.drawable.ic_launcher,
+					"Critical process report", System.currentTimeMillis());
 			notif.flags |= Notification.FLAG_AUTO_CANCEL;
 			Intent notificationIntent = new Intent(context, MainActivity.class);
-			PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-			notif.setLatestEventInfo(context, "Sms-Report Parser", "Обновление статуса критичных процессов", contentIntent);
+			PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
+					notificationIntent, 0);
+			notif.setLatestEventInfo(context, "Sms-Report Parser",
+					"Обновление статуса критичных процессов", contentIntent);
 			mNotificationManager.notify(mId, notif);
 		} catch (Exception ex) {
 			writeLog(ex);
 		}
+	}
+
+	public static void startPlay(View view) {
+
+		r.play();
+	}
+
+	public static void startPlay() {
+
+		r.play();
+	}
+
+	public static void stopPlay(View view) {
+
+		r.stop();
+	}
+
+	public static void stopPlay() {
+
+		r.stop();
 	}
 
 }

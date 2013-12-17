@@ -64,9 +64,9 @@ public class HandleIncommingSms extends Thread {
 						// создание нотификации
 						SharedPreferences prefs = PreferenceManager
 								.getDefaultSharedPreferences(context);
-						if (/*recordsArray.size() > 0
+						if (recordsArray.size() > 0
 								&& prefs.getBoolean(
-										"notify_on_sms_receive_enabled", false)*/true) {
+										"notify_on_sms_receive_enabled", false)) {
 
 							// TODO make notification if not exist
 							NotificationManager mNotificationManager = (NotificationManager) context

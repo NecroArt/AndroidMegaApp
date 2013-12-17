@@ -21,5 +21,8 @@
     <string name="notification_pref">Уведомление</string>
     <string name="notification_pref_sum">Уведомление при возникновении события</string>
     
+    <string name="title_activity_play">Играть</string>
+    <string name="title_activity_stop">Остановить</string>
+    
 
 </resources>
