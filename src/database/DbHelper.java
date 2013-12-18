@@ -588,6 +588,140 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		return records;
 	}
+	
+	/**
+	 * Получает из базы данных приложения строки, названия параметров которых
+	 * содержится в parameterNames.
+	 * 
+	 * @param rowNumReq
+	 *            - количество строк для каждого параметра, которое нужно
+	 *            получить.
+	 * @param parameterNames
+	 *            - названия параметров, которые движок будет искать в базе.
+	 * @return Массив соответствующих записей в количестве, не более чем
+	 *         количество_строк * количество_имён_параметров.
+	 */
+	public ArrayList<SmsRecord> getLastRecords(Integer rowNumReq,
+			ArrayList<String> parameterNames) {
+
+		ArrayList<SmsRecord> records = new ArrayList<SmsRecord>();
+
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		String lastSmsDateQuery = "select max(date) from "
+				+ TableEntry.TABLE_NAME;
+
+		Cursor cursor = db.rawQuery(lastSmsDateQuery, null);
+
+		Long maxDate = null;
+		if (cursor.moveToFirst()) {
+			maxDate = cursor.getLong(0);
+		}
+		if (!cursor.isClosed()) {
+			cursor.close();
+			cursor = null;
+		}
+
+		if (maxDate != null) {
+
+			// TODO cast rowNumReq time intervals below last sms time
+			Calendar lastCal = Calendar.getInstance();
+			lastCal.setTimeInMillis(maxDate);
+
+			// TODO cast sql queries for all intervals by union operator
+			String query = "";
+
+			for (int i = 0; i < rowNumReq; i++) {
+				Calendar startCalendar = Calendar.getInstance();
+				startCalendar.setTimeInMillis(maxDate);
+				startCalendar.set(Calendar.HOUR_OF_DAY, 0);
+				startCalendar.set(Calendar.MINUTE, 0);
+				startCalendar.set(Calendar.SECOND, 0);
+				startCalendar.set(Calendar.MILLISECOND, 0);
+				startCalendar.add(Calendar.DAY_OF_MONTH, -i);
+
+				Calendar endCalendar = Calendar.getInstance();
+				endCalendar.setTimeInMillis(maxDate);
+				endCalendar.set(Calendar.HOUR_OF_DAY, 23);
+				endCalendar.set(Calendar.MINUTE, 59);
+				endCalendar.set(Calendar.SECOND, 59);
+				endCalendar.set(Calendar.MILLISECOND, 99);
+				endCalendar.add(Calendar.DAY_OF_MONTH, -i);
+
+				query += " select max(" + TableEntry.COLUMN_NAME_DATE
+						+ ") from " + TABLE_NAME + " where date between "
+						+ String.valueOf(startCalendar.getTimeInMillis())
+						+ " and "
+						+ String.valueOf(endCalendar.getTimeInMillis());
+				if (i < rowNumReq - 1) {
+					query += " union ";
+				}
+			}
+
+			ArrayList<Long> arrayCal = new ArrayList<Long>();
+
+			if (!query.equals("")) {
+				cursor = db.rawQuery(query, null);
+				if (cursor.moveToFirst()) {
+
+					do {
+						arrayCal.add(cursor.getLong(0));
+					} while (cursor.moveToNext());
+
+				}
+				if (!cursor.isClosed()) {
+					cursor.close();
+					cursor = null;
+				}
+			}
+			String dates = "";
+			for (int i = 0; i < arrayCal.size(); i++) {
+				if (i < arrayCal.size() - 1) {
+					dates += arrayCal.get(i) + ", ";
+				} else {
+					dates += arrayCal.get(i);
+				}
+			}
+
+			String parameters = "";
+			for (int i = 0; i < parameterNames.size(); i++) {
+				if (i < parameterNames.size() - 1) {
+					parameters += "\'" + parameterNames.get(i) + "\', ";
+				} else {
+					parameters += "\'" + parameterNames.get(i) + "\'";
+				}
+			}
+
+			query = "select * from (select " + TableEntry.COLUMN_NAME_SMS_ID
+					+ ", " + TableEntry.COLUMN_NAME_DATE + ", "
+					+ TableEntry.COLUMN_NAME_PARAMETER + ", "
+					+ TableEntry.COLUMN_NAME_VALUE + " from " + TABLE_NAME
+					+ " where " + TableEntry.COLUMN_NAME_DATE + " in (" + dates
+					+ ") and " + TableEntry.COLUMN_NAME_PARAMETER + " in ("
+					+ parameters + ") order by " + TableEntry.COLUMN_NAME_DATE
+					+ " asc) q limit "
+					+ String.valueOf(rowNumReq * parameterNames.size());
+			cursor = db.rawQuery(query, null);
+			if (cursor.moveToFirst()) {
+
+				do {
+					SmsRecord newSmsRecrd = new SmsRecord(cursor.getString(0),
+							cursor.getString(1), cursor.getString(2),
+							cursor.getString(3));
+					records.add(newSmsRecrd);
+				} while (cursor.moveToNext());
+
+			}
+			if (!cursor.isClosed()) {
+				cursor.close();
+				cursor = null;
+			}
+
+			db.close();
+		}
+
+		return records;
+	}
 
 	/**
 	 * Fetch sms from phone memory, which have ids have not contained in

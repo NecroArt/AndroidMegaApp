@@ -5,18 +5,63 @@
     <CheckBoxPreference
             android:key="notify_on_sms_receive_enabled"
             android:title="Показывать уведомления"
-            android:summary="При получении SMS показывать сообщение в статус-баре" />
+            android:summary="При получении SMS показывать сообщение в статус-баре"
+            android:defaultValue="true"/>
+    
+    <PreferenceScreen
+            android:key="second_preferencescreen"
+            android:title="Параметры для отображения"
+            android:summary="Список параметров, которые будут показаны в (итоговой панели?)">
+        <CheckBoxPreference
+                android:key="show_golden_gate_status"
+                android:title="GoldenGate"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="show_otrabotalo_status"
+                android:title="ОТРАБОТАЛО"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="show_nochyu_upalo_status"
+                android:title="НОЧЬЮ_УПАЛО"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="show_abontoday_status"
+                android:title="ABONTODAY"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="show_viruchka_status"
+                android:title="ВЫРУЧКА"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="show_operativniy_status"
+                android:title="ОПЕРАТИВНЫЙ"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="show_send_imsi_status"
+                android:title="SEND_IMSI"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="show_ftp_upl_status"
+                android:title="FTP_UPL"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="show_vchera_upalo_status"
+                android:title="ВЧЕРА_УПАЛО"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="show_padalo_7_dney_status"
+                android:title="ПАДАЛО_7_ДНЕЙ"
+                android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="show_svobodno_status"
+                android:title="СВОБОДНО"
+                android:defaultValue="true"/>
+    </PreferenceScreen>
     
     <CheckBoxPreference
             android:key="sow_sms_content_on_receive"
             android:title="Показывать содержимое SMS"
-            android:summary="При получении смс показывать текст сообщения в уведомлении" />
+            android:summary="При получении смс показывать текст сообщения в уведомлении"
+            android:defaultValue="true"/>
     
-    <!-- <PreferenceScreen
-            android:key="second_preferencescreen"
-            android:title="WiFi settings">
-        <CheckBoxPreference
-                android:key="prefer wifi"
-                android:title="Prefer WiFi" />
-    </PreferenceScreen>  -->
 </PreferenceScreen> 
