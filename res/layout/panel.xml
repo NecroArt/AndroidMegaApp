@@ -1,7 +1,997 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
+    android:gravity="center" >
 
-  
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/goldenGateRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#8800CCCC"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/goldenGateLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_golden_gate" />
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*"
+                 >
+
+                <TableRow
+                    android:id="@+id/tableRowGoldenGateDays"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/textViewGoldenGateDayOne"
+                        android:gravity="center"
+                        android:text="@string/label_one" />
+
+                    <TextView
+                        android:id="@+id/textViewGoldenGateDayTwo"
+                        android:gravity="center"
+                        android:text="@string/label_two" />
+
+                    <TextView
+                        android:id="@+id/textViewGoldenGateDayThree"
+                        android:gravity="center"
+                        android:text="@string/label_three" />
+
+                    <TextView
+                        android:id="@+id/textViewGoldenGateDayFour"
+                        android:gravity="center"
+                        android:text="@string/label_four" />
+
+                    <TextView
+                        android:id="@+id/textViewGoldenGateDayFive"
+                        android:gravity="center"
+                        android:text="@string/label_five" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowGoldenGateValues"
+                    android:layout_width="fill_parent"
+                    android:gravity="center_horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewGoldenGateValueOne"
+                        android:contentDescription="@string/label_content_description_value_one"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewGoldenGateValueTwo"
+                        android:contentDescription="@string/label_content_description_value_two"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewGoldenGateValueThree"
+                        android:contentDescription="@string/label_content_description_value_three"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewGoldenGateValueFour"
+                        android:contentDescription="@string/label_content_description_value_four"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewGoldenGateValueFive"
+                        android:contentDescription="@string/label_content_description_value_five"
+                        android:src="@drawable/success" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/otrabotaloRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#8800CCCC"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/otrabotaloLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_otrabotalo" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:id="@+id/tableRowOtrabotaloDays"
+                    android:layout_width="fill_parent"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/textViewOtrabotaloDayOne"
+                        android:gravity="center"
+                        android:text="@string/label_one" />
+
+                    <TextView
+                        android:id="@+id/textViewOtrabotaloDayTwo"
+                        android:gravity="center"
+                        android:text="@string/label_two" />
+
+                    <TextView
+                        android:id="@+id/textViewOtrabotaloDayThree"
+                        android:gravity="center"
+                        android:text="@string/label_three" />
+
+                    <TextView
+                        android:id="@+id/textViewOtrabotaloDayFour"
+                        android:gravity="center"
+                        android:text="@string/label_four" />
+
+                    <TextView
+                        android:id="@+id/textViewOtrabotaloDayFive"
+                        android:gravity="center"
+                        android:text="@string/label_five" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowOtrabotaloValues"
+                    android:gravity="center_horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewOtrabotaloValueOne"
+                        android:contentDescription="@string/label_content_description_value_one"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewOtrabotaloValueTwo"
+                        android:contentDescription="@string/label_content_description_value_two"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewOtrabotaloValueThree"
+                        android:contentDescription="@string/label_content_description_value_three"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewOtrabotaloValueFour"
+                        android:contentDescription="@string/label_content_description_value_four"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewOtrabotaloValueFive"
+                        android:contentDescription="@string/label_content_description_value_five"
+                        android:src="@drawable/success" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/nochyuUpalRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#8800CCCC"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/nochyuUpaloLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_nochyu_upalo" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:id="@+id/tableRowNochyuUpaloDays"
+                    android:layout_width="fill_parent"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/textViewNochyuUpaloDayOne"
+                        android:gravity="center"
+                        android:text="@string/label_one" />
+
+                    <TextView
+                        android:id="@+id/textViewNochyuUpaloDayTwo"
+                        android:gravity="center"
+                        android:text="@string/label_two" />
+
+                    <TextView
+                        android:id="@+id/textViewNochyuUpaloDayThree"
+                        android:gravity="center"
+                        android:text="@string/label_three" />
+
+                    <TextView
+                        android:id="@+id/textViewNochyuUpaloDayFour"
+                        android:gravity="center"
+                        android:text="@string/label_four" />
+
+                    <TextView
+                        android:id="@+id/textViewNochyuUpaloDayFive"
+                        android:gravity="center"
+                        android:text="@string/label_five" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowNochyuUpaloValues"
+                    android:gravity="center_horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewNochyuUpaloValueOne"
+                        android:contentDescription="@string/label_content_description_value_one"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewNochyuUpaloValueTwo"
+                        android:contentDescription="@string/label_content_description_value_two"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewNochyuUpaloValueThree"
+                        android:contentDescription="@string/label_content_description_value_three"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewNochyuUpaloValueFour"
+                        android:contentDescription="@string/label_content_description_value_four"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewNochyuUpaloValueFive"
+                        android:contentDescription="@string/label_content_description_value_five"
+                        android:src="@drawable/success" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/abontodayRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#8800CCCC"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/nochyuAbontodayLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_abontoday" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:id="@+id/tableRowAbontodayDays"
+                    android:layout_width="fill_parent"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/textViewAbontodayDayOne"
+                        android:gravity="center"
+                        android:text="@string/label_one" />
+
+                    <TextView
+                        android:id="@+id/textViewAbontodayDayTwo"
+                        android:gravity="center"
+                        android:text="@string/label_two" />
+
+                    <TextView
+                        android:id="@+id/textViewAbontodayDayThree"
+                        android:gravity="center"
+                        android:text="@string/label_three" />
+
+                    <TextView
+                        android:id="@+id/textViewAbontodayDayFour"
+                        android:gravity="center"
+                        android:text="@string/label_four" />
+
+                    <TextView
+                        android:id="@+id/textViewAbontodayDayFive"
+                        android:gravity="center"
+                        android:text="@string/label_five" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowAbontodayValues"
+                    android:gravity="center_horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewAbontodayValueOne"
+                        android:contentDescription="@string/label_content_description_value_one"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewAbontodayValueTwo"
+                        android:contentDescription="@string/label_content_description_value_two"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewAbontodayValueThree"
+                        android:contentDescription="@string/label_content_description_value_three"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewAbontodayValueFour"
+                        android:contentDescription="@string/label_content_description_value_four"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewAbontodayValueFive"
+                        android:contentDescription="@string/label_content_description_value_five"
+                        android:src="@drawable/success" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/viruchkaRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#8800CCCC"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/nochyuViruchkaLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_viruchka" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:id="@+id/tableRowViruchkaDays"
+                    android:layout_width="fill_parent"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/textViewViruchkaDayOne"
+                        android:gravity="center"
+                        android:text="@string/label_one" />
+
+                    <TextView
+                        android:id="@+id/textViewViruchkaDayTwo"
+                        android:gravity="center"
+                        android:text="@string/label_two" />
+
+                    <TextView
+                        android:id="@+id/textViewViruchkaDayThree"
+                        android:gravity="center"
+                        android:text="@string/label_three" />
+
+                    <TextView
+                        android:id="@+id/textViewViruchkaDayFour"
+                        android:gravity="center"
+                        android:text="@string/label_four" />
+
+                    <TextView
+                        android:id="@+id/textViewViruchkaDayFive"
+                        android:gravity="center"
+                        android:text="@string/label_five" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowViruchkaValues"
+                    android:gravity="center_horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewViruchkaValueOne"
+                        android:contentDescription="@string/label_content_description_value_one"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewViruchkaValueTwo"
+                        android:contentDescription="@string/label_content_description_value_two"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewViruchkaValueThree"
+                        android:contentDescription="@string/label_content_description_value_three"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewViruchkaValueFour"
+                        android:contentDescription="@string/label_content_description_value_four"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewViruchkaValueFive"
+                        android:contentDescription="@string/label_content_description_value_five"
+                        android:src="@drawable/success" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/operativniyRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#8800CCCC"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/nochyuOperativniyLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_operativniy" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:id="@+id/tableRowOperativniyDays"
+                    android:layout_width="fill_parent"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/textViewOperativniyDayOne"
+                        android:gravity="center"
+                        android:text="@string/label_one" />
+
+                    <TextView
+                        android:id="@+id/textViewOperativniyDayTwo"
+                        android:gravity="center"
+                        android:text="@string/label_two" />
+
+                    <TextView
+                        android:id="@+id/textViewOperativniyDayThree"
+                        android:gravity="center"
+                        android:text="@string/label_three" />
+
+                    <TextView
+                        android:id="@+id/textViewOperativniyDayFour"
+                        android:gravity="center"
+                        android:text="@string/label_four" />
+
+                    <TextView
+                        android:id="@+id/textViewOperativniyDayFive"
+                        android:gravity="center"
+                        android:text="@string/label_five" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowOperativniyValues"
+                    android:gravity="center_horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewOperativniyValueOne"
+                        android:contentDescription="@string/label_content_description_value_one"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewOperativniyValueTwo"
+                        android:contentDescription="@string/label_content_description_value_two"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewOperativniyValueThree"
+                        android:contentDescription="@string/label_content_description_value_three"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewOperativniyValueFour"
+                        android:contentDescription="@string/label_content_description_value_four"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewOperativniyValueFive"
+                        android:contentDescription="@string/label_content_description_value_five"
+                        android:src="@drawable/success" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/sendImsiRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#8800CCCC"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tableRowSendImsiLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_send_imsi" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:id="@+id/tableRowSendImsiDays"
+                    android:layout_width="fill_parent"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/textViewSendImsiDayOne"
+                        android:gravity="center"
+                        android:text="@string/label_one" />
+
+                    <TextView
+                        android:id="@+id/textViewSendImsiDayTwo"
+                        android:gravity="center"
+                        android:text="@string/label_two" />
+
+                    <TextView
+                        android:id="@+id/textViewSendImsiDayThree"
+                        android:gravity="center"
+                        android:text="@string/label_three" />
+
+                    <TextView
+                        android:id="@+id/textViewSendImsiDayFour"
+                        android:gravity="center"
+                        android:text="@string/label_four" />
+
+                    <TextView
+                        android:id="@+id/textViewSendImsiDayFive"
+                        android:gravity="center"
+                        android:text="@string/label_five" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowSendImsiValues"
+                    android:gravity="center_horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewSendImsiValueOne"
+                        android:contentDescription="@string/label_content_description_value_one"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewSendImsiValueTwo"
+                        android:contentDescription="@string/label_content_description_value_two"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewSendImsiValueThree"
+                        android:contentDescription="@string/label_content_description_value_three"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewSendImsiValueFour"
+                        android:contentDescription="@string/label_content_description_value_four"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewSendImsiValueFive"
+                        android:contentDescription="@string/label_content_description_value_five"
+                        android:src="@drawable/success" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ftpUplRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#8800CCCC"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tableRowFtpUplLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_ftp_upl" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:id="@+id/tableRowFtpUplDays"
+                    android:layout_width="fill_parent"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/textViewFtpUplDayOne"
+                        android:gravity="center"
+                        android:text="@string/label_one" />
+
+                    <TextView
+                        android:id="@+id/textViewFtpUplDayTwo"
+                        android:gravity="center"
+                        android:text="@string/label_two" />
+
+                    <TextView
+                        android:id="@+id/textViewFtpUplDayThree"
+                        android:gravity="center"
+                        android:text="@string/label_three" />
+
+                    <TextView
+                        android:id="@+id/textViewFtpUplDayFour"
+                        android:gravity="center"
+                        android:text="@string/label_four" />
+
+                    <TextView
+                        android:id="@+id/textViewFtpUplDayFive"
+                        android:gravity="center"
+                        android:text="@string/label_five" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowFtpUplValues"
+                    android:gravity="center_horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewFtpUplValueOne"
+                        android:contentDescription="@string/label_content_description_value_one"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewFtpUplValueTwo"
+                        android:contentDescription="@string/label_content_description_value_two"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewFtpUplValueThree"
+                        android:contentDescription="@string/label_content_description_value_three"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewFtpUplValueFour"
+                        android:contentDescription="@string/label_content_description_value_four"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewFtpUplValueFive"
+                        android:contentDescription="@string/label_content_description_value_five"
+                        android:src="@drawable/success" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/vcheraUpaloRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#8800CCCC"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tableRowVcheraUpaloLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_vchera_upalo" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:id="@+id/tableRowVcheraUpaloDays"
+                    android:layout_width="fill_parent"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/textViewVcheraUpaloDayOne"
+                        android:gravity="center"
+                        android:text="@string/label_one" />
+
+                    <TextView
+                        android:id="@+id/textViewVcheraUpaloDayTwo"
+                        android:gravity="center"
+                        android:text="@string/label_two" />
+
+                    <TextView
+                        android:id="@+id/textViewVcheraUpaloDayThree"
+                        android:gravity="center"
+                        android:text="@string/label_three" />
+
+                    <TextView
+                        android:id="@+id/textViewVcheraUpaloDayFour"
+                        android:gravity="center"
+                        android:text="@string/label_four" />
+
+                    <TextView
+                        android:id="@+id/textViewVcheraUpaloDayFive"
+                        android:gravity="center"
+                        android:text="@string/label_five" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowVcheraUpaloValues"
+                    android:gravity="center_horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewVcheraUpaloValueOne"
+                        android:contentDescription="@string/label_content_description_value_one"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewVcheraUpaloValueTwo"
+                        android:contentDescription="@string/label_content_description_value_two"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewVcheraUpaloValueThree"
+                        android:contentDescription="@string/label_content_description_value_three"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewVcheraUpaloValueFour"
+                        android:contentDescription="@string/label_content_description_value_four"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewVcheraUpaloValueFive"
+                        android:contentDescription="@string/label_content_description_value_five"
+                        android:src="@drawable/success" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/padaloSemDneyRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#8800CCCC"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tableRowPadaloSemDneyLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_padalo_sem_dney" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:id="@+id/tableRowPadaloSemDneyDays"
+                    android:layout_width="fill_parent"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/textViewPadaloSemDneyDayOne"
+                        android:gravity="center"
+                        android:text="@string/label_one" />
+
+                    <TextView
+                        android:id="@+id/textViewPadaloSemDneyDayTwo"
+                        android:gravity="center"
+                        android:text="@string/label_two" />
+
+                    <TextView
+                        android:id="@+id/textViewPadaloSemDneyDayThree"
+                        android:gravity="center"
+                        android:text="@string/label_three" />
+
+                    <TextView
+                        android:id="@+id/textViewPadaloSemDneyDayFour"
+                        android:gravity="center"
+                        android:text="@string/label_four" />
+
+                    <TextView
+                        android:id="@+id/textViewPadaloSemDneyDayFive"
+                        android:gravity="center"
+                        android:text="@string/label_five" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowPadaloSemDneyValues"
+                    android:gravity="center_horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewPadaloSemDneyValueOne"
+                        android:contentDescription="@string/label_content_description_value_one"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewPadaloSemDneyValueTwo"
+                        android:contentDescription="@string/label_content_description_value_two"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewPadaloSemDneyValueThree"
+                        android:contentDescription="@string/label_content_description_value_three"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewPadaloSemDneyValueFour"
+                        android:contentDescription="@string/label_content_description_value_four"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewPadaloSemDneyValueFive"
+                        android:contentDescription="@string/label_content_description_value_five"
+                        android:src="@drawable/success" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/svobodnoRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#8800CCCC"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tableRowSvobodnoLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/label_svobodno" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:id="@+id/tableRowSvobodnoDays"
+                    android:layout_width="fill_parent"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/textViewSvobodnoDayOne"
+                        android:gravity="center"
+                        android:text="@string/label_one" />
+
+                    <TextView
+                        android:id="@+id/textViewSvobodnoDayTwo"
+                        android:gravity="center"
+                        android:text="@string/label_two" />
+
+                    <TextView
+                        android:id="@+id/textViewSvobodnoDayThree"
+                        android:gravity="center"
+                        android:text="@string/label_three" />
+
+                    <TextView
+                        android:id="@+id/textViewSvobodnoDayFour"
+                        android:gravity="center"
+                        android:text="@string/label_four" />
+
+                    <TextView
+                        android:id="@+id/textViewSvobodnoDayFive"
+                        android:gravity="center"
+                        android:text="@string/label_five" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRowSvobodnoValues"
+                    android:gravity="center_horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewSvobodnoValueOne"
+                        android:contentDescription="@string/label_content_description_value_one"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewSvobodnoValueTwo"
+                        android:contentDescription="@string/label_content_description_value_two"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewSvobodnoValueThree"
+                        android:contentDescription="@string/label_content_description_value_three"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewSvobodnoValueFour"
+                        android:contentDescription="@string/label_content_description_value_four"
+                        android:src="@drawable/success" />
+
+                    <ImageView
+                        android:id="@+id/imageViewSvobodnoValueFive"
+                        android:contentDescription="@string/label_content_description_value_five"
+                        android:src="@drawable/success" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+        
+    </LinearLayout>
 
 </ScrollView>

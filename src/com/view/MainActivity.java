@@ -294,7 +294,6 @@ public class MainActivity extends Activity {
 
 			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-			@SuppressWarnings("deprecation")
 			Notification notif = new Notification(R.drawable.ic_launcher,
 					"Critical process report", System.currentTimeMillis());
 			notif.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -327,6 +326,15 @@ public class MainActivity extends Activity {
 	public static void stopPlay() {
 
 		r.stop();
+	}
+
+	public void test(View view) {
+
+		setContentView(R.layout.panel);
+		TextView textView = (TextView) findViewById(R.id.textViewPadaloSemDneyDayOne);
+		textView.setText("ss");
+		
+		
 	}
 
 }

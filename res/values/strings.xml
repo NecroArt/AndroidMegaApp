@@ -24,5 +24,29 @@
     <string name="title_activity_play">Играть</string>
     <string name="title_activity_stop">Остановить</string>
     
+    <string name="label_golden_gate">GoldenGate</string>
+    <string name="label_otrabotalo">ОТРАБОТАЛО</string>
+    <string name="label_nochyu_upalo">НОЧЬЮ_УПАЛО</string>
+    <string name="label_abontoday">ABONTODAY</string>
+    <string name="label_viruchka">ВЫРУЧКА</string>
+    <string name="label_operativniy">ОПЕРАТИВНЫЙ</string>
+    <string name="label_send_imsi">SEND_IMSI</string>
+    <string name="label_ftp_upl">FTP_UPL</string>
+    <string name="label_vchera_upalo">ВЧЕРА_УПАЛО</string>
+    <string name="label_padalo_sem_dney">ПАДАЛО_7_ДНЕЙ</string>
+    <string name="label_svobodno">СВОБОДНО</string>
+    
+    <string name="label_one">1</string>
+    <string name="label_two">2</string>
+    <string name="label_three">3</string>
+    <string name="label_four">4</string>
+    <string name="label_five">5</string>
+    
+    <string name="label_content_description_value_one">День 1</string>
+    <string name="label_content_description_value_two">День 2</string>
+    <string name="label_content_description_value_three">День 3</string>
+    <string name="label_content_description_value_four">День 4</string>
+    <string name="label_content_description_value_five">День 5</string>
+    
 
 </resources>
