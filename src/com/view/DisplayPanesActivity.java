@@ -30,12 +30,15 @@ public class DisplayPanesActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.panel);
+		
+		TextView textView = (TextView) findViewById(R.id.textViewGoldenGateDayOne);
+		//textView.setText("");
 
-		LinearLayout linearLayout = new LinearLayout(this);
+		/*LinearLayout linearLayout = new LinearLayout(this);
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
 
 		// TODO make it as user options
-		// String[] parameters = { "Œœ≈–¿“»¬Õ€…", "ABONTODAY" };
+
 		ArrayList<String> parameters = new ArrayList<String>();
 
 		DbHelper dbHelper = new DbHelper(this, null, null,
@@ -164,7 +167,7 @@ public class DisplayPanesActivity extends Activity {
 		scrollView.setFillViewport(true);
 		scrollView.addView(linearLayout);
 
-		setContentView(scrollView);
+		setContentView(scrollView);*/
 
 	}
 

@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.view"
     android:versionCode="0"
-    android:versionName="0.077" >
+    android:versionName="0.078" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="17" />
-	<uses-permission android:name="android.permission.READ_SMS" />
+	<uses-permission android:name="android.permission.READ_SMS"/>
 	<uses-permission android:name="android.permission.RECEIVE_SMS"/>
 	<uses-permission android:name="android.permission.WRITE_SMS"/>
 	<uses-permission android:name="android.permission.READ_LOGS"/>
