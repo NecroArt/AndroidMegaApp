@@ -331,8 +331,8 @@ public class MainActivity extends Activity {
 	public void test(View view) {
 
 		setContentView(R.layout.panel);
-		TextView textView = (TextView) findViewById(R.id.textViewPadaloSemDneyDayOne);
-		textView.setText("ss");
+		/*TextView textView = (TextView) findViewById(R.id.textViewPadaloSemDneyDayOne);
+		textView.setText("ss");*/
 		
 		
 	}
