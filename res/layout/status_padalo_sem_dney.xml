@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/padaloSemDneyRelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="50dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="50dp"
+    android:background="@drawable/card"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tableRowPadaloSemDneyLable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/label_padalo_sem_dney" />
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:stretchColumns="*" >
+
+        <TableRow
+            android:id="@+id/tableRowPadaloSemDneyDays"
+            android:layout_width="fill_parent"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/textViewPadaloSemDneyDayOne"
+                android:gravity="center"
+                android:text="@string/label_one" />
+
+            <TextView
+                android:id="@+id/textViewPadaloSemDneyDayTwo"
+                android:gravity="center"
+                android:text="@string/label_two" />
+
+            <TextView
+                android:id="@+id/textViewPadaloSemDneyDayThree"
+                android:gravity="center"
+                android:text="@string/label_three" />
+
+            <TextView
+                android:id="@+id/textViewPadaloSemDneyDayFour"
+                android:gravity="center"
+                android:text="@string/label_four" />
+
+            <TextView
+                android:id="@+id/textViewPadaloSemDneyDayFive"
+                android:gravity="center"
+                android:text="@string/label_five" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowPadaloSemDneyValues"
+            android:gravity="center_horizontal" >
+
+            <ImageView
+                android:id="@+id/imageViewPadaloSemDneyValueOne"
+                android:contentDescription="@string/label_content_description_value_one"
+                android:src="@drawable/success" />
+
+            <ImageView
+                android:id="@+id/imageViewPadaloSemDneyValueTwo"
+                android:contentDescription="@string/label_content_description_value_two"
+                android:src="@drawable/success" />
+
+            <ImageView
+                android:id="@+id/imageViewPadaloSemDneyValueThree"
+                android:contentDescription="@string/label_content_description_value_three"
+                android:src="@drawable/success" />
+
+            <ImageView
+                android:id="@+id/imageViewPadaloSemDneyValueFour"
+                android:contentDescription="@string/label_content_description_value_four"
+                android:src="@drawable/success" />
+
+            <ImageView
+                android:id="@+id/imageViewPadaloSemDneyValueFive"
+                android:contentDescription="@string/label_content_description_value_five"
+                android:src="@drawable/success" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
