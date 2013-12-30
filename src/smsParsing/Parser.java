@@ -17,9 +17,7 @@ public class Parser {
 		ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
 
 		// check that sms contain what will
-		if (smsText.startsWith("Статус критичных процессов REP-COMM")) {
-			//TODO delete this
-				//true){
+		if (smsText.startsWith("Статус критичных процессов REP-COMM")){
 						
 			String[] arrayPhrases = smsText.split((char) 10 + "|" + (char) 13);
 

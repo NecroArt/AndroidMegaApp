@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/goldenGateRelativeLayout"
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout 
+    android:id="@+id/goldenGateLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="50dp"
@@ -16,27 +17,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/label_golden_gate" />
+        android:text="@string/golden_gate_label" />
 
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
         android:gravity="center"
-        android:stretchColumns="*" >
+        android:stretchColumns="*"
+        android:id="@+id/goldenGateTableLayout">
 
         <TableRow
-            android:id="@+id/tableRowGoldenGateDays"
+            android:id="@+id/goldenGateTableRowDays"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal" >
+
+            <!--<TableRow
+            android:id="@+id/goldenGateTableRowDays"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center" >
-
+            android:gravity="center_horizontal" > 
             <TextView
                 android:id="@+id/textViewGoldenGateDayOne"
                 android:gravity="center"
                 android:text="@string/label_one" />
 
-            <TextView
+           <TextView
                 android:id="@+id/textViewGoldenGateDayTwo"
                 android:gravity="center"
                 android:text="@string/label_two" />
@@ -54,15 +60,15 @@
             <TextView
                 android:id="@+id/textViewGoldenGateDayFive"
                 android:gravity="center"
-                android:text="@string/label_five" />
+                android:text="@string/label_five" /> -->
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRowGoldenGateValues"
+            android:id="@+id/goldenGateTableRowValues"
             android:layout_width="fill_parent"
             android:gravity="center_horizontal" >
 
-            <ImageView
+            <!-- <ImageView
                 android:id="@+id/imageViewGoldenGateValueOne"
                 android:contentDescription="@string/label_content_description_value_one"
                 android:src="@drawable/success" />
@@ -85,8 +91,9 @@
             <ImageView
                 android:id="@+id/imageViewGoldenGateValueFive"
                 android:contentDescription="@string/label_content_description_value_five"
-                android:src="@drawable/success" />
+                android:src="@drawable/success" /> -->
         </TableRow>
     </TableLayout>
 
 </LinearLayout>
+</merge>

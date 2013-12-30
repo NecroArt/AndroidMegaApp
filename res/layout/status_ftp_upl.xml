@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ftpUplRelativeLayout"
+    android:id="@+id/ftpUplLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="50dp"
@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/label_ftp_upl" />
+        android:text="@string/ftp_upl_label" />
 
     <TableLayout
         android:layout_width="wrap_content"

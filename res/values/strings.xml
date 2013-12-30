@@ -24,17 +24,17 @@
     <string name="title_activity_play">Играть</string>
     <string name="title_activity_stop">Остановить</string>
     
-    <string name="label_golden_gate">GoldenGate</string>
-    <string name="label_otrabotalo">ОТРАБОТАЛО</string>
-    <string name="label_nochyu_upalo">НОЧЬЮ_УПАЛО</string>
-    <string name="label_abontoday">ABONTODAY</string>
-    <string name="label_viruchka">ВЫРУЧКА</string>
-    <string name="label_operativniy">ОПЕРАТИВНЫЙ</string>
-    <string name="label_send_imsi">SEND_IMSI</string>
-    <string name="label_ftp_upl">FTP_UPL</string>
-    <string name="label_vchera_upalo">ВЧЕРА_УПАЛО</string>
-    <string name="label_padalo_sem_dney">ПАДАЛО_7_ДНЕЙ</string>
-    <string name="label_svobodno">СВОБОДНО</string>
+    <string name="golden_gate_label">GoldenGate</string>
+    <string name="otrabotalo_label">ОТРАБОТАЛО</string>
+    <string name="nochyu_upalo_label">НОЧЬЮ_УПАЛО</string>
+    <string name="abontoday_label">ABONTODAY</string>
+    <string name="viruchka_label">ВЫРУЧКА</string>
+    <string name="operativniy_label">ОПЕРАТИВНЫЙ</string>
+    <string name="send_imsi_label">SEND_IMSI</string>
+    <string name="ftp_upl_label">FTP_UPL</string>
+    <string name="vchera_upalo_label">ВЧЕРА_УПАЛО</string>
+    <string name="padalo_sem_dney_label">ПАДАЛО_7_ДНЕЙ</string>
+    <string name="svobodno_label">СВОБОДНО</string>
     
     <string name="label_one">1</string>
     <string name="label_two">2</string>
