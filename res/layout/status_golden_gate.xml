@@ -1,99 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout 
-    android:id="@+id/goldenGateLinearLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="50dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="50dp"
-    android:background="@drawable/card"
-    android:gravity="center"
-    android:orientation="vertical" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <TextView
-        android:id="@+id/goldenGateLable"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/goldenGateLinearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/status_linear_layout_bottom_margin"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="@dimen/status_linear_layout_top_margin"
+        android:background="@drawable/card"
         android:gravity="center"
-        android:text="@string/golden_gate_label" />
+        android:orientation="vertical" >
 
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:stretchColumns="*"
-        android:id="@+id/goldenGateTableLayout">
-
-        <TableRow
-            android:id="@+id/goldenGateTableRowDays"
-            android:layout_width="fill_parent"
-            android:gravity="center_horizontal" >
-
-            <!--<TableRow
-            android:id="@+id/goldenGateTableRowDays"
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/goldenGateLable"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal" > 
-            <TextView
-                android:id="@+id/textViewGoldenGateDayOne"
-                android:gravity="center"
-                android:text="@string/label_one" />
+            android:gravity="center"
+            android:text="@string/golden_gate_label" />
 
-           <TextView
-                android:id="@+id/textViewGoldenGateDayTwo"
-                android:gravity="center"
-                android:text="@string/label_two" />
-
-            <TextView
-                android:id="@+id/textViewGoldenGateDayThree"
-                android:gravity="center"
-                android:text="@string/label_three" />
-
-            <TextView
-                android:id="@+id/textViewGoldenGateDayFour"
-                android:gravity="center"
-                android:text="@string/label_four" />
-
-            <TextView
-                android:id="@+id/textViewGoldenGateDayFive"
-                android:gravity="center"
-                android:text="@string/label_five" /> -->
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/goldenGateTableRowValues"
+        <TableLayout
+            android:id="@+id/goldenGateTableLayout"
             android:layout_width="fill_parent"
-            android:gravity="center_horizontal" >
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:stretchColumns="*" >
 
-            <!-- <ImageView
-                android:id="@+id/imageViewGoldenGateValueOne"
-                android:contentDescription="@string/label_content_description_value_one"
-                android:src="@drawable/success" />
+            <TableRow
+                android:id="@+id/goldenGateTableRowDays"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal" >
+            </TableRow>
 
-            <ImageView
-                android:id="@+id/imageViewGoldenGateValueTwo"
-                android:contentDescription="@string/label_content_description_value_two"
-                android:src="@drawable/success" />
+            <TableRow
+                android:id="@+id/goldenGateTableRowValues"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal" >
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imageViewGoldenGateValueThree"
-                android:contentDescription="@string/label_content_description_value_three"
-                android:src="@drawable/success" />
-
-            <ImageView
-                android:id="@+id/imageViewGoldenGateValueFour"
-                android:contentDescription="@string/label_content_description_value_four"
-                android:src="@drawable/success" />
-
-            <ImageView
-                android:id="@+id/imageViewGoldenGateValueFive"
-                android:contentDescription="@string/label_content_description_value_five"
-                android:src="@drawable/success" /> -->
-        </TableRow>
-    </TableLayout>
-
-</LinearLayout>
 </merge>

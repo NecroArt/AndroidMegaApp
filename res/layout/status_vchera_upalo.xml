@@ -1,90 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/vcheraUpaloLinearLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="50dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="50dp"
-    android:background="@drawable/card"
-    android:gravity="center"
-    android:orientation="vertical" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <TextView
-        android:id="@+id/tableRowVcheraUpaloLable"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/vcheraUpaloLinearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/status_linear_layout_bottom_margin"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="@dimen/status_linear_layout_top_margin"
+        android:background="@drawable/card"
         android:gravity="center"
-        android:text="@string/vchera_upalo_label" />
+        android:orientation="vertical" >
 
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:stretchColumns="*" >
+        <TextView
+            android:id="@+id/vcheraUpaloLable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/vchera_upalo_label" />
 
-        <TableRow
-            android:id="@+id/tableRowVcheraUpaloDays"
-            android:layout_width="fill_parent"
-            android:gravity="center" >
+        <TableLayout
+            android:id="@+id/vcheraUpaloTableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:stretchColumns="*" >
 
-            <TextView
-                android:id="@+id/textViewVcheraUpaloDayOne"
-                android:gravity="center"
-                android:text="@string/label_one" />
+            <TableRow
+                android:id="@+id/vcheraUpaloTableRowDays"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal" >
+            </TableRow>
 
-            <TextView
-                android:id="@+id/textViewVcheraUpaloDayTwo"
-                android:gravity="center"
-                android:text="@string/label_two" />
+            <TableRow
+                android:id="@+id/vcheraUpaloTableRowValues"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal" >
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/textViewVcheraUpaloDayThree"
-                android:gravity="center"
-                android:text="@string/label_three" />
-
-            <TextView
-                android:id="@+id/textViewVcheraUpaloDayFour"
-                android:gravity="center"
-                android:text="@string/label_four" />
-
-            <TextView
-                android:id="@+id/textViewVcheraUpaloDayFive"
-                android:gravity="center"
-                android:text="@string/label_five" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRowVcheraUpaloValues"
-            android:gravity="center_horizontal" >
-
-            <ImageView
-                android:id="@+id/imageViewVcheraUpaloValueOne"
-                android:contentDescription="@string/label_content_description_value_one"
-                android:src="@drawable/success" />
-
-            <ImageView
-                android:id="@+id/imageViewVcheraUpaloValueTwo"
-                android:contentDescription="@string/label_content_description_value_two"
-                android:src="@drawable/success" />
-
-            <ImageView
-                android:id="@+id/imageViewVcheraUpaloValueThree"
-                android:contentDescription="@string/label_content_description_value_three"
-                android:src="@drawable/success" />
-
-            <ImageView
-                android:id="@+id/imageViewVcheraUpaloValueFour"
-                android:contentDescription="@string/label_content_description_value_four"
-                android:src="@drawable/success" />
-
-            <ImageView
-                android:id="@+id/imageViewVcheraUpaloValueFive"
-                android:contentDescription="@string/label_content_description_value_five"
-                android:src="@drawable/success" />
-        </TableRow>
-    </TableLayout>
-
-</LinearLayout>
+</merge>

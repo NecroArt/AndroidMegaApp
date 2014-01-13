@@ -14,8 +14,7 @@
         android:background="#EEEEEE">
         
         <include layout="@layout/status_golden_gate" android:id="@+id/golden_gate_include" android:visibility="gone"/>
-        
-        <!-- <include layout="@layout/status_otrabotalo" android:id="@+id/otrabotalo_include" android:visibility="gone"/>
+        <include layout="@layout/status_otrabotalo" android:id="@+id/otrabotalo_include" android:visibility="gone"/>
         <include layout="@layout/status_nochyu_upalo" android:id="@+id/nochyu_upalo_include" android:visibility="gone"/>
         <include layout="@layout/status_abontoday" android:id="@+id/abontoday_include" android:visibility="gone"/>
         <include layout="@layout/status_viruchka" android:id="@+id/viruchka_include" android:visibility="gone"/>
@@ -24,7 +23,7 @@
         <include layout="@layout/status_ftp_upl" android:id="@+id/ftp_upl_include" android:visibility="gone"/>
         <include layout="@layout/status_vchera_upalo" android:id="@+id/vchera_upalo_include" android:visibility="gone"/>
         <include layout="@layout/status_padalo_sem_dney" android:id="@+id/padalo_sem_dney_include" android:visibility="gone"/>
-        <include layout="@layout/status_svobodno" android:id="@+id/svobodno_include" android:visibility="gone"/> -->
+        <include layout="@layout/status_svobodno" android:id="@+id/svobodno_include" android:visibility="gone"/>
         
     </LinearLayout>
 

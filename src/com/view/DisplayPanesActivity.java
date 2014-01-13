@@ -26,6 +26,8 @@ import android.widget.LinearLayout.LayoutParams;
 public class DisplayPanesActivity extends Activity {
 
 	private static int daysAmount = 5;
+	private static int paddingTop = 5;
+	private static int paddingBottom = 5;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -59,49 +61,167 @@ public class DisplayPanesActivity extends Activity {
 
 			parameters.add("GoldenGate");
 
-			LinearLayout goldenGateLinearLayout = (LinearLayout) findViewById(R.id.goldenGateLinearLayout);
-			goldenGateLinearLayout.setVisibility(View.VISIBLE);
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.goldenGateLinearLayout);
+			linearLayout.setVisibility(View.VISIBLE);
 
+		} else {
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.goldenGateLinearLayout);
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.goldenGateTableLayout);
+			linearLayout.removeView(tableLayout);
+			
+			linearLayout.setVisibility(View.GONE);
+			
 		}
 
 		if (prefs.getBoolean("show_otrabotalo_status", true)) {
 			parameters.add("ОТРАБОТАЛО");
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.otrabotaloLinearLayout);
+			linearLayout.setVisibility(View.VISIBLE);
+		} else {
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.otrabotaloLinearLayout);
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.otrabotaloTableLayout);
+			linearLayout.removeView(tableLayout);
+			
+			linearLayout.setVisibility(View.GONE);
+			
 		}
 
 		if (prefs.getBoolean("show_nochyu_upalo_status", true)) {
 			parameters.add("НОЧЬЮ_УПАЛО");
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.nochyuUpaloLinearLayout);
+			linearLayout.setVisibility(View.VISIBLE);
+		} else {
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.nochyuUpaloLinearLayout);
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.nochyuUpaloTableLayout);
+			linearLayout.removeView(tableLayout);
+			
+			linearLayout.setVisibility(View.GONE);
+			
 		}
 
 		if (prefs.getBoolean("show_abontoday_status", true)) {
 			parameters.add("ABONTODAY");
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.abontodayLinearLayout);
+			linearLayout.setVisibility(View.VISIBLE);
+		} else {
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.abontodayLinearLayout);
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.abontodayTableLayout);
+			linearLayout.removeView(tableLayout);
+			
+			linearLayout.setVisibility(View.GONE);
+			
 		}
 
 		if (prefs.getBoolean("show_viruchka_status", true)) {
 			parameters.add("ВЫРУЧКА");
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.viruchkaLinearLayout);
+			linearLayout.setVisibility(View.VISIBLE);
+		} else {
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.viruchkaLinearLayout);
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.viruchkaTableLayout);
+			linearLayout.removeView(tableLayout);
+			
+			linearLayout.setVisibility(View.GONE);
+			
 		}
 
 		if (prefs.getBoolean("show_operativniy_status", true)) {
 			parameters.add("ОПЕРАТИВНЫЙ");
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.operativniyLinearLayout);
+			linearLayout.setVisibility(View.VISIBLE);
+		} else {
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.operativniyLinearLayout);
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.operativniyTableLayout);
+			linearLayout.removeView(tableLayout);
+			
+			linearLayout.setVisibility(View.GONE);
+			
 		}
 
 		if (prefs.getBoolean("show_send_imsi_status", true)) {
 			parameters.add("SEND_IMSI");
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.sendImsiLinearLayout);
+			linearLayout.setVisibility(View.VISIBLE);
+		} else {
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.sendImsiLinearLayout);
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.sendImsiTableLayout);
+			linearLayout.removeView(tableLayout);
+			
+			linearLayout.setVisibility(View.GONE);
+			
 		}
 
 		if (prefs.getBoolean("show_ftp_upl_status", true)) {
 			parameters.add("FTP_UPL");
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ftpUplLinearLayout);
+			linearLayout.setVisibility(View.VISIBLE);
+		} else {
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ftpUplLinearLayout);
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.ftpUplTableLayout);
+			linearLayout.removeView(tableLayout);
+			
+			linearLayout.setVisibility(View.GONE);
+			
 		}
 
 		if (prefs.getBoolean("show_vchera_upalo_status", true)) {
 			parameters.add("ВЧЕРА_УПАЛО");
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.vcheraUpaloLinearLayout);
+			linearLayout.setVisibility(View.VISIBLE);
+		} else {
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.vcheraUpaloLinearLayout);
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.vcheraUpaloTableLayout);
+			linearLayout.removeView(tableLayout);
+			
+			linearLayout.setVisibility(View.GONE);
+			
 		}
 
 		if (prefs.getBoolean("show_padalo_7_dney_status", true)) {
 			parameters.add("ПАДАЛО_7_ДНЕЙ");
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.padaloSemDneyLinearLayout);
+			linearLayout.setVisibility(View.VISIBLE);
+		} else {
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.padaloSemDneyLinearLayout);
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.padaloSemDneyTableLayout);
+			linearLayout.removeView(tableLayout);
+			
+			linearLayout.setVisibility(View.GONE);
+			
 		}
 
 		if (prefs.getBoolean("show_svobodno_status", true)) {
 			parameters.add("СВОБОДНО");
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.svobodnoLinearLayout);
+			linearLayout.setVisibility(View.VISIBLE);
+		} else {
+			
+			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.svobodnoLinearLayout);
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.svobodnoTableLayout);
+			linearLayout.removeView(tableLayout);
+			
+			linearLayout.setVisibility(View.GONE);
+			
 		}
 
 		ArrayList<SmsRecord> recordsArray = dbHelper.getLastRecords(5,
@@ -114,38 +234,55 @@ public class DisplayPanesActivity extends Activity {
 				showGoldenGate(recordsArray);
 			}
 
-			/*
-			 * // ОТРАБОТАЛО if (prefs.getBoolean("show_otrabotalo_status",
-			 * true)) { showOtrabotalo(this, linearLayout, recordsArray); }
-			 * 
-			 * // НОЧЬЮ_УПАЛО if (prefs.getBoolean("show_nochyu_upalo_status",
-			 * true)) { showNochyuUpalo(this, linearLayout, recordsArray); }
-			 * 
-			 * // ABONTODAY if (prefs.getBoolean("show_abontoday_status", true))
-			 * { showAbontoday(this, linearLayout, recordsArray); }
-			 * 
-			 * // ВЫРУЧКА if (prefs.getBoolean("show_viruchka_status", true)) {
-			 * showViruchka(this, linearLayout, recordsArray); }
-			 * 
-			 * // ОПЕРАТИВНЫЙ if (prefs.getBoolean("show_operativniy_status",
-			 * true)) { showOperativniy(this, linearLayout, recordsArray); }
-			 * 
-			 * // SEND_IMSI if (prefs.getBoolean("show_send_imsi_status", true))
-			 * { showSendImsi(this, linearLayout, recordsArray); }
-			 * 
-			 * // FTP_UPL if (prefs.getBoolean("show_ftp_upl_status", true)) {
-			 * showFtpUpl(this, linearLayout, recordsArray); }
-			 * 
-			 * // ВЧЕРА_УПАЛО if (prefs.getBoolean("show_vchera_upalo_status",
-			 * true)) { showVcheraUpalo(this, linearLayout, recordsArray); }
-			 * 
-			 * // ПАДАЛО_7_ДНЕЙ if
-			 * (prefs.getBoolean("show_padalo_7_dney_status", true)) {
-			 * showPadaloSemDney(this, linearLayout, recordsArray); }
-			 * 
-			 * // СВОБОДНО if (prefs.getBoolean("show_svobodno_status", true)) {
-			 * showSvobodno(this, linearLayout, recordsArray); }
-			 */
+			// ОТРАБОТАЛО
+			if (prefs.getBoolean("show_otrabotalo_status", true)) {
+				showOtrabotalo(recordsArray);
+			}
+
+			// НОЧЬЮ_УПАЛО
+			if (prefs.getBoolean("show_nochyu_upalo_status", true)) {
+				showNochyuUpalo(recordsArray);
+			}
+
+			// ABONTODAY
+			if (prefs.getBoolean("show_abontoday_status", true)) {
+				showAbontoday(recordsArray);
+			}
+
+			// ВЫРУЧКА
+			if (prefs.getBoolean("show_viruchka_status", true)) {
+				showViruchka(recordsArray);
+			}
+
+			// ОПЕРАТИВНЫЙ
+			if (prefs.getBoolean("show_operativniy_status", true)) {
+				showOperativniy(recordsArray);
+			}
+
+			// SEND_IMSI
+			if (prefs.getBoolean("show_send_imsi_status", true)) {
+				showSendImsi(recordsArray);
+			}
+
+			// FTP_UPL
+			if (prefs.getBoolean("show_ftp_upl_status", true)) {
+				showFtpUpl(recordsArray);
+			}
+
+			// ВЧЕРА_УПАЛО
+			if (prefs.getBoolean("show_vchera_upalo_status", true)) {
+				showVcheraUpalo(recordsArray);
+			}
+
+			// ПАДАЛО_7_ДНЕЙ
+			if (prefs.getBoolean("show_padalo_7_dney_status", true)) {
+				showPadaloSemDney(recordsArray);
+			}
+
+			// СВОБОДНО
+			if (prefs.getBoolean("show_svobodno_status", true)) {
+				showSvobodno(recordsArray);
+			}
 
 		} catch (Exception ex) {
 			// TODO handle exceptions correctly way
@@ -157,43 +294,42 @@ public class DisplayPanesActivity extends Activity {
 			 * linearLayout.addView(text); MainActivity.writeLog(ex);
 			 */
 		}
-		/*
-		 * ScrollView scrollView = new ScrollView(this);
-		 * scrollView.setFillViewport(true); scrollView.addView(linearLayout);
-		 * 
-		 * setContentView(scrollView);
-		 */
 
 	}
 
-	void showGoldenGate(ArrayList<SmsRecord> recordsArray) {
-		
-		LinearLayout goldenGateLinearLayout = (LinearLayout) findViewById(R.id.goldenGateLinearLayout);
+	/**
+	 * Добавляет в полученный linearLayout блок с состоянием параметра
+	 * "GoldenGate"
+	 * 
+	 * @param recordsArray
+	 *            - данные, на основе которых будет формироваться отображаемый в
+	 *            linearLayout контент.
+	 */
+	private void showGoldenGate(ArrayList<SmsRecord> recordsArray) {
+
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.goldenGateLinearLayout);
 		TableRow tableRowDays = (TableRow) findViewById(R.id.goldenGateTableRowDays);
 		TableRow tableRowValues = (TableRow) findViewById(R.id.goldenGateTableRowValues);
 		int childId = 0;
 		int added = 0;
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<Integer> status = new ArrayList<Integer>();
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("GoldenGate")) {
-				
+
 				Calendar date = recordsArray.get(i).getDate();
-				
+
 				TextView textViewDay = new TextView(this);
-				textViewDay.setText(String.valueOf(date.get(Calendar.HOUR_OF_DAY)));
-				textViewDay.setPadding(0, 0, 0, 0);
+				textViewDay.setText(String.valueOf(date
+						.get(Calendar.DAY_OF_MONTH)));
+				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
 				textViewDay.setGravity(Gravity.CENTER);
 				tableRowDays.addView(textViewDay);
-				
+
 				ImageView imageViewValue = new ImageView(this);
 				imageViewValue.setId(++childId);
 				imageViewValue.setPadding(0, 0, 0, 0);
 				
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
 
 				if (recordsArray.get(i).getParameterValue().matches("OK")) {
 					imageViewValue.setImageResource(R.drawable.success);
@@ -212,135 +348,16 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 		if (added == 0) {
-			
-			TableLayout goldenGateTableLayout = (TableLayout) findViewById(R.id.goldenGateTableLayout);
-			goldenGateLinearLayout.removeView(goldenGateTableLayout);
-			
+
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.goldenGateTableLayout);
+			linearLayout.removeView(tableLayout);
+
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
 			dataNotFound.setText("Данные не найдены");
-			goldenGateLinearLayout.addView(dataNotFound);
-			
+			linearLayout.addView(dataNotFound);
+
 		}
-		
-	}
-
-	/**
-	 * Добавляет в полученный linearLayout блок с состоянием параметра
-	 * "GoldenGate"
-	 * 
-	 * @param displayPanesActivity
-	 *            - ссылка на Activity, в которой производится отрисовка.
-	 * @param linearLayout
-	 *            - макет в displayPanesActivity, в который будет добавлен
-	 *            контент.
-	 * @param recordsArray
-	 *            - данные, на основе которых будет формироваться отображаемый в
-	 *            linearLayout контент.
-	 */
-	private void showGoldenGate(DisplayPanesActivity displayPanesActivity,
-			LinearLayout linearLayout, ArrayList<SmsRecord> recordsArray) {
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
-
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 50, 10, 50);
-		innerLinearLayout.setLayoutParams(params);
-
-		// label
-		int childId = 0;
-
-		TextView textView = new TextView(this);
-		textView.setText("GoldenGate");
-		textView.setId(++childId);
-		textView.setBackgroundColor(Color.parseColor("#8800CCCC"));
-		textView.setGravity(Gravity.CENTER);
-		innerLinearLayout.addView(textView);
-
-		TableLayout table = new TableLayout(this);
-		table.setStretchAllColumns(true);
-		table.setShrinkAllColumns(true);
-
-		// images
-		TableRow currentRow = new TableRow(this);
-		TableRow days = new TableRow(this);
-		int added = 0;
-
-		TableRow.LayoutParams relativeLayoutParameters = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<Integer> status = new ArrayList<Integer>();
-
-		// TODO make days amount parameter
-		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
-
-			if (recordsArray.get(i).getParameterName().equals("GoldenGate")) {
-				ImageView imageView = new ImageView(this);
-				imageView.setId(++childId);
-				imageView.setPadding(0, 0, 0, 0);
-
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
-
-				if (recordsArray.get(i).getParameterValue().matches("OK")) {
-					status.add(0);
-				} else {
-					if (recordsArray.get(i).getParameterValue().equals("WARN")) {
-						status.add(1);
-					} else {
-						status.add(2);
-					}
-				}
-
-				added++;
-
-			}
-		}
-
-		if (added == 0) {
-			TextView dataNotFound = new TextView(this);
-			dataNotFound.setGravity(Gravity.CENTER);
-			dataNotFound.setText("Данные не найдены");
-			dataNotFound.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(dataNotFound);
-		}
-
-		if (status.size() == daysNumber.size()) {
-			for (int i = 0; i < status.size(); i++) {
-
-				TextView curDay = new TextView(this);
-				curDay.setGravity(Gravity.CENTER);
-				curDay.setText(String.valueOf(daysNumber.get(i)));
-				days.addView(curDay);
-
-				ImageView imageView = new ImageView(this);
-				switch (status.get(i)) {
-				case 0:
-					imageView.setImageResource(R.drawable.success);
-					break;
-				case 1:
-					imageView.setImageResource(R.drawable.warning);
-					break;
-				default:
-					imageView.setImageResource(R.drawable.error);
-					break;
-				}
-				currentRow.addView(imageView);
-			}
-		}
-
-		// add images
-		if (added != 0) {
-			table.addView(days);
-			table.addView(currentRow);
-			table.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(table, relativeLayoutParameters);
-		}
-
-		linearLayout.addView(innerLinearLayout);
 
 	}
 
@@ -357,54 +374,32 @@ public class DisplayPanesActivity extends Activity {
 	 *            - данные, на основе которых будет формироваться отображаемый в
 	 *            linearLayout контент.
 	 */
-	private void showOtrabotalo(DisplayPanesActivity displayPanesActivity,
-			LinearLayout linearLayout, ArrayList<SmsRecord> recordsArray) {
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
+	private void showOtrabotalo(ArrayList<SmsRecord> recordsArray) {
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 50, 10, 50);
-		innerLinearLayout.setLayoutParams(params);
-
-		// label
-		int childId = 0;
-
-		TextView textView = new TextView(this);
-		textView.setText("ОТРАБОТАЛО");
-		textView.setId(++childId);
-		textView.setBackgroundColor(Color.parseColor("#8800CCCC"));
-		textView.setGravity(Gravity.CENTER);
-		innerLinearLayout.addView(textView);
-
-		TableLayout table = new TableLayout(this);
-		table.setStretchAllColumns(true);
-		table.setShrinkAllColumns(true);
-
-		// images
-		TableRow currentRow = new TableRow(this);
-		TableRow days = new TableRow(this);
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.otrabotaloLinearLayout);
+		TableRow tableRowDays = (TableRow) findViewById(R.id.otrabotaloTableRowDays);
+		TableRow tableRowValues = (TableRow) findViewById(R.id.otrabotaloTableRowValues);
 		int added = 0;
-
-		TableRow.LayoutParams relativeLayoutParameters = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<String> status = new ArrayList<String>();
-
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("ОТРАБОТАЛО")) {
-				ImageView imageView = new ImageView(this);
-				imageView.setId(++childId);
-				imageView.setPadding(0, 0, 0, 0);
 
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
+				Calendar date = recordsArray.get(i).getDate();
 
-				status.add(recordsArray.get(i).getParameterValue());
+				TextView textViewDay = new TextView(this);
+				textViewDay.setText(String.valueOf(date
+						.get(Calendar.DAY_OF_MONTH)));
+				textViewDay.setGravity(Gravity.CENTER);
+				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
+				tableRowDays.addView(textViewDay);
+
+				TextView textViewValue = new TextView(this);
+				textViewValue.setPadding(0, paddingTop, 0, paddingBottom);
+				textViewValue.setGravity(Gravity.CENTER);
+
+				textViewValue.setText(recordsArray.get(i).getParameterValue());
+				tableRowValues.addView(textViewValue);
 
 				added++;
 
@@ -412,38 +407,16 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 		if (added == 0) {
+
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.otrabotaloTableLayout);
+			linearLayout.removeView(tableLayout);
+
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
 			dataNotFound.setText("Данные не найдены");
-			dataNotFound.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(dataNotFound);
+			linearLayout.addView(dataNotFound);
+
 		}
-
-		if (status.size() == daysNumber.size()) {
-			for (int i = 0; i < status.size(); i++) {
-
-				TextView curDay = new TextView(this);
-				curDay.setGravity(Gravity.CENTER);
-				curDay.setText(String.valueOf(daysNumber.get(i)));
-				days.addView(curDay);
-
-				TextView textViewValue = new TextView(this);
-				textViewValue.setGravity(Gravity.CENTER);
-				textViewValue.setText(status.get(i));
-
-				currentRow.addView(textViewValue);
-			}
-		}
-
-		// add images
-		if (added != 0) {
-			table.addView(days);
-			table.addView(currentRow);
-			table.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(table, relativeLayoutParameters);
-		}
-
-		linearLayout.addView(innerLinearLayout);
 
 	}
 
@@ -460,54 +433,31 @@ public class DisplayPanesActivity extends Activity {
 	 *            - данные, на основе которых будет формироваться отображаемый в
 	 *            linearLayout контент.
 	 */
-	private void showNochyuUpalo(DisplayPanesActivity displayPanesActivity,
-			LinearLayout linearLayout, ArrayList<SmsRecord> recordsArray) {
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
-
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 50, 10, 50);
-		innerLinearLayout.setLayoutParams(params);
-
-		// label
-		int childId = 0;
-
-		TextView textView = new TextView(this);
-		textView.setText("НОЧЬЮ_УПАЛО");
-		textView.setId(++childId);
-		textView.setBackgroundColor(Color.parseColor("#8800CCCC"));
-		textView.setGravity(Gravity.CENTER);
-		innerLinearLayout.addView(textView);
-
-		TableLayout table = new TableLayout(this);
-		table.setStretchAllColumns(true);
-		table.setShrinkAllColumns(true);
-
-		// images
-		TableRow currentRow = new TableRow(this);
-		TableRow days = new TableRow(this);
+	private void showNochyuUpalo(ArrayList<SmsRecord> recordsArray) {
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.nochyuUpaloLinearLayout);
+		TableRow tableRowDays = (TableRow) findViewById(R.id.nochyuUpaloTableRowDays);
+		TableRow tableRowValues = (TableRow) findViewById(R.id.nochyuUpaloTableRowValues);
 		int added = 0;
-
-		TableRow.LayoutParams relativeLayoutParameters = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<String> status = new ArrayList<String>();
-
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("НОЧЬЮ_УПАЛО")) {
-				ImageView imageView = new ImageView(this);
-				imageView.setId(++childId);
-				imageView.setPadding(0, 0, 0, 0);
 
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
+				Calendar date = recordsArray.get(i).getDate();
 
-				status.add(recordsArray.get(i).getParameterValue());
+				TextView textViewDay = new TextView(this);
+				textViewDay.setText(String.valueOf(date
+						.get(Calendar.DAY_OF_MONTH)));
+				textViewDay.setGravity(Gravity.CENTER);
+				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
+				tableRowDays.addView(textViewDay);
+
+				TextView textViewValue = new TextView(this);
+				textViewValue.setPadding(0, paddingTop, 0, paddingBottom);
+				textViewValue.setGravity(Gravity.CENTER);
+
+				textViewValue.setText(recordsArray.get(i).getParameterValue());
+				tableRowValues.addView(textViewValue);
 
 				added++;
 
@@ -515,38 +465,17 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 		if (added == 0) {
+
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.nochyuUpaloTableLayout);
+			linearLayout.removeView(tableLayout);
+
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
 			dataNotFound.setText("Данные не найдены");
-			dataNotFound.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(dataNotFound);
+			linearLayout.addView(dataNotFound);
+
 		}
 
-		if (status.size() == daysNumber.size()) {
-			for (int i = 0; i < status.size(); i++) {
-
-				TextView curDay = new TextView(this);
-				curDay.setGravity(Gravity.CENTER);
-				curDay.setText(String.valueOf(daysNumber.get(i)));
-				days.addView(curDay);
-
-				TextView textViewValue = new TextView(this);
-				textViewValue.setGravity(Gravity.CENTER);
-				textViewValue.setText(status.get(i));
-
-				currentRow.addView(textViewValue);
-			}
-		}
-
-		// add images
-		if (added != 0) {
-			table.addView(days);
-			table.addView(currentRow);
-			table.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(table, relativeLayoutParameters);
-		}
-
-		linearLayout.addView(innerLinearLayout);
 	}
 
 	/**
@@ -562,63 +491,41 @@ public class DisplayPanesActivity extends Activity {
 	 *            - данные, на основе которых будет формироваться отображаемый в
 	 *            linearLayout контент.
 	 */
-	private void showAbontoday(DisplayPanesActivity displayPanesActivity,
-			LinearLayout linearLayout, ArrayList<SmsRecord> recordsArray) {
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
+	private void showAbontoday(ArrayList<SmsRecord> recordsArray) {
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 50, 10, 50);
-		innerLinearLayout.setLayoutParams(params);
-
-		// label
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.abontodayLinearLayout);
+		TableRow tableRowDays = (TableRow) findViewById(R.id.abontodayTableRowDays);
+		TableRow tableRowValues = (TableRow) findViewById(R.id.abontodayTableRowValues);
 		int childId = 0;
-
-		TextView textView = new TextView(this);
-		textView.setText("ABONTODAY");
-		textView.setId(++childId);
-		textView.setBackgroundColor(Color.parseColor("#8800CCCC"));
-		textView.setGravity(Gravity.CENTER);
-		innerLinearLayout.addView(textView);
-
-		TableLayout table = new TableLayout(this);
-		table.setStretchAllColumns(true);
-		table.setShrinkAllColumns(true);
-
-		// images
-		TableRow currentRow = new TableRow(this);
-		TableRow days = new TableRow(this);
 		int added = 0;
-
-		TableRow.LayoutParams relativeLayoutParameters = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<Integer> status = new ArrayList<Integer>();
-
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("ABONTODAY")) {
-				ImageView imageView = new ImageView(this);
-				imageView.setId(++childId);
-				imageView.setPadding(0, 0, 0, 0);
 
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
+				Calendar date = recordsArray.get(i).getDate();
+
+				TextView textViewDay = new TextView(this);
+				textViewDay.setText(String.valueOf(date
+						.get(Calendar.DAY_OF_MONTH)));
+				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
+				textViewDay.setGravity(Gravity.CENTER);
+				tableRowDays.addView(textViewDay);
+
+				ImageView imageViewValue = new ImageView(this);
+				imageViewValue.setId(++childId);
+				imageViewValue.setPadding(0, 0, 0, 0);
 
 				if (recordsArray.get(i).getParameterValue().matches("вчера")) {
-					status.add(0);
+					imageViewValue.setImageResource(R.drawable.success);
 				} else {
-					if (recordsArray.get(i).getParameterValue()
-							.equals("позавчера")) {
-						status.add(1);
+					if (recordsArray.get(i).getParameterValue().equals("позавчера")) {
+						imageViewValue.setImageResource(R.drawable.warning);
 					} else {
-						status.add(2);
+						imageViewValue.setImageResource(R.drawable.error);
 					}
 				}
+				tableRowValues.addView(imageViewValue);
 
 				added++;
 
@@ -626,46 +533,16 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 		if (added == 0) {
+
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.abontodayTableLayout);
+			linearLayout.removeView(tableLayout);
+
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
 			dataNotFound.setText("Данные не найдены");
-			dataNotFound.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(dataNotFound);
+			linearLayout.addView(dataNotFound);
+
 		}
-
-		if (status.size() == daysNumber.size()) {
-			for (int i = 0; i < status.size(); i++) {
-
-				TextView curDay = new TextView(this);
-				curDay.setGravity(Gravity.CENTER);
-				curDay.setText(String.valueOf(daysNumber.get(i)));
-				days.addView(curDay);
-
-				ImageView imageView = new ImageView(this);
-				switch (status.get(i)) {
-				case 0:
-					imageView.setImageResource(R.drawable.success);
-					break;
-				case 1:
-					imageView.setImageResource(R.drawable.warning);
-					break;
-				default:
-					imageView.setImageResource(R.drawable.error);
-					break;
-				}
-				currentRow.addView(imageView);
-			}
-		}
-
-		// add images
-		if (added != 0) {
-			table.addView(days);
-			table.addView(currentRow);
-			table.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(table, relativeLayoutParameters);
-		}
-
-		linearLayout.addView(innerLinearLayout);
 
 	}
 
@@ -681,63 +558,40 @@ public class DisplayPanesActivity extends Activity {
 	 *            - данные, на основе которых будет формироваться отображаемый в
 	 *            linearLayout контент.
 	 */
-	private void showViruchka(DisplayPanesActivity displayPanesActivity,
-			LinearLayout linearLayout, ArrayList<SmsRecord> recordsArray) {
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
-
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 50, 10, 50);
-		innerLinearLayout.setLayoutParams(params);
-
-		// label
+	private void showViruchka(ArrayList<SmsRecord> recordsArray) {
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.viruchkaLinearLayout);
+		TableRow tableRowDays = (TableRow) findViewById(R.id.viruchkaTableRowDays);
+		TableRow tableRowValues = (TableRow) findViewById(R.id.viruchkaTableRowValues);
 		int childId = 0;
-
-		TextView textView = new TextView(this);
-		textView.setText("ВЫРУЧКА");
-		textView.setId(++childId);
-		textView.setBackgroundColor(Color.parseColor("#8800CCCC"));
-		textView.setGravity(Gravity.CENTER);
-		innerLinearLayout.addView(textView);
-
-		TableLayout table = new TableLayout(this);
-		table.setStretchAllColumns(true);
-		table.setShrinkAllColumns(true);
-
-		// images
-		TableRow currentRow = new TableRow(this);
-		TableRow days = new TableRow(this);
 		int added = 0;
-
-		TableRow.LayoutParams relativeLayoutParameters = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<Integer> status = new ArrayList<Integer>();
-
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("ВЫРУЧКА")) {
-				ImageView imageView = new ImageView(this);
-				imageView.setId(++childId);
-				imageView.setPadding(0, 0, 0, 0);
 
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
+				Calendar date = recordsArray.get(i).getDate();
+
+				TextView textViewDay = new TextView(this);
+				textViewDay.setText(String.valueOf(date
+						.get(Calendar.DAY_OF_MONTH)));
+				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
+				textViewDay.setGravity(Gravity.CENTER);
+				tableRowDays.addView(textViewDay);
+
+				ImageView imageViewValue = new ImageView(this);
+				imageViewValue.setId(++childId);
+				imageViewValue.setPadding(0, 0, 0, 0);
 
 				if (recordsArray.get(i).getParameterValue().matches("вчера")) {
-					status.add(0);
+					imageViewValue.setImageResource(R.drawable.success);
 				} else {
-					if (recordsArray.get(i).getParameterValue()
-							.equals("позавчера")) {
-						status.add(1);
+					if (recordsArray.get(i).getParameterValue().equals("позавчера")) {
+						imageViewValue.setImageResource(R.drawable.warning);
 					} else {
-						status.add(2);
+						imageViewValue.setImageResource(R.drawable.error);
 					}
 				}
+				tableRowValues.addView(imageViewValue);
 
 				added++;
 
@@ -745,46 +599,16 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 		if (added == 0) {
+
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.viruchkaTableLayout);
+			linearLayout.removeView(tableLayout);
+
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
 			dataNotFound.setText("Данные не найдены");
-			dataNotFound.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(dataNotFound);
+			linearLayout.addView(dataNotFound);
+
 		}
-
-		if (status.size() == daysNumber.size()) {
-			for (int i = 0; i < status.size(); i++) {
-
-				TextView curDay = new TextView(this);
-				curDay.setGravity(Gravity.CENTER);
-				curDay.setText(String.valueOf(daysNumber.get(i)));
-				days.addView(curDay);
-
-				ImageView imageView = new ImageView(this);
-				switch (status.get(i)) {
-				case 0:
-					imageView.setImageResource(R.drawable.success);
-					break;
-				case 1:
-					imageView.setImageResource(R.drawable.warning);
-					break;
-				default:
-					imageView.setImageResource(R.drawable.error);
-					break;
-				}
-				currentRow.addView(imageView);
-			}
-		}
-
-		// add images
-		if (added != 0) {
-			table.addView(days);
-			table.addView(currentRow);
-			table.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(table, relativeLayoutParameters);
-		}
-
-		linearLayout.addView(innerLinearLayout);
 
 	}
 
@@ -801,65 +625,41 @@ public class DisplayPanesActivity extends Activity {
 	 *            - данные, на основе которых будет формироваться отображаемый в
 	 *            linearLayout контент.
 	 */
-	private void showOperativniy(DisplayPanesActivity displayPanesActivity,
-			LinearLayout linearLayout, ArrayList<SmsRecord> recordsArray) {
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
+	private void showOperativniy(ArrayList<SmsRecord> recordsArray) {
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 50, 10, 50);
-		innerLinearLayout.setLayoutParams(params);
-
-		// label
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.operativniyLinearLayout);
+		TableRow tableRowDays = (TableRow) findViewById(R.id.operativniyTableRowDays);
+		TableRow tableRowValues = (TableRow) findViewById(R.id.operativniyTableRowValues);
 		int childId = 0;
-
-		TextView textView = new TextView(this);
-		textView.setText("Оперативный");
-		textView.setId(++childId);
-		textView.setBackgroundColor(Color.parseColor("#43C6DB"));
-		textView.setGravity(Gravity.CENTER);
-		innerLinearLayout.addView(textView);
-
-		TableLayout table = new TableLayout(this);
-		table.setStretchAllColumns(true);
-		table.setShrinkAllColumns(true);
-
-		// images
-		TableRow currentRow = new TableRow(this);
-		TableRow.LayoutParams relativeLayoutParameters = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-		currentRow = new TableRow(this);
-		TableRow days = new TableRow(this);
 		int added = 0;
-
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<Integer> status = new ArrayList<Integer>();
-		// get status for last 5 days
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("ОПЕРАТИВНЫЙ")) {
-				ImageView imageView = new ImageView(this);
-				imageView.setId(++childId);
-				imageView.setPadding(0, 0, 0, 0);
 
-				// TODO return to days of month
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
+				Calendar date = recordsArray.get(i).getDate();
+
+				TextView textViewDay = new TextView(this);
+				textViewDay.setText(String.valueOf(date
+						.get(Calendar.DAY_OF_MONTH)));
+				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
+				textViewDay.setGravity(Gravity.CENTER);
+				tableRowDays.addView(textViewDay);
+
+				ImageView imageViewValue = new ImageView(this);
+				imageViewValue.setId(++childId);
+				imageViewValue.setPadding(0, 0, 0, 0);
 
 				if (recordsArray.get(i).getParameterValue().matches("вчера")) {
-					status.add(0);
+					imageViewValue.setImageResource(R.drawable.success);
 				} else {
-					if (recordsArray.get(i).getParameterValue()
-							.equals("позавчера")) {
-						status.add(1);
+					if (recordsArray.get(i).getParameterValue().equals("позавчера")) {
+						imageViewValue.setImageResource(R.drawable.warning);
 					} else {
-						status.add(2);
+						imageViewValue.setImageResource(R.drawable.error);
 					}
 				}
+				tableRowValues.addView(imageViewValue);
 
 				added++;
 
@@ -867,47 +667,16 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 		if (added == 0) {
+
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.operativniyTableLayout);
+			linearLayout.removeView(tableLayout);
+
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
 			dataNotFound.setText("Данные не найдены");
-			dataNotFound.setBackgroundColor(Color.parseColor("#43C6DB"));
-			innerLinearLayout.addView(dataNotFound);
+			linearLayout.addView(dataNotFound);
+
 		}
-
-		if (status.size() == daysNumber.size()) {
-			for (int i = 0; i < status.size(); i++) {
-
-				TextView curDay = new TextView(this);
-				curDay.setGravity(Gravity.CENTER);
-				curDay.setText(String.valueOf(daysNumber.get(i)));
-				days.addView(curDay);
-
-				ImageView imageView = new ImageView(this);
-				switch (status.get(i)) {
-				case 0:
-					imageView.setImageResource(R.drawable.success);
-					break;
-				case 1:
-					imageView.setImageResource(R.drawable.warning);
-					break;
-				default:
-					imageView.setImageResource(R.drawable.error);
-					break;
-				}
-				currentRow.addView(imageView);
-			}
-		}
-
-		// add images
-		if (added != 0) {
-			table.addView(days);
-			table.addView(currentRow);
-			table.setBackgroundColor(Color.parseColor("#43C6DB"));
-			innerLinearLayout.addView(table, relativeLayoutParameters);
-		}
-
-		linearLayout.addView(innerLinearLayout);
-
 	}
 
 	/**
@@ -923,64 +692,41 @@ public class DisplayPanesActivity extends Activity {
 	 *            - данные, на основе которых будет формироваться отображаемый в
 	 *            linearLayout контент.
 	 */
-	private void showSendImsi(DisplayPanesActivity displayPanesActivity,
-			LinearLayout linearLayout, ArrayList<SmsRecord> recordsArray) {
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
+	private void showSendImsi(ArrayList<SmsRecord> recordsArray) {
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 50, 10, 50);
-		innerLinearLayout.setLayoutParams(params);
-
-		// label
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.sendImsiLinearLayout);
+		TableRow tableRowDays = (TableRow) findViewById(R.id.sendImsiTableRowDays);
+		TableRow tableRowValues = (TableRow) findViewById(R.id.sendImsiTableRowValues);
 		int childId = 0;
-
-		TextView textView = new TextView(this);
-		textView.setText("SEND_IMSI");
-		textView.setId(++childId);
-		textView.setBackgroundColor(Color.parseColor("#43C6DB"));
-		textView.setGravity(Gravity.CENTER);
-		innerLinearLayout.addView(textView);
-
-		TableLayout table = new TableLayout(this);
-		table.setStretchAllColumns(true);
-		table.setShrinkAllColumns(true);
-
-		// images
-		TableRow currentRow = new TableRow(this);
-		TableRow.LayoutParams relativeLayoutParameters = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-		currentRow = new TableRow(this);
-		TableRow days = new TableRow(this);
 		int added = 0;
-
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<Integer> status = new ArrayList<Integer>();
-		// get status for last 5 days
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("SEND_IMSI")) {
-				ImageView imageView = new ImageView(this);
-				imageView.setId(++childId);
-				imageView.setPadding(0, 0, 0, 0);
 
-				// TODO return to days of month
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
+				Calendar date = recordsArray.get(i).getDate();
+
+				TextView textViewDay = new TextView(this);
+				textViewDay.setText(String.valueOf(date
+						.get(Calendar.DAY_OF_MONTH)));
+				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
+				textViewDay.setGravity(Gravity.CENTER);
+				tableRowDays.addView(textViewDay);
+
+				ImageView imageViewValue = new ImageView(this);
+				imageViewValue.setId(++childId);
+				imageViewValue.setPadding(0, 0, 0, 0);
 
 				if (recordsArray.get(i).getParameterValue().matches("OK")) {
-					status.add(0);
+					imageViewValue.setImageResource(R.drawable.success);
 				} else {
 					if (recordsArray.get(i).getParameterValue().equals("WARN")) {
-						status.add(1);
+						imageViewValue.setImageResource(R.drawable.warning);
 					} else {
-						status.add(2);
+						imageViewValue.setImageResource(R.drawable.error);
 					}
 				}
+				tableRowValues.addView(imageViewValue);
 
 				added++;
 
@@ -988,47 +734,16 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 		if (added == 0) {
+
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.sendImsiTableLayout);
+			linearLayout.removeView(tableLayout);
+
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
 			dataNotFound.setText("Данные не найдены");
-			dataNotFound.setBackgroundColor(Color.parseColor("#43C6DB"));
-			innerLinearLayout.addView(dataNotFound);
+			linearLayout.addView(dataNotFound);
+
 		}
-
-		if (status.size() == daysNumber.size()) {
-			for (int i = 0; i < status.size(); i++) {
-
-				TextView curDay = new TextView(this);
-				curDay.setGravity(Gravity.CENTER);
-				curDay.setText(String.valueOf(daysNumber.get(i)));
-				days.addView(curDay);
-
-				ImageView imageView = new ImageView(this);
-				switch (status.get(i)) {
-				case 0:
-					imageView.setImageResource(R.drawable.success);
-					break;
-				case 1:
-					imageView.setImageResource(R.drawable.warning);
-					break;
-				default:
-					imageView.setImageResource(R.drawable.error);
-					break;
-				}
-				currentRow.addView(imageView);
-			}
-		}
-
-		// add images
-		if (added != 0) {
-			table.addView(days);
-			table.addView(currentRow);
-			table.setBackgroundColor(Color.parseColor("#43C6DB"));
-			innerLinearLayout.addView(table, relativeLayoutParameters);
-		}
-
-		linearLayout.addView(innerLinearLayout);
-
 	}
 
 	/**
@@ -1043,58 +758,37 @@ public class DisplayPanesActivity extends Activity {
 	 *            - данные, на основе которых будет формироваться отображаемый в
 	 *            linearLayout контент.
 	 */
-	private void showFtpUpl(DisplayPanesActivity displayPanesActivity,
-			LinearLayout linearLayout, ArrayList<SmsRecord> recordsArray) {
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
+	private void showFtpUpl(ArrayList<SmsRecord> recordsArray) {
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 50, 10, 50);
-		innerLinearLayout.setLayoutParams(params);
-
-		// label
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ftpUplLinearLayout);
+		TableRow tableRowDays = (TableRow) findViewById(R.id.ftpUplTableRowDays);
+		TableRow tableRowValues = (TableRow) findViewById(R.id.ftpUplTableRowValues);
 		int childId = 0;
-
-		TextView textView = new TextView(this);
-		textView.setText("FTP_UPL");
-		textView.setId(++childId);
-		textView.setBackgroundColor(Color.parseColor("#8800CCCC"));
-		textView.setGravity(Gravity.CENTER);
-		innerLinearLayout.addView(textView);
-
-		TableLayout table = new TableLayout(this);
-		table.setStretchAllColumns(true);
-		table.setShrinkAllColumns(true);
-
-		// images
-		TableRow currentRow = new TableRow(this);
-		TableRow days = new TableRow(this);
 		int added = 0;
-
-		TableRow.LayoutParams relativeLayoutParameters = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<Integer> status = new ArrayList<Integer>();
-
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("FTP_UPL")) {
-				ImageView imageView = new ImageView(this);
-				imageView.setId(++childId);
-				imageView.setPadding(0, 0, 0, 0);
 
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
+				Calendar date = recordsArray.get(i).getDate();
+
+				TextView textViewDay = new TextView(this);
+				textViewDay.setText(String.valueOf(date
+						.get(Calendar.DAY_OF_MONTH)));
+				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
+				textViewDay.setGravity(Gravity.CENTER);
+				tableRowDays.addView(textViewDay);
+
+				ImageView imageViewValue = new ImageView(this);
+				imageViewValue.setId(++childId);
+				imageViewValue.setPadding(0, 0, 0, 0);
 
 				if (recordsArray.get(i).getParameterValue().matches("OK")) {
-					status.add(0);
+					imageViewValue.setImageResource(R.drawable.success);
 				} else {
-					status.add(1);
+					imageViewValue.setImageResource(R.drawable.error);
 				}
+				tableRowValues.addView(imageViewValue);
 
 				added++;
 
@@ -1102,47 +796,16 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 		if (added == 0) {
+
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.ftpUplTableLayout);
+			linearLayout.removeView(tableLayout);
+
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
 			dataNotFound.setText("Данные не найдены");
-			dataNotFound.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(dataNotFound);
+			linearLayout.addView(dataNotFound);
+
 		}
-
-		if (status.size() == daysNumber.size()) {
-			for (int i = 0; i < status.size(); i++) {
-
-				TextView curDay = new TextView(this);
-				curDay.setGravity(Gravity.CENTER);
-				curDay.setText(String.valueOf(daysNumber.get(i)));
-				days.addView(curDay);
-
-				ImageView imageView = new ImageView(this);
-				switch (status.get(i)) {
-				case 0:
-					imageView.setImageResource(R.drawable.success);
-					break;
-				case 1:
-					imageView.setImageResource(R.drawable.warning);
-					break;
-				default:
-					imageView.setImageResource(R.drawable.error);
-					break;
-				}
-				currentRow.addView(imageView);
-			}
-		}
-
-		// add images
-		if (added != 0) {
-			table.addView(days);
-			table.addView(currentRow);
-			table.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(table, relativeLayoutParameters);
-		}
-
-		linearLayout.addView(innerLinearLayout);
-
 	}
 
 	/**
@@ -1158,54 +821,32 @@ public class DisplayPanesActivity extends Activity {
 	 *            - данные, на основе которых будет формироваться отображаемый в
 	 *            linearLayout контент.
 	 */
-	private void showVcheraUpalo(DisplayPanesActivity displayPanesActivity,
-			LinearLayout linearLayout, ArrayList<SmsRecord> recordsArray) {
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
+	private void showVcheraUpalo(ArrayList<SmsRecord> recordsArray) {
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 50, 10, 50);
-		innerLinearLayout.setLayoutParams(params);
-
-		// label
-		int childId = 0;
-
-		TextView textView = new TextView(this);
-		textView.setText("ВЧЕРА_УПАЛО");
-		textView.setId(++childId);
-		textView.setBackgroundColor(Color.parseColor("#8800CCCC"));
-		textView.setGravity(Gravity.CENTER);
-		innerLinearLayout.addView(textView);
-
-		TableLayout table = new TableLayout(this);
-		table.setStretchAllColumns(true);
-		table.setShrinkAllColumns(true);
-
-		// images
-		TableRow currentRow = new TableRow(this);
-		TableRow days = new TableRow(this);
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.vcheraUpaloLinearLayout);
+		TableRow tableRowDays = (TableRow) findViewById(R.id.vcheraUpaloTableRowDays);
+		TableRow tableRowValues = (TableRow) findViewById(R.id.vcheraUpaloTableRowValues);
 		int added = 0;
-
-		TableRow.LayoutParams relativeLayoutParameters = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<String> status = new ArrayList<String>();
-
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("ВЧЕРА_УПАЛО")) {
-				ImageView imageView = new ImageView(this);
-				imageView.setId(++childId);
-				imageView.setPadding(0, 0, 0, 0);
 
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
+				Calendar date = recordsArray.get(i).getDate();
 
-				status.add(recordsArray.get(i).getParameterValue());
+				TextView textViewDay = new TextView(this);
+				textViewDay.setText(String.valueOf(date
+						.get(Calendar.DAY_OF_MONTH)));
+				textViewDay.setGravity(Gravity.CENTER);
+				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
+				tableRowDays.addView(textViewDay);
+
+				TextView textViewValue = new TextView(this);
+				textViewValue.setPadding(0, paddingTop, 0, paddingBottom);
+				textViewValue.setGravity(Gravity.CENTER);
+
+				textViewValue.setText(recordsArray.get(i).getParameterValue());
+				tableRowValues.addView(textViewValue);
 
 				added++;
 
@@ -1213,38 +854,16 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 		if (added == 0) {
+
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.vcheraUpaloTableLayout);
+			linearLayout.removeView(tableLayout);
+
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
 			dataNotFound.setText("Данные не найдены");
-			dataNotFound.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(dataNotFound);
+			linearLayout.addView(dataNotFound);
+
 		}
-
-		if (status.size() == daysNumber.size()) {
-			for (int i = 0; i < status.size(); i++) {
-
-				TextView curDay = new TextView(this);
-				curDay.setGravity(Gravity.CENTER);
-				curDay.setText(String.valueOf(daysNumber.get(i)));
-				days.addView(curDay);
-
-				TextView textViewValue = new TextView(this);
-				textViewValue.setGravity(Gravity.CENTER);
-				textViewValue.setText(status.get(i));
-
-				currentRow.addView(textViewValue);
-			}
-		}
-
-		// add images
-		if (added != 0) {
-			table.addView(days);
-			table.addView(currentRow);
-			table.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(table, relativeLayoutParameters);
-		}
-
-		linearLayout.addView(innerLinearLayout);
 	}
 
 	/**
@@ -1260,54 +879,32 @@ public class DisplayPanesActivity extends Activity {
 	 *            - данные, на основе которых будет формироваться отображаемый в
 	 *            linearLayout контент.
 	 */
-	private void showPadaloSemDney(DisplayPanesActivity displayPanesActivity,
-			LinearLayout linearLayout, ArrayList<SmsRecord> recordsArray) {
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
+	private void showPadaloSemDney(ArrayList<SmsRecord> recordsArray) {
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 50, 10, 50);
-		innerLinearLayout.setLayoutParams(params);
-
-		// label
-		int childId = 0;
-
-		TextView textView = new TextView(this);
-		textView.setText("ПАДАЛО_7_ДНЕЙ");
-		textView.setId(++childId);
-		textView.setBackgroundColor(Color.parseColor("#8800CCCC"));
-		textView.setGravity(Gravity.CENTER);
-		innerLinearLayout.addView(textView);
-
-		TableLayout table = new TableLayout(this);
-		table.setStretchAllColumns(true);
-		table.setShrinkAllColumns(true);
-
-		// images
-		TableRow currentRow = new TableRow(this);
-		TableRow days = new TableRow(this);
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.padaloSemDneyLinearLayout);
+		TableRow tableRowDays = (TableRow) findViewById(R.id.padaloSemDneyTableRowDays);
+		TableRow tableRowValues = (TableRow) findViewById(R.id.padaloSemDneyTableRowValues);
 		int added = 0;
-
-		TableRow.LayoutParams relativeLayoutParameters = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<String> status = new ArrayList<String>();
-
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("ПАДАЛО_7_ДНЕЙ")) {
-				ImageView imageView = new ImageView(this);
-				imageView.setId(++childId);
-				imageView.setPadding(0, 0, 0, 0);
 
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
+				Calendar date = recordsArray.get(i).getDate();
 
-				status.add(recordsArray.get(i).getParameterValue());
+				TextView textViewDay = new TextView(this);
+				textViewDay.setText(String.valueOf(date
+						.get(Calendar.DAY_OF_MONTH)));
+				textViewDay.setGravity(Gravity.CENTER);
+				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
+				tableRowDays.addView(textViewDay);
+
+				TextView textViewValue = new TextView(this);
+				textViewValue.setPadding(0, paddingTop, 0, paddingBottom);
+				textViewValue.setGravity(Gravity.CENTER);
+
+				textViewValue.setText(recordsArray.get(i).getParameterValue());
+				tableRowValues.addView(textViewValue);
 
 				added++;
 
@@ -1315,38 +912,16 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 		if (added == 0) {
+
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.padaloSemDneyTableLayout);
+			linearLayout.removeView(tableLayout);
+
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
 			dataNotFound.setText("Данные не найдены");
-			dataNotFound.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(dataNotFound);
+			linearLayout.addView(dataNotFound);
+
 		}
-
-		if (status.size() == daysNumber.size()) {
-			for (int i = 0; i < status.size(); i++) {
-
-				TextView curDay = new TextView(this);
-				curDay.setGravity(Gravity.CENTER);
-				curDay.setText(String.valueOf(daysNumber.get(i)));
-				days.addView(curDay);
-
-				TextView textViewValue = new TextView(this);
-				textViewValue.setGravity(Gravity.CENTER);
-				textViewValue.setText(status.get(i));
-
-				currentRow.addView(textViewValue);
-			}
-		}
-
-		// add images
-		if (added != 0) {
-			table.addView(days);
-			table.addView(currentRow);
-			table.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(table, relativeLayoutParameters);
-		}
-
-		linearLayout.addView(innerLinearLayout);
 	}
 
 	/**
@@ -1362,54 +937,32 @@ public class DisplayPanesActivity extends Activity {
 	 *            - данные, на основе которых будет формироваться отображаемый в
 	 *            linearLayout контент.
 	 */
-	private void showSvobodno(DisplayPanesActivity displayPanesActivity,
-			LinearLayout linearLayout, ArrayList<SmsRecord> recordsArray) {
-		LinearLayout innerLinearLayout = new LinearLayout(this);
-		innerLinearLayout.setOrientation(LinearLayout.VERTICAL);
+	private void showSvobodno(ArrayList<SmsRecord> recordsArray) {
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(10, 50, 10, 50);
-		innerLinearLayout.setLayoutParams(params);
-
-		// label
-		int childId = 0;
-
-		TextView textView = new TextView(this);
-		textView.setText("СВОБОДНО");
-		textView.setId(++childId);
-		textView.setBackgroundColor(Color.parseColor("#8800CCCC"));
-		textView.setGravity(Gravity.CENTER);
-		innerLinearLayout.addView(textView);
-
-		TableLayout table = new TableLayout(this);
-		table.setStretchAllColumns(true);
-		table.setShrinkAllColumns(true);
-
-		// images
-		TableRow currentRow = new TableRow(this);
-		TableRow days = new TableRow(this);
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.svobodnoLinearLayout);
+		TableRow tableRowDays = (TableRow) findViewById(R.id.svobodnoTableRowDays);
+		TableRow tableRowValues = (TableRow) findViewById(R.id.svobodnoTableRowValues);
 		int added = 0;
-
-		TableRow.LayoutParams relativeLayoutParameters = new TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
-
-		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
-		ArrayList<String> status = new ArrayList<String>();
-
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
 			if (recordsArray.get(i).getParameterName().equals("СВОБОДНО")) {
-				ImageView imageView = new ImageView(this);
-				imageView.setId(++childId);
-				imageView.setPadding(0, 0, 0, 0);
 
-				daysNumber.add(recordsArray.get(i).getDate()
-						.get(Calendar.DAY_OF_MONTH));
+				Calendar date = recordsArray.get(i).getDate();
 
-				status.add(recordsArray.get(i).getParameterValue());
+				TextView textViewDay = new TextView(this);
+				textViewDay.setText(String.valueOf(date
+						.get(Calendar.DAY_OF_MONTH)));
+				textViewDay.setGravity(Gravity.CENTER);
+				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
+				tableRowDays.addView(textViewDay);
+
+				TextView textViewValue = new TextView(this);
+				textViewValue.setPadding(0, paddingTop, 0, paddingBottom);
+				textViewValue.setGravity(Gravity.CENTER);
+
+				textViewValue.setText(recordsArray.get(i).getParameterValue());
+				tableRowValues.addView(textViewValue);
 
 				added++;
 
@@ -1417,38 +970,16 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 		if (added == 0) {
+
+			TableLayout tableLayout = (TableLayout) findViewById(R.id.svobodnoTableLayout);
+			linearLayout.removeView(tableLayout);
+
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
 			dataNotFound.setText("Данные не найдены");
-			dataNotFound.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(dataNotFound);
+			linearLayout.addView(dataNotFound);
+
 		}
-
-		if (status.size() == daysNumber.size()) {
-			for (int i = 0; i < status.size(); i++) {
-
-				TextView curDay = new TextView(this);
-				curDay.setGravity(Gravity.CENTER);
-				curDay.setText(String.valueOf(daysNumber.get(i)));
-				days.addView(curDay);
-
-				TextView textViewValue = new TextView(this);
-				textViewValue.setGravity(Gravity.CENTER);
-				textViewValue.setText(status.get(i));
-
-				currentRow.addView(textViewValue);
-			}
-		}
-
-		// add images
-		if (added != 0) {
-			table.addView(days);
-			table.addView(currentRow);
-			table.setBackgroundColor(Color.parseColor("#8800CCCC"));
-			innerLinearLayout.addView(table, relativeLayoutParameters);
-		}
-
-		linearLayout.addView(innerLinearLayout);
 	}
 
 	public static int getDaysAmount() {
