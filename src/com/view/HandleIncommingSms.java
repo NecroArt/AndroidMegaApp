@@ -18,6 +18,11 @@ public class HandleIncommingSms extends Thread {
 
 	private static int runningThreadAmount = 0;
 	private static Context context = null;
+	
+	/**
+	 * Сколько миллисекунд должен ждать поток, прежде чем пытаться найти смс в базе данных.
+	 */
+	private static int millisToSleep = 5000;
 
 	/**
 	 * Default constructor.
@@ -38,7 +43,7 @@ public class HandleIncommingSms extends Thread {
 					iterationsOccured++;
 
 					// wait while sms will store in database
-					Thread.sleep(10000);
+					Thread.sleep(millisToSleep);
 
 					// TODO может быть уже использовать свой статичный контекст?
 					DbHelper dbHelper = new DbHelper(SmsReceiver.getContext(),
