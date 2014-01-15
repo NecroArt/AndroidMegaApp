@@ -81,7 +81,7 @@ public class SmsReceiver extends BroadcastReceiver {
 				SharedPreferences prefs = PreferenceManager
 						.getDefaultSharedPreferences(context);
 				if (prefs.getBoolean(
-						"sow_sms_content_on_receive", false)) {
+						"show_sms_content_on_receive", false)) {
 					
 					Toast.makeText(
 	                        context,
