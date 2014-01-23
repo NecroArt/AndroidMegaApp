@@ -47,12 +47,12 @@
                 android:onClick="addAll"
                 android:text="@string/title_activity_add_all" />
 
-            <Button
+            <!--<Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="showTable"
-                android:text="@string/button_table" />
+                android:text="@string/button_table" /> -->
 
             <Button
                 android:layout_width="match_parent"

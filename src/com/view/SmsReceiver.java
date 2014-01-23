@@ -31,7 +31,8 @@ public class SmsReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-
+		//intent.setFlags(32);
+		
 		SmsReceiver.context = context;
 		Bundle bundle = intent.getExtras(); // ---get the SMS message passed
 											// in---
@@ -66,12 +67,16 @@ public class SmsReceiver extends BroadcastReceiver {
 
 				}
 
-				if (isNumber000019) {
+				if (isNumber000019 && allMessages.startsWith(MainActivity.keyPhrase)) {
 					HandleIncommingSms.setContext(context);
+					HandleIncommingSms.setSms(msgs);
 					HandleIncommingSms.incNumberRunning();
 					(new HandleIncommingSms()).start();
+
+					//TODO delete this?
 					isNumber000019 = false;
-					//abortBroadcast();
+					
+					abortBroadcast();
 				}
 
 				Calendar cal = Calendar.getInstance();

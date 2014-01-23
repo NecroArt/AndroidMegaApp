@@ -296,6 +296,13 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 	}
+	
+	@Override
+	public void onRestart() {
+
+		onCreate(null);
+
+	}
 
 	/**
 	 * ƒобавл€ет в полученный linearLayout блок с состо€нием параметра

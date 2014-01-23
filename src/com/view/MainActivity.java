@@ -36,7 +36,6 @@ public class MainActivity extends Activity {
 
 	public final static Integer COLUMN_REQ_AMOUNT = 0;
 	public final static String TELEPHONE_NUMBER = "000019";
-	// public final static String TELEPHONE_NUMBER = "15555215554";
 	private static final int RESULT_SETTINGS = 1;
 	public static String lastSmsDate = "Нет данных об sms";
 
@@ -48,6 +47,8 @@ public class MainActivity extends Activity {
 	public static int mId;
 	private static boolean firstLaunch = true;
 	public static Context context = null;
+	//public static String keyPhrase = "t";
+	public static String keyPhrase = "Статус критичных процессов REP-COMM";
 
 	@SuppressLint("NewApi")
 	@Override
@@ -93,7 +94,7 @@ public class MainActivity extends Activity {
 
 			}
 
-			Uri alert = RingtoneManager
+			/*Uri alert = RingtoneManager
 					.getDefaultUri(RingtoneManager.TYPE_ALARM);
 			if (alert == null) {
 				// alert is null, using backup
@@ -108,7 +109,7 @@ public class MainActivity extends Activity {
 							.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
 				}
 			}
-			r = RingtoneManager.getRingtone(getApplicationContext(), alert);
+			r = RingtoneManager.getRingtone(getApplicationContext(), alert);*/
 
 		} catch (Exception ex) {
 			writeLog(ex);
