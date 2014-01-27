@@ -257,6 +257,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		rowsDeleted = db.delete(TABLE_NAME, TableEntry.COLUMN_NAME_ID + " = ?",
 				args);
 
+		db.close();
 		return rowsDeleted;
 
 	}
@@ -279,6 +280,7 @@ public class DbHelper extends SQLiteOpenHelper {
 			return cursor.getLong(0);
 		}
 
+		db.close();
 		return 0L;
 
 	}
@@ -299,6 +301,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		rowsDeleted = db.delete(TABLE_NAME, TableEntry.COLUMN_NAME_SMS_ID
 				+ " = ?", args);
 
+		db.close();
 		return rowsDeleted;
 
 	}
@@ -583,8 +586,9 @@ public class DbHelper extends SQLiteOpenHelper {
 				cursor = null;
 			}
 
-			db.close();
 		}
+		
+		db.close();
 
 		return records;
 	}
@@ -717,9 +721,10 @@ public class DbHelper extends SQLiteOpenHelper {
 				cursor = null;
 			}
 
-			db.close();
 		}
 
+		db.close();
+		
 		return records;
 	}
 
