@@ -19,9 +19,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -47,7 +46,7 @@ public class MainActivity extends Activity {
 	public static int mId;
 	private static boolean firstLaunch = true;
 	public static Context context = null;
-	//public static String keyPhrase = "t";
+	// public static String keyPhrase = "t";
 	public static String keyPhrase = "Статус критичных процессов REP-COMM";
 
 	@SuppressLint("NewApi")
@@ -94,22 +93,17 @@ public class MainActivity extends Activity {
 
 			}
 
-			/*Uri alert = RingtoneManager
-					.getDefaultUri(RingtoneManager.TYPE_ALARM);
-			if (alert == null) {
-				// alert is null, using backup
-				alert = RingtoneManager
-						.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-				if (alert == null) { // I can't see this ever being null (as
-										// always
-										// have a default notification) but just
-										// incase
-					// alert backup is null, using 2nd backup
-					alert = RingtoneManager
-							.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-				}
-			}
-			r = RingtoneManager.getRingtone(getApplicationContext(), alert);*/
+			/*
+			 * Uri alert = RingtoneManager
+			 * .getDefaultUri(RingtoneManager.TYPE_ALARM); if (alert == null) {
+			 * // alert is null, using backup alert = RingtoneManager
+			 * .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); if (alert ==
+			 * null) { // I can't see this ever being null (as // always // have
+			 * a default notification) but just // incase // alert backup is
+			 * null, using 2nd backup alert = RingtoneManager
+			 * .getDefaultUri(RingtoneManager.TYPE_RINGTONE); } } r =
+			 * RingtoneManager.getRingtone(getApplicationContext(), alert);
+			 */
 
 		} catch (Exception ex) {
 			writeLog(ex);
@@ -118,17 +112,16 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+	public void onResume() {
+		onCreate(null);
 	}
 
 	@Override
-	public void onRestart() {
-
-		onCreate(null);
-
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.settings_menu, menu);
+		getMenuInflater().inflate(R.menu.settings_database_menu, menu);
+		return true;
 	}
 
 	@Override
@@ -138,9 +131,12 @@ public class MainActivity extends Activity {
 			Intent i = new Intent(this, SettingsActivity.class);
 			startActivityForResult(i, RESULT_SETTINGS);
 			break;
-
+		case R.id.action_database_settings:
+			Intent i1 = new Intent(this, SettingsDatabaseActivity.class);
+			startActivityForResult(i1, RESULT_SETTINGS);
+			break;
+		default: return super.onOptionsItemSelected(item);
 		}
-		// return super.onOptionsItemSelected(item);
 		return true;
 	}
 
@@ -332,10 +328,12 @@ public class MainActivity extends Activity {
 	public void test(View view) {
 
 		setContentView(R.layout.panel);
-		/*TextView textView = (TextView) findViewById(R.id.textViewPadaloSemDneyDayOne);
-		textView.setText("ss");*/
-		
-		
+		/*
+		 * TextView textView = (TextView)
+		 * findViewById(R.id.textViewPadaloSemDneyDayOne);
+		 * textView.setText("ss");
+		 */
+
 	}
 
 }

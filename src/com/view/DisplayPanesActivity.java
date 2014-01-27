@@ -7,12 +7,15 @@ import database.DbHelper;
 import database.SmsRecord;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,7 +26,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
-public class DisplayPanesActivity extends Activity {
+public class DisplayPanesActivity extends MainActivity {
 
 	private static int daysAmount = 5;
 	private static int paddingTop = 5;
@@ -298,12 +301,10 @@ public class DisplayPanesActivity extends Activity {
 	}
 	
 	@Override
-	public void onRestart() {
-
+	public void onResume() {
 		onCreate(null);
-
 	}
-
+	
 	/**
 	 * ƒобавл€ет в полученный linearLayout блок с состо€нием параметра
 	 * "GoldenGate"

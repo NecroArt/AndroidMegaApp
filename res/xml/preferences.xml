@@ -11,7 +11,7 @@
     <PreferenceScreen
             android:key="second_preferencescreen"
             android:title="Параметры для отображения"
-            android:summary="Список параметров, которые будут показаны в (итоговой панели?)">
+            android:summary="Список параметров, которые будут показаны в на главном экране">
         <CheckBoxPreference
                 android:key="show_golden_gate_status"
                 android:title="GoldenGate"

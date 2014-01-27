@@ -40,6 +40,7 @@ public final class R {
         public static final int abontodayTableRowDays=0x7f090013;
         public static final int abontodayTableRowValues=0x7f090014;
         public static final int abontoday_include=0x7f090006;
+        public static final int action_database_settings=0x7f090048;
         public static final int action_settings=0x7f090047;
         public static final int ftpUplLinearLayout=0x7f090015;
         public static final int ftpUplTableLayout=0x7f090017;
@@ -127,49 +128,51 @@ public final class R {
     }
     public static final class menu {
         public static final int display_message=0x7f080000;
-        public static final int main=0x7f080001;
+        public static final int settings_database_menu=0x7f080001;
+        public static final int settings_menu=0x7f080002;
     }
     public static final class string {
-        public static final int abontoday_label=0x7f060016;
+        public static final int abontoday_label=0x7f060017;
+        public static final int action_database_settings=0x7f060005;
         public static final int action_settings=0x7f060004;
         public static final int app_name=0x7f060000;
         public static final int button_table=0x7f060003;
         public static final int button_test=0x7f060002;
         public static final int edit_message=0x7f060001;
-        public static final int ftp_upl_label=0x7f06001a;
-        public static final int golden_gate_label=0x7f060013;
-        public static final int label_content_description_value_five=0x7f060027;
-        public static final int label_content_description_value_four=0x7f060026;
-        public static final int label_content_description_value_one=0x7f060023;
-        public static final int label_content_description_value_three=0x7f060025;
-        public static final int label_content_description_value_two=0x7f060024;
-        public static final int label_five=0x7f060022;
-        public static final int label_four=0x7f060021;
-        public static final int label_one=0x7f06001e;
-        public static final int label_three=0x7f060020;
-        public static final int label_two=0x7f06001f;
-        public static final int nochyu_upalo_label=0x7f060015;
-        public static final int notification_pref=0x7f06000f;
-        public static final int notification_pref_sum=0x7f060010;
-        public static final int operativniy_label=0x7f060018;
-        public static final int otrabotalo_label=0x7f060014;
-        public static final int padalo_sem_dney_label=0x7f06001c;
-        public static final int send_imsi_label=0x7f060019;
-        public static final int svobodno_label=0x7f06001d;
-        public static final int title_activity_add_all=0x7f060008;
-        public static final int title_activity_delete_all=0x7f06000a;
-        public static final int title_activity_delete_record_by_id=0x7f06000c;
-        public static final int title_activity_delete_sms=0x7f06000b;
-        public static final int title_activity_display_codes=0x7f06000e;
-        public static final int title_activity_display_message=0x7f060006;
-        public static final int title_activity_display_table=0x7f060007;
-        public static final int title_activity_drop_db=0x7f060009;
-        public static final int title_activity_main=0x7f060005;
-        public static final int title_activity_play=0x7f060011;
-        public static final int title_activity_show_panes=0x7f06000d;
-        public static final int title_activity_stop=0x7f060012;
-        public static final int vchera_upalo_label=0x7f06001b;
-        public static final int viruchka_label=0x7f060017;
+        public static final int ftp_upl_label=0x7f06001b;
+        public static final int golden_gate_label=0x7f060014;
+        public static final int label_content_description_value_five=0x7f060028;
+        public static final int label_content_description_value_four=0x7f060027;
+        public static final int label_content_description_value_one=0x7f060024;
+        public static final int label_content_description_value_three=0x7f060026;
+        public static final int label_content_description_value_two=0x7f060025;
+        public static final int label_five=0x7f060023;
+        public static final int label_four=0x7f060022;
+        public static final int label_one=0x7f06001f;
+        public static final int label_three=0x7f060021;
+        public static final int label_two=0x7f060020;
+        public static final int nochyu_upalo_label=0x7f060016;
+        public static final int notification_pref=0x7f060010;
+        public static final int notification_pref_sum=0x7f060011;
+        public static final int operativniy_label=0x7f060019;
+        public static final int otrabotalo_label=0x7f060015;
+        public static final int padalo_sem_dney_label=0x7f06001d;
+        public static final int send_imsi_label=0x7f06001a;
+        public static final int svobodno_label=0x7f06001e;
+        public static final int title_activity_add_all=0x7f060009;
+        public static final int title_activity_delete_all=0x7f06000b;
+        public static final int title_activity_delete_record_by_id=0x7f06000d;
+        public static final int title_activity_delete_sms=0x7f06000c;
+        public static final int title_activity_display_codes=0x7f06000f;
+        public static final int title_activity_display_message=0x7f060007;
+        public static final int title_activity_display_table=0x7f060008;
+        public static final int title_activity_drop_db=0x7f06000a;
+        public static final int title_activity_main=0x7f060006;
+        public static final int title_activity_play=0x7f060012;
+        public static final int title_activity_show_panes=0x7f06000e;
+        public static final int title_activity_stop=0x7f060013;
+        public static final int vchera_upalo_label=0x7f06001c;
+        public static final int viruchka_label=0x7f060018;
     }
     public static final class style {
         /** 
@@ -200,6 +203,7 @@ public final class R {
         public static final int AppTheme=0x7f070001;
     }
     public static final class xml {
-        public static final int preferences=0x7f040000;
+        public static final int database_preferences=0x7f040000;
+        public static final int preferences=0x7f040001;
     }
 }

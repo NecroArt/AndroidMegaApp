@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="first_preferencescreen">
+    <CheckBoxPreference
+            android:key="notify_on_sms_receive_enabled"
+            android:title="Показывать уведомления"
+            android:summary="При получении SMS показывать сообщение в статус-баре"
+            android:defaultValue="false"/>
+        
+</PreferenceScreen> 
