@@ -132,11 +132,11 @@ public class MainActivity extends Activity {
 			startActivityForResult(i, RESULT_SETTINGS);
 			break;
 		case R.id.action_database_settings:
-			Intent i1 = new Intent(this, SettingsDatabaseActivity.class);
+			/*Intent i1 = new Intent(this, SettingsDatabaseActivity.class);
 			startActivityForResult(i1, RESULT_SETTINGS);
-			break;
-			/*Intent intent = new Intent(this, DisplayPanesActivity.class);
-			startActivity(intent);*/
+			break;*/
+			Intent intent = new Intent(this, SettingsDatabaseActivity.class);
+			startActivity(intent);
 		default:
 			return super.onOptionsItemSelected(item);
 		}
