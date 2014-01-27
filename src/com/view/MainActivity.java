@@ -120,7 +120,7 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.settings_menu, menu);
-		getMenuInflater().inflate(R.menu.settings_database_menu, menu);
+		getMenuInflater().inflate(R.menu.database_menu, menu);
 		return true;
 	}
 
@@ -135,7 +135,10 @@ public class MainActivity extends Activity {
 			Intent i1 = new Intent(this, SettingsDatabaseActivity.class);
 			startActivityForResult(i1, RESULT_SETTINGS);
 			break;
-		default: return super.onOptionsItemSelected(item);
+			/*Intent intent = new Intent(this, DisplayPanesActivity.class);
+			startActivity(intent);*/
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 		return true;
 	}
