@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 		try {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_main);
-
+			
 			TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date);
 
 			DbHelper dbHelper = new DbHelper(this, null, null,
@@ -243,12 +243,12 @@ public class MainActivity extends Activity {
 
 	}
 
-	public void showCodes(View view) {
+	/*public void showCodes(View view) {
 
 		Intent intent = new Intent(this, TestShowCodes.class);
 
 		startActivity(intent);
-	}
+	}*/
 
 	public static void writeLog(Exception ex) {
 
@@ -276,66 +276,6 @@ public class MainActivity extends Activity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	public void showPreferences(View view) {
-
-		Intent intent = new Intent(this, SettingsActivity.class);
-
-		startActivity(intent);
-	}
-
-	@SuppressWarnings("deprecation")
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	public void makeNotification() {
-		// TODO make normal notification
-		try {
-
-			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-			Notification notif = new Notification(R.drawable.ic_launcher,
-					"Critical process report", System.currentTimeMillis());
-			notif.flags |= Notification.FLAG_AUTO_CANCEL;
-			Intent notificationIntent = new Intent(context, MainActivity.class);
-			PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
-					notificationIntent, 0);
-			notif.setLatestEventInfo(context, "Sms-Report Parser",
-					"Обновление статуса критичных процессов", contentIntent);
-			mNotificationManager.notify(mId, notif);
-		} catch (Exception ex) {
-			writeLog(ex);
-		}
-	}
-
-	public static void startPlay(View view) {
-
-		r.play();
-	}
-
-	public static void startPlay() {
-
-		r.play();
-	}
-
-	public static void stopPlay(View view) {
-
-		r.stop();
-	}
-
-	public static void stopPlay() {
-
-		r.stop();
-	}
-
-	public void test(View view) {
-
-		setContentView(R.layout.panel);
-		/*
-		 * TextView textView = (TextView)
-		 * findViewById(R.id.textViewPadaloSemDneyDayOne);
-		 * textView.setText("ss");
-		 */
 
 	}
 
