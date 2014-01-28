@@ -12,17 +12,10 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -36,7 +29,6 @@ public class MainActivity extends Activity {
 
 	public final static Integer COLUMN_REQ_AMOUNT = 0;
 	public final static String TELEPHONE_NUMBER = "000019";
-	// public final static String TELEPHONE_NUMBER = "15555215554";
 	private static final int RESULT_SETTINGS = 1;
 	public static String lastSmsDate = "Нет данных об sms";
 
@@ -44,10 +36,14 @@ public class MainActivity extends Activity {
 
 	public static String my_text = null;
 	public static String text = null;
+	
+	//TODO выпилить?
 	public static Locale locale = null;
+	
 	public static int mId;
 	private static boolean firstLaunch = true;
 	public static Context context = null;
+	public static String keyPhrase = "Статус критичных процессов REP-COMM";
 
 	@SuppressLint("NewApi")
 	@Override
@@ -57,7 +53,7 @@ public class MainActivity extends Activity {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_main);
 
-			TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date);
+			TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date_old);
 
 			DbHelper dbHelper = new DbHelper(this, null, null,
 					DbHelper.getDBVersion());
@@ -93,22 +89,17 @@ public class MainActivity extends Activity {
 
 			}
 
-			Uri alert = RingtoneManager
-					.getDefaultUri(RingtoneManager.TYPE_ALARM);
-			if (alert == null) {
-				// alert is null, using backup
-				alert = RingtoneManager
-						.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-				if (alert == null) { // I can't see this ever being null (as
-										// always
-										// have a default notification) but just
-										// incase
-					// alert backup is null, using 2nd backup
-					alert = RingtoneManager
-							.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-				}
-			}
-			r = RingtoneManager.getRingtone(getApplicationContext(), alert);
+			/*
+			 * Uri alert = RingtoneManager
+			 * .getDefaultUri(RingtoneManager.TYPE_ALARM); if (alert == null) {
+			 * // alert is null, using backup alert = RingtoneManager
+			 * .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); if (alert ==
+			 * null) { // I can't see this ever being null (as // always // have
+			 * a default notification) but just // incase // alert backup is
+			 * null, using 2nd backup alert = RingtoneManager
+			 * .getDefaultUri(RingtoneManager.TYPE_RINGTONE); } } r =
+			 * RingtoneManager.getRingtone(getApplicationContext(), alert);
+			 */
 
 		} catch (Exception ex) {
 			writeLog(ex);
@@ -117,29 +108,36 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+	public void onResume() {
+		onCreate(null);
 	}
 
 	@Override
-	public void onRestart() {
-
-		onCreate(null);
-
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.settings_menu, menu);
+		getMenuInflater().inflate(R.menu.database_menu, menu);
+		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_settings:
-			Intent i = new Intent(this, SettingsActivity.class);
-			startActivityForResult(i, RESULT_SETTINGS);
+			Intent i1 = new Intent(this, SettingsActivity.class);
+			startActivityForResult(i1, RESULT_SETTINGS);
 			break;
-
+		case R.id.action_database_settings:
+			Intent i2 = new Intent(this, SettingsDatabaseActivity.class);
+			startActivity(i2);
+			break;
+		case R.id.action_about:
+			Intent i3 = new Intent(this, AboutActivity.class);
+			startActivity(i3);
+			break;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		// return super.onOptionsItemSelected(item);
 		return true;
 	}
 
@@ -243,12 +241,13 @@ public class MainActivity extends Activity {
 
 	}
 
-	public void showCodes(View view) {
-
-		Intent intent = new Intent(this, TestShowCodes.class);
-
-		startActivity(intent);
-	}
+	/*
+	 * public void showCodes(View view) {
+	 * 
+	 * Intent intent = new Intent(this, TestShowCodes.class);
+	 * 
+	 * startActivity(intent); }
+	 */
 
 	public static void writeLog(Exception ex) {
 
@@ -277,64 +276,6 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 
-	}
-
-	public void showPreferences(View view) {
-
-		Intent intent = new Intent(this, SettingsActivity.class);
-
-		startActivity(intent);
-	}
-
-	@SuppressWarnings("deprecation")
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	public void makeNotification() {
-		// TODO make normal notification
-		try {
-
-			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-			Notification notif = new Notification(R.drawable.ic_launcher,
-					"Critical process report", System.currentTimeMillis());
-			notif.flags |= Notification.FLAG_AUTO_CANCEL;
-			Intent notificationIntent = new Intent(context, MainActivity.class);
-			PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
-					notificationIntent, 0);
-			notif.setLatestEventInfo(context, "Sms-Report Parser",
-					"Обновление статуса критичных процессов", contentIntent);
-			mNotificationManager.notify(mId, notif);
-		} catch (Exception ex) {
-			writeLog(ex);
-		}
-	}
-
-	public static void startPlay(View view) {
-
-		r.play();
-	}
-
-	public static void startPlay() {
-
-		r.play();
-	}
-
-	public static void stopPlay(View view) {
-
-		r.stop();
-	}
-
-	public static void stopPlay() {
-
-		r.stop();
-	}
-
-	public void test(View view) {
-
-		setContentView(R.layout.panel);
-		/*TextView textView = (TextView) findViewById(R.id.textViewPadaloSemDneyDayOne);
-		textView.setText("ss");*/
-		
-		
 	}
 
 }

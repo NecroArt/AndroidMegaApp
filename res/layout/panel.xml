@@ -2,29 +2,79 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#EEEEEE"
     android:fillViewport="true"
-    android:gravity="center"
-    android:background="#EEEEEE">
+    android:gravity="center" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="#EEEEEE"
         android:gravity="center"
-        android:orientation="vertical"
-        android:background="#EEEEEE">
-        
-        <include layout="@layout/status_golden_gate" android:id="@+id/golden_gate_include" android:visibility="gone"/>
-        <include layout="@layout/status_otrabotalo" android:id="@+id/otrabotalo_include" android:visibility="gone"/>
-        <include layout="@layout/status_nochyu_upalo" android:id="@+id/nochyu_upalo_include" android:visibility="gone"/>
-        <include layout="@layout/status_abontoday" android:id="@+id/abontoday_include" android:visibility="gone"/>
-        <include layout="@layout/status_viruchka" android:id="@+id/viruchka_include" android:visibility="gone"/>
-        <include layout="@layout/status_operativniy" android:id="@+id/operativniy_include" android:visibility="gone"/>
-        <include layout="@layout/status_send_imsi" android:id="@+id/send_imsi_include" android:visibility="gone"/>
-        <include layout="@layout/status_ftp_upl" android:id="@+id/ftp_upl_include" android:visibility="gone"/>
-        <include layout="@layout/status_vchera_upalo" android:id="@+id/vchera_upalo_include" android:visibility="gone"/>
-        <include layout="@layout/status_padalo_sem_dney" android:id="@+id/padalo_sem_dney_include" android:visibility="gone"/>
-        <include layout="@layout/status_svobodno" android:id="@+id/svobodno_include" android:visibility="gone"/>
-        
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/last_sms_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" >
+        </TextView>
+
+        <include
+            android:id="@+id/golden_gate_include"
+            layout="@layout/status_golden_gate"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/otrabotalo_include"
+            layout="@layout/status_otrabotalo"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/nochyu_upalo_include"
+            layout="@layout/status_nochyu_upalo"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/abontoday_include"
+            layout="@layout/status_abontoday"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/viruchka_include"
+            layout="@layout/status_viruchka"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/operativniy_include"
+            layout="@layout/status_operativniy"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/send_imsi_include"
+            layout="@layout/status_send_imsi"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/ftp_upl_include"
+            layout="@layout/status_ftp_upl"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/vchera_upalo_include"
+            layout="@layout/status_vchera_upalo"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/padalo_sem_dney_include"
+            layout="@layout/status_padalo_sem_dney"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/svobodno_include"
+            layout="@layout/status_svobodno"
+            android:visibility="gone" />
     </LinearLayout>
 
 </ScrollView>

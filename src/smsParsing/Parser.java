@@ -17,6 +17,7 @@ public class Parser {
 		ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
 
 		// check that sms contain what will
+		//TODO remove this?
 		if (smsText.startsWith("Ñòàòóñ êğèòè÷íûõ ïğîöåññîâ REP-COMM")){
 						
 			String[] arrayPhrases = smsText.split((char) 10 + "|" + (char) 13);
@@ -54,5 +55,50 @@ public class Parser {
 
 		return recordsArray;
 
+	}
+
+	public static ArrayList<SmsRecord> parse(String allMessages, int indexOnIcc) {
+		String smsText = allMessages;
+		ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
+
+		// check that sms contain what will
+		//TODO remove this?
+		if (smsText.startsWith(MainActivity.keyPhrase)){
+						
+			String[] arrayPhrases = smsText.split((char) 10 + "|" + (char) 13);
+
+			String[] parameterNames = { "GoldenGate", "ÎÒĞÀÁÎÒÀËÎ",
+					"ÍÎ×ÜŞ_ÓÏÀËÎ", "ABONTODAY", "ÂÛĞÓ×ÊÀ", "ÂÛĞÓ×ÊÀ",
+					"ÎÏÅĞÀÒÈÂÍÛÉ", "SEND_IMSI", "Â×ÅĞÀ_ÓÏÀËÎ", "ÏÀÄÀËÎ_7_ÄÍÅÉ",
+					"ÑÂÎÁÎÄÍÎ", "FTP_UPL"};
+
+			Calendar calendar = Calendar.getInstance();
+			for (String currentString : arrayPhrases) {
+
+				boolean added = false;
+
+				for (int j = 0; j < parameterNames.length && !added; j++) {
+
+					if (currentString.indexOf(":") != -1
+							&& currentString.substring(0,
+									currentString.indexOf(":")).equals(
+									parameterNames[j])) {
+
+						SmsRecord newRecord = new SmsRecord(String.valueOf(indexOnIcc),
+								calendar, parameterNames[j],
+								currentString.substring(
+										currentString.indexOf(":") + 2,
+										currentString.length()));
+						recordsArray.add(newRecord);
+						added = true;
+
+					}
+				}
+
+			}
+
+		}
+
+		return recordsArray;
 	}
 }
