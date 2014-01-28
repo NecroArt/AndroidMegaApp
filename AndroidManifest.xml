@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.view"
     android:versionCode="0"
-    android:versionName="0.123" >
+    android:versionName="0.127" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -79,6 +79,14 @@
         <activity
             android:name="com.view.SettingsDatabaseActivity"
             android:label="@string/action_database_settings"
+            android:parentActivityName="com.view.DisplayPanesActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.view.DisplayPanesActivity" />
+        </activity>
+        <activity
+            android:name="com.view.AboutActivity"
+            android:label="@string/action_about"
             android:parentActivityName="com.view.DisplayPanesActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

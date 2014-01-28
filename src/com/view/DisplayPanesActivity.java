@@ -1,5 +1,6 @@
 package com.view;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -31,31 +32,40 @@ public class DisplayPanesActivity extends MainActivity {
 	private static int daysAmount = 5;
 	private static int paddingTop = 5;
 	private static int paddingBottom = 5;
+	
+	public static String lastSmsDate = "Ќет данных об sms";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.panel);
 
-		// TextView textView = (TextView)
-		// findViewById(R.id.textViewGoldenGateDayOne);
-		// textView.setVisibility(View.GONE);
-		// textView.setText("");
-
-		/*
-		 * LinearLayout linearLayout = new LinearLayout(this);
-		 * linearLayout.setOrientation(LinearLayout.VERTICAL);
-		 */
-
-		// TODO make it as user options
-
-		// LinearLayout linearLayoutGoldenGate = (LinearLayout)
-		// findViewById(R.id.golden_gate_include);
-
-		ArrayList<String> parameters = new ArrayList<String>();
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		
+		// установка значени€ даты последней полученной смс
+		TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date);
 
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
+
+		Long millis = dbHelper.getLastSmsDate();
+		locale = getResources().getConfiguration().locale;
+		if (millis != 0L) {
+			Calendar date = Calendar.getInstance();
+			date.setTimeInMillis(millis);
+			lastSmsDate = date.get(Calendar.DAY_OF_MONTH)
+					+ " "
+					+ new SimpleDateFormat("MMMM", MainActivity.locale)
+							.format(date.getTime())
+					+ " "
+					+ String.format("%02d:%02d:%02d",
+							date.get(Calendar.HOUR_OF_DAY),
+							date.get(Calendar.MINUTE),
+							date.get(Calendar.SECOND));
+		}
+		lastSmsDateTextView.setText("ќбновлено " + lastSmsDate);
+
+		ArrayList<String> parameters = new ArrayList<String>();
 
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());

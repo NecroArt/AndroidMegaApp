@@ -49,5 +49,6 @@
     <string name="label_content_description_value_four">День 4</string>
     <string name="label_content_description_value_five">День 5</string>
     
+    <string name="action_about">История изменений</string>
 
 </resources>

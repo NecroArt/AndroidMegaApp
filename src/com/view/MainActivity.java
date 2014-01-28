@@ -12,16 +12,10 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.Ringtone;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -42,11 +36,13 @@ public class MainActivity extends Activity {
 
 	public static String my_text = null;
 	public static String text = null;
+	
+	//TODO выпилить?
 	public static Locale locale = null;
+	
 	public static int mId;
 	private static boolean firstLaunch = true;
 	public static Context context = null;
-	// public static String keyPhrase = "t";
 	public static String keyPhrase = "Статус критичных процессов REP-COMM";
 
 	@SuppressLint("NewApi")
@@ -56,8 +52,8 @@ public class MainActivity extends Activity {
 		try {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_main);
-			
-			TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date);
+
+			TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date_old);
 
 			DbHelper dbHelper = new DbHelper(this, null, null,
 					DbHelper.getDBVersion());
@@ -128,15 +124,17 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_settings:
-			Intent i = new Intent(this, SettingsActivity.class);
-			startActivityForResult(i, RESULT_SETTINGS);
+			Intent i1 = new Intent(this, SettingsActivity.class);
+			startActivityForResult(i1, RESULT_SETTINGS);
 			break;
 		case R.id.action_database_settings:
-			/*Intent i1 = new Intent(this, SettingsDatabaseActivity.class);
-			startActivityForResult(i1, RESULT_SETTINGS);
-			break;*/
-			Intent intent = new Intent(this, SettingsDatabaseActivity.class);
-			startActivity(intent);
+			Intent i2 = new Intent(this, SettingsDatabaseActivity.class);
+			startActivity(i2);
+			break;
+		case R.id.action_about:
+			Intent i3 = new Intent(this, AboutActivity.class);
+			startActivity(i3);
+			break;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -243,12 +241,13 @@ public class MainActivity extends Activity {
 
 	}
 
-	/*public void showCodes(View view) {
-
-		Intent intent = new Intent(this, TestShowCodes.class);
-
-		startActivity(intent);
-	}*/
+	/*
+	 * public void showCodes(View view) {
+	 * 
+	 * Intent intent = new Intent(this, TestShowCodes.class);
+	 * 
+	 * startActivity(intent); }
+	 */
 
 	public static void writeLog(Exception ex) {
 
