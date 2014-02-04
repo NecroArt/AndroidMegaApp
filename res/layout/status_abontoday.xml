@@ -32,11 +32,99 @@
                 android:id="@+id/abontodayTableRowDays"
                 android:layout_width="fill_parent"
                 android:gravity="center_horizontal" >
+                <TextView
+                    android:id="@+id/abontodayTextViewDay1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="1" />
+
+                <TextView
+                    android:id="@+id/abontodayTextViewDay2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="2" />
+
+                <TextView
+                    android:id="@+id/abontodayTextViewDay3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="3" />
+
+                <TextView
+                    android:id="@+id/abontodayTextViewDay4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="4" />
+
+                <TextView
+                    android:id="@+id/abontodayTextViewDay5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="5" />
             </TableRow>
 
             <TableRow
                 android:id="@+id/abontodayTableRowValues"
                 android:gravity="center_horizontal" >
+                <ImageView
+                    android:id="@+id/abontodayImageViewDay1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Последний статус дня"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:src="@drawable/error" />
+
+                <ImageView
+                    android:id="@+id/abontodayImageViewDay2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Последний статус дня"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:src="@drawable/warning" />
+
+                <ImageView
+                    android:id="@+id/abontodayImageViewDay3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Последний статус дня"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:src="@drawable/success" />
+
+                <ImageView
+                    android:id="@+id/abontodayImageViewDay4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Последний статус дня"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:src="@drawable/error" />
+
+                <ImageView
+                    android:id="@+id/abontodayImageViewDay5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Последний статус дня"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:src="@drawable/warning" />
             </TableRow>
         </TableLayout>
     </LinearLayout>

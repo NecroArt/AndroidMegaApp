@@ -3,15 +3,11 @@ package com.view;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
-import database.DbHelper;
-import database.SmsRecord;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
@@ -20,221 +16,224 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
+import android.widget.Toast;
+import database.DbHelper;
+import database.SmsRecord;
 
-public class DisplayPanesActivity extends MainActivity {
+public class DisplayPanesActivity extends Activity {
 
 	private static int daysAmount = 5;
-	private static int paddingTop = 5;
-	private static int paddingBottom = 5;
+	private static final int RESULT_SETTINGS = 1;
+	public static String keyPhraseRepDBStatus = "Статус критичных процессов REP-COMM";
+	public static String keyPhraseAbonDynamic = "Динамика АБ за ";
 	
-	public static String lastSmsDate = "Нет данных об sms";
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.panel);
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-		
+
 		// установка значения даты последней полученной смс
 		TextView lastSmsDateTextView = (TextView) findViewById(R.id.last_sms_date);
 
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
-
+		
 		Long millis = dbHelper.getLastSmsDate();
-		locale = getResources().getConfiguration().locale;
+		Locale locale = getResources().getConfiguration().locale;
 		if (millis != 0L) {
 			Calendar date = Calendar.getInstance();
 			date.setTimeInMillis(millis);
-			lastSmsDate = date.get(Calendar.DAY_OF_MONTH)
+			String lastSmsDate = date.get(Calendar.DAY_OF_MONTH)
 					+ " "
-					+ new SimpleDateFormat("MMMM", MainActivity.locale)
+					+ new SimpleDateFormat("MMMM", locale)
 							.format(date.getTime())
 					+ " "
 					+ String.format("%02d:%02d:%02d",
 							date.get(Calendar.HOUR_OF_DAY),
 							date.get(Calendar.MINUTE),
 							date.get(Calendar.SECOND));
+			lastSmsDateTextView.setText("Обновлено " + lastSmsDate);
 		}
-		lastSmsDateTextView.setText("Обновлено " + lastSmsDate);
+		else {
+			lastSmsDateTextView.setText("Нет данных об sms");
+		}
 
 		ArrayList<String> parameters = new ArrayList<String>();
 
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 
-		if (prefs.getBoolean("show_golden_gate_status", true)) {
+		if (prefs.getBoolean("show_golden_gate_status", true)) { //TODO может лучше наоборот, сделать visible, а при проверке ставить gone
 
 			parameters.add("GoldenGate");
 
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.goldenGateLinearLayout);
 			linearLayout.setVisibility(View.VISIBLE);
 
-		} else {
-			
+		} else { //TODO а это надо?
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.goldenGateLinearLayout);
 			TableLayout tableLayout = (TableLayout) findViewById(R.id.goldenGateTableLayout);
 			linearLayout.removeView(tableLayout);
-			
+
 			linearLayout.setVisibility(View.GONE);
-			
+
 		}
 
 		if (prefs.getBoolean("show_otrabotalo_status", true)) {
 			parameters.add("ОТРАБОТАЛО");
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.otrabotaloLinearLayout);
 			linearLayout.setVisibility(View.VISIBLE);
 		} else {
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.otrabotaloLinearLayout);
 			TableLayout tableLayout = (TableLayout) findViewById(R.id.otrabotaloTableLayout);
 			linearLayout.removeView(tableLayout);
-			
+
 			linearLayout.setVisibility(View.GONE);
-			
+
 		}
 
 		if (prefs.getBoolean("show_nochyu_upalo_status", true)) {
 			parameters.add("НОЧЬЮ_УПАЛО");
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.nochyuUpaloLinearLayout);
 			linearLayout.setVisibility(View.VISIBLE);
 		} else {
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.nochyuUpaloLinearLayout);
 			TableLayout tableLayout = (TableLayout) findViewById(R.id.nochyuUpaloTableLayout);
 			linearLayout.removeView(tableLayout);
-			
+
 			linearLayout.setVisibility(View.GONE);
-			
+
 		}
 
 		if (prefs.getBoolean("show_abontoday_status", true)) {
 			parameters.add("ABONTODAY");
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.abontodayLinearLayout);
 			linearLayout.setVisibility(View.VISIBLE);
 		} else {
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.abontodayLinearLayout);
 			TableLayout tableLayout = (TableLayout) findViewById(R.id.abontodayTableLayout);
 			linearLayout.removeView(tableLayout);
-			
+
 			linearLayout.setVisibility(View.GONE);
-			
+
 		}
 
 		if (prefs.getBoolean("show_viruchka_status", true)) {
 			parameters.add("ВЫРУЧКА");
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.viruchkaLinearLayout);
 			linearLayout.setVisibility(View.VISIBLE);
 		} else {
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.viruchkaLinearLayout);
 			TableLayout tableLayout = (TableLayout) findViewById(R.id.viruchkaTableLayout);
 			linearLayout.removeView(tableLayout);
-			
+
 			linearLayout.setVisibility(View.GONE);
-			
+
 		}
 
 		if (prefs.getBoolean("show_operativniy_status", true)) {
 			parameters.add("ОПЕРАТИВНЫЙ");
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.operativniyLinearLayout);
 			linearLayout.setVisibility(View.VISIBLE);
 		} else {
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.operativniyLinearLayout);
 			TableLayout tableLayout = (TableLayout) findViewById(R.id.operativniyTableLayout);
 			linearLayout.removeView(tableLayout);
-			
+
 			linearLayout.setVisibility(View.GONE);
-			
+
 		}
 
 		if (prefs.getBoolean("show_send_imsi_status", true)) {
 			parameters.add("SEND_IMSI");
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.sendImsiLinearLayout);
 			linearLayout.setVisibility(View.VISIBLE);
 		} else {
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.sendImsiLinearLayout);
 			TableLayout tableLayout = (TableLayout) findViewById(R.id.sendImsiTableLayout);
 			linearLayout.removeView(tableLayout);
-			
+
 			linearLayout.setVisibility(View.GONE);
-			
+
 		}
 
 		if (prefs.getBoolean("show_ftp_upl_status", true)) {
 			parameters.add("FTP_UPL");
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ftpUplLinearLayout);
 			linearLayout.setVisibility(View.VISIBLE);
 		} else {
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ftpUplLinearLayout);
 			TableLayout tableLayout = (TableLayout) findViewById(R.id.ftpUplTableLayout);
 			linearLayout.removeView(tableLayout);
-			
+
 			linearLayout.setVisibility(View.GONE);
-			
+
 		}
 
 		if (prefs.getBoolean("show_vchera_upalo_status", true)) {
 			parameters.add("ВЧЕРА_УПАЛО");
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.vcheraUpaloLinearLayout);
 			linearLayout.setVisibility(View.VISIBLE);
 		} else {
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.vcheraUpaloLinearLayout);
 			TableLayout tableLayout = (TableLayout) findViewById(R.id.vcheraUpaloTableLayout);
 			linearLayout.removeView(tableLayout);
-			
+
 			linearLayout.setVisibility(View.GONE);
-			
+
 		}
 
 		if (prefs.getBoolean("show_padalo_7_dney_status", true)) {
 			parameters.add("ПАДАЛО_7_ДНЕЙ");
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.padaloSemDneyLinearLayout);
 			linearLayout.setVisibility(View.VISIBLE);
 		} else {
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.padaloSemDneyLinearLayout);
 			TableLayout tableLayout = (TableLayout) findViewById(R.id.padaloSemDneyTableLayout);
 			linearLayout.removeView(tableLayout);
-			
+
 			linearLayout.setVisibility(View.GONE);
-			
+
 		}
 
 		if (prefs.getBoolean("show_svobodno_status", true)) {
 			parameters.add("СВОБОДНО");
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.svobodnoLinearLayout);
 			linearLayout.setVisibility(View.VISIBLE);
 		} else {
-			
+
 			LinearLayout linearLayout = (LinearLayout) findViewById(R.id.svobodnoLinearLayout);
 			TableLayout tableLayout = (TableLayout) findViewById(R.id.svobodnoTableLayout);
 			linearLayout.removeView(tableLayout);
-			
+
 			linearLayout.setVisibility(View.GONE);
-			
+
 		}
 
 		ArrayList<SmsRecord> recordsArray = dbHelper.getLastRecords(5,
@@ -309,12 +308,87 @@ public class DisplayPanesActivity extends MainActivity {
 		}
 
 	}
-	
+
 	@Override
-	public void onResume() {
+	public void onRestart() {
 		onCreate(null);
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.settings_menu, menu);
+		getMenuInflater().inflate(R.menu.database_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			Intent i1 = new Intent(this, SettingsActivity.class);
+			startActivityForResult(i1, RESULT_SETTINGS);
+			break;
+		case R.id.action_database_settings:
+			Intent i2 = new Intent(this, SettingsDatabaseActivity.class);
+			startActivity(i2);
+			break;
+		case R.id.action_about:
+			Intent i3 = new Intent(this, AboutActivity.class);
+			startActivity(i3);
+			break;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+		return true;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		switch (requestCode) {
+		case RESULT_SETTINGS:
+
+			break;
+
+		}
+
+	}
 	
+	public void addAll(View view) {
+
+		DbHelper dbHelper = new DbHelper(this, null, null,
+				DbHelper.getDBVersion());
+
+		// EditText editText = (EditText) findViewById(R.id.edit_message);
+		Integer rowsAdded = 0;
+
+		/*
+		 * try { Integer smsNumber =
+		 * Integer.valueOf(editText.getText().toString()); if (smsNumber > 0) {
+		 * rowsAdded = dbHelper.addAll(this, smsNumber); } else { rowsAdded =
+		 * dbHelper.addAll(this); } } catch (NumberFormatException ex) {
+		 */
+		rowsAdded = dbHelper.addAll(this);
+		// }
+
+		Toast.makeText(this, "Добавлено " + rowsAdded + " записей", Toast.LENGTH_LONG)
+				.show();
+
+	}
+	
+	public void deleteAll(View view) {
+
+		DbHelper dbHelper = new DbHelper(this, null, null,
+				DbHelper.getDBVersion());
+		Integer deletedRows = dbHelper.deleteAll();
+		Toast.makeText(
+				this,
+				deletedRows > 0 ? "Удалено " + deletedRows.toString() + " записей"
+						: "БД пуста", Toast.LENGTH_LONG).show();
+
+	}
 	/**
 	 * Добавляет в полученный linearLayout блок с состоянием параметра
 	 * "GoldenGate"
@@ -328,8 +402,8 @@ public class DisplayPanesActivity extends MainActivity {
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.goldenGateLinearLayout);
 		TableRow tableRowDays = (TableRow) findViewById(R.id.goldenGateTableRowDays);
 		TableRow tableRowValues = (TableRow) findViewById(R.id.goldenGateTableRowValues);
-		int childId = 0;
 		int added = 0;
+
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
@@ -337,17 +411,13 @@ public class DisplayPanesActivity extends MainActivity {
 
 				Calendar date = recordsArray.get(i).getDate();
 
-				TextView textViewDay = new TextView(this);
+				TextView textViewDay = (TextView) tableRowDays
+						.getChildAt(added);
 				textViewDay.setText(String.valueOf(date
 						.get(Calendar.DAY_OF_MONTH)));
-				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
-				textViewDay.setGravity(Gravity.CENTER);
-				tableRowDays.addView(textViewDay);
 
-				ImageView imageViewValue = new ImageView(this);
-				imageViewValue.setId(++childId);
-				imageViewValue.setPadding(0, 0, 0, 0);
-				
+				ImageView imageViewValue = (ImageView) tableRowValues
+						.getChildAt(added);
 
 				if (recordsArray.get(i).getParameterValue().matches("OK")) {
 					imageViewValue.setImageResource(R.drawable.success);
@@ -358,7 +428,6 @@ public class DisplayPanesActivity extends MainActivity {
 						imageViewValue.setImageResource(R.drawable.error);
 					}
 				}
-				tableRowValues.addView(imageViewValue);
 
 				added++;
 
@@ -375,6 +444,14 @@ public class DisplayPanesActivity extends MainActivity {
 			dataNotFound.setText("Данные не найдены");
 			linearLayout.addView(dataNotFound);
 
+		} else {
+			if (added < daysAmount) {
+				for (int i = added; i < daysAmount; i++) {
+					tableRowDays.getChildAt(i).setVisibility(View.GONE);
+					tableRowValues.getChildAt(i).setVisibility(
+							View.GONE);
+				}
+			}
 		}
 
 	}
@@ -405,19 +482,14 @@ public class DisplayPanesActivity extends MainActivity {
 
 				Calendar date = recordsArray.get(i).getDate();
 
-				TextView textViewDay = new TextView(this);
+				TextView textViewDay = (TextView) tableRowDays
+						.getChildAt(added);
 				textViewDay.setText(String.valueOf(date
 						.get(Calendar.DAY_OF_MONTH)));
-				textViewDay.setGravity(Gravity.CENTER);
-				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
-				tableRowDays.addView(textViewDay);
 
-				TextView textViewValue = new TextView(this);
-				textViewValue.setPadding(0, paddingTop, 0, paddingBottom);
-				textViewValue.setGravity(Gravity.CENTER);
-
+				TextView textViewValue = (TextView) tableRowValues
+						.getChildAt(added);
 				textViewValue.setText(recordsArray.get(i).getParameterValue());
-				tableRowValues.addView(textViewValue);
 
 				added++;
 
@@ -434,8 +506,15 @@ public class DisplayPanesActivity extends MainActivity {
 			dataNotFound.setText("Данные не найдены");
 			linearLayout.addView(dataNotFound);
 
+		} else {
+			if (added < daysAmount) {
+				for (int i = added; i < daysAmount; i++) {
+					tableRowDays.getChildAt(i).setVisibility(View.GONE);
+					tableRowValues.getChildAt(i).setVisibility(
+							View.GONE);
+				}
+			}
 		}
-
 	}
 
 	/**
@@ -463,19 +542,14 @@ public class DisplayPanesActivity extends MainActivity {
 
 				Calendar date = recordsArray.get(i).getDate();
 
-				TextView textViewDay = new TextView(this);
+				TextView textViewDay = (TextView) tableRowDays
+						.getChildAt(added);
 				textViewDay.setText(String.valueOf(date
 						.get(Calendar.DAY_OF_MONTH)));
-				textViewDay.setGravity(Gravity.CENTER);
-				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
-				tableRowDays.addView(textViewDay);
 
-				TextView textViewValue = new TextView(this);
-				textViewValue.setPadding(0, paddingTop, 0, paddingBottom);
-				textViewValue.setGravity(Gravity.CENTER);
-
+				TextView textViewValue = (TextView) tableRowValues
+						.getChildAt(added);
 				textViewValue.setText(recordsArray.get(i).getParameterValue());
-				tableRowValues.addView(textViewValue);
 
 				added++;
 
@@ -492,6 +566,14 @@ public class DisplayPanesActivity extends MainActivity {
 			dataNotFound.setText("Данные не найдены");
 			linearLayout.addView(dataNotFound);
 
+		} else {
+			if (added < daysAmount) {
+				for (int i = added; i < daysAmount; i++) {
+					tableRowDays.getChildAt(i).setVisibility(View.GONE);
+					tableRowValues.getChildAt(i).setVisibility(
+							View.GONE);
+				}
+			}
 		}
 
 	}
@@ -514,7 +596,6 @@ public class DisplayPanesActivity extends MainActivity {
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.abontodayLinearLayout);
 		TableRow tableRowDays = (TableRow) findViewById(R.id.abontodayTableRowDays);
 		TableRow tableRowValues = (TableRow) findViewById(R.id.abontodayTableRowValues);
-		int childId = 0;
 		int added = 0;
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
@@ -523,27 +604,24 @@ public class DisplayPanesActivity extends MainActivity {
 
 				Calendar date = recordsArray.get(i).getDate();
 
-				TextView textViewDay = new TextView(this);
+				TextView textViewDay = (TextView) tableRowDays
+						.getChildAt(added);
 				textViewDay.setText(String.valueOf(date
 						.get(Calendar.DAY_OF_MONTH)));
-				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
-				textViewDay.setGravity(Gravity.CENTER);
-				tableRowDays.addView(textViewDay);
 
-				ImageView imageViewValue = new ImageView(this);
-				imageViewValue.setId(++childId);
-				imageViewValue.setPadding(0, 0, 0, 0);
+				ImageView imageViewValue = (ImageView) tableRowValues
+						.getChildAt(added);
 
 				if (recordsArray.get(i).getParameterValue().matches("вчера")) {
 					imageViewValue.setImageResource(R.drawable.success);
 				} else {
-					if (recordsArray.get(i).getParameterValue().equals("позавчера")) {
+					if (recordsArray.get(i).getParameterValue()
+							.equals("позавчера")) {
 						imageViewValue.setImageResource(R.drawable.warning);
 					} else {
 						imageViewValue.setImageResource(R.drawable.error);
 					}
 				}
-				tableRowValues.addView(imageViewValue);
 
 				added++;
 
@@ -560,6 +638,14 @@ public class DisplayPanesActivity extends MainActivity {
 			dataNotFound.setText("Данные не найдены");
 			linearLayout.addView(dataNotFound);
 
+		} else {
+			if (added < daysAmount) {
+				for (int i = added; i < daysAmount; i++) {
+					tableRowDays.getChildAt(i).setVisibility(View.GONE);
+					tableRowValues.getChildAt(i).setVisibility(
+							View.GONE);
+				}
+			}
 		}
 
 	}
@@ -589,27 +675,24 @@ public class DisplayPanesActivity extends MainActivity {
 
 				Calendar date = recordsArray.get(i).getDate();
 
-				TextView textViewDay = new TextView(this);
+				TextView textViewDay = (TextView) tableRowDays
+						.getChildAt(added);
 				textViewDay.setText(String.valueOf(date
 						.get(Calendar.DAY_OF_MONTH)));
-				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
-				textViewDay.setGravity(Gravity.CENTER);
-				tableRowDays.addView(textViewDay);
 
-				ImageView imageViewValue = new ImageView(this);
-				imageViewValue.setId(++childId);
-				imageViewValue.setPadding(0, 0, 0, 0);
+				ImageView imageViewValue = (ImageView) tableRowValues
+						.getChildAt(added);
 
 				if (recordsArray.get(i).getParameterValue().matches("вчера")) {
 					imageViewValue.setImageResource(R.drawable.success);
 				} else {
-					if (recordsArray.get(i).getParameterValue().equals("позавчера")) {
+					if (recordsArray.get(i).getParameterValue()
+							.equals("позавчера")) {
 						imageViewValue.setImageResource(R.drawable.warning);
 					} else {
 						imageViewValue.setImageResource(R.drawable.error);
 					}
 				}
-				tableRowValues.addView(imageViewValue);
 
 				added++;
 
@@ -626,6 +709,14 @@ public class DisplayPanesActivity extends MainActivity {
 			dataNotFound.setText("Данные не найдены");
 			linearLayout.addView(dataNotFound);
 
+		} else {
+			if (added < daysAmount) {
+				for (int i = added; i < daysAmount; i++) {
+					tableRowDays.getChildAt(i).setVisibility(View.GONE);
+					tableRowValues.getChildAt(i).setVisibility(
+							View.GONE);
+				}
+			}
 		}
 
 	}
@@ -657,27 +748,24 @@ public class DisplayPanesActivity extends MainActivity {
 
 				Calendar date = recordsArray.get(i).getDate();
 
-				TextView textViewDay = new TextView(this);
+				TextView textViewDay = (TextView) tableRowDays
+						.getChildAt(added);
 				textViewDay.setText(String.valueOf(date
 						.get(Calendar.DAY_OF_MONTH)));
-				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
-				textViewDay.setGravity(Gravity.CENTER);
-				tableRowDays.addView(textViewDay);
 
-				ImageView imageViewValue = new ImageView(this);
-				imageViewValue.setId(++childId);
-				imageViewValue.setPadding(0, 0, 0, 0);
+				ImageView imageViewValue = (ImageView) tableRowValues
+						.getChildAt(added);
 
 				if (recordsArray.get(i).getParameterValue().matches("вчера")) {
 					imageViewValue.setImageResource(R.drawable.success);
 				} else {
-					if (recordsArray.get(i).getParameterValue().equals("позавчера")) {
+					if (recordsArray.get(i).getParameterValue()
+							.equals("позавчера")) {
 						imageViewValue.setImageResource(R.drawable.warning);
 					} else {
 						imageViewValue.setImageResource(R.drawable.error);
 					}
 				}
-				tableRowValues.addView(imageViewValue);
 
 				added++;
 
@@ -694,6 +782,14 @@ public class DisplayPanesActivity extends MainActivity {
 			dataNotFound.setText("Данные не найдены");
 			linearLayout.addView(dataNotFound);
 
+		} else {
+			if (added < daysAmount) {
+				for (int i = added; i < daysAmount; i++) {
+					tableRowDays.getChildAt(i).setVisibility(View.GONE);
+					tableRowValues.getChildAt(i).setVisibility(
+							View.GONE);
+				}
+			}
 		}
 	}
 
@@ -724,16 +820,13 @@ public class DisplayPanesActivity extends MainActivity {
 
 				Calendar date = recordsArray.get(i).getDate();
 
-				TextView textViewDay = new TextView(this);
+				TextView textViewDay = (TextView) tableRowDays
+						.getChildAt(added);
 				textViewDay.setText(String.valueOf(date
 						.get(Calendar.DAY_OF_MONTH)));
-				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
-				textViewDay.setGravity(Gravity.CENTER);
-				tableRowDays.addView(textViewDay);
 
-				ImageView imageViewValue = new ImageView(this);
-				imageViewValue.setId(++childId);
-				imageViewValue.setPadding(0, 0, 0, 0);
+				ImageView imageViewValue = (ImageView) tableRowValues
+						.getChildAt(added);
 
 				if (recordsArray.get(i).getParameterValue().matches("OK")) {
 					imageViewValue.setImageResource(R.drawable.success);
@@ -744,7 +837,6 @@ public class DisplayPanesActivity extends MainActivity {
 						imageViewValue.setImageResource(R.drawable.error);
 					}
 				}
-				tableRowValues.addView(imageViewValue);
 
 				added++;
 
@@ -761,6 +853,14 @@ public class DisplayPanesActivity extends MainActivity {
 			dataNotFound.setText("Данные не найдены");
 			linearLayout.addView(dataNotFound);
 
+		} else {
+			if (added < daysAmount) {
+				for (int i = added; i < daysAmount; i++) {
+					tableRowDays.getChildAt(i).setVisibility(View.GONE);
+					tableRowValues.getChildAt(i).setVisibility(
+							View.GONE);
+				}
+			}
 		}
 	}
 
@@ -790,23 +890,19 @@ public class DisplayPanesActivity extends MainActivity {
 
 				Calendar date = recordsArray.get(i).getDate();
 
-				TextView textViewDay = new TextView(this);
+				TextView textViewDay = (TextView) tableRowDays
+						.getChildAt(added);
 				textViewDay.setText(String.valueOf(date
 						.get(Calendar.DAY_OF_MONTH)));
-				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
-				textViewDay.setGravity(Gravity.CENTER);
-				tableRowDays.addView(textViewDay);
 
-				ImageView imageViewValue = new ImageView(this);
-				imageViewValue.setId(++childId);
-				imageViewValue.setPadding(0, 0, 0, 0);
+				ImageView imageViewValue = (ImageView) tableRowValues
+						.getChildAt(added);
 
 				if (recordsArray.get(i).getParameterValue().matches("OK")) {
 					imageViewValue.setImageResource(R.drawable.success);
 				} else {
 					imageViewValue.setImageResource(R.drawable.error);
 				}
-				tableRowValues.addView(imageViewValue);
 
 				added++;
 
@@ -823,6 +919,14 @@ public class DisplayPanesActivity extends MainActivity {
 			dataNotFound.setText("Данные не найдены");
 			linearLayout.addView(dataNotFound);
 
+		} else {
+			if (added < daysAmount) {
+				for (int i = added; i < daysAmount; i++) {
+					tableRowDays.getChildAt(i).setVisibility(View.GONE);
+					tableRowValues.getChildAt(i).setVisibility(
+							View.GONE);
+				}
+			}
 		}
 	}
 
@@ -852,19 +956,14 @@ public class DisplayPanesActivity extends MainActivity {
 
 				Calendar date = recordsArray.get(i).getDate();
 
-				TextView textViewDay = new TextView(this);
+				TextView textViewDay = (TextView) tableRowDays
+						.getChildAt(added);
 				textViewDay.setText(String.valueOf(date
 						.get(Calendar.DAY_OF_MONTH)));
-				textViewDay.setGravity(Gravity.CENTER);
-				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
-				tableRowDays.addView(textViewDay);
 
-				TextView textViewValue = new TextView(this);
-				textViewValue.setPadding(0, paddingTop, 0, paddingBottom);
-				textViewValue.setGravity(Gravity.CENTER);
-
+				TextView textViewValue = (TextView) tableRowValues
+						.getChildAt(added);
 				textViewValue.setText(recordsArray.get(i).getParameterValue());
-				tableRowValues.addView(textViewValue);
 
 				added++;
 
@@ -881,6 +980,14 @@ public class DisplayPanesActivity extends MainActivity {
 			dataNotFound.setText("Данные не найдены");
 			linearLayout.addView(dataNotFound);
 
+		} else {
+			if (added < daysAmount) {
+				for (int i = added; i < daysAmount; i++) {
+					tableRowDays.getChildAt(i).setVisibility(View.GONE);
+					tableRowValues.getChildAt(i).setVisibility(
+							View.GONE);
+				}
+			}
 		}
 	}
 
@@ -910,19 +1017,14 @@ public class DisplayPanesActivity extends MainActivity {
 
 				Calendar date = recordsArray.get(i).getDate();
 
-				TextView textViewDay = new TextView(this);
+				TextView textViewDay = (TextView) tableRowDays
+						.getChildAt(added);
 				textViewDay.setText(String.valueOf(date
 						.get(Calendar.DAY_OF_MONTH)));
-				textViewDay.setGravity(Gravity.CENTER);
-				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
-				tableRowDays.addView(textViewDay);
 
-				TextView textViewValue = new TextView(this);
-				textViewValue.setPadding(0, paddingTop, 0, paddingBottom);
-				textViewValue.setGravity(Gravity.CENTER);
-
+				TextView textViewValue = (TextView) tableRowValues
+						.getChildAt(added);
 				textViewValue.setText(recordsArray.get(i).getParameterValue());
-				tableRowValues.addView(textViewValue);
 
 				added++;
 
@@ -939,6 +1041,14 @@ public class DisplayPanesActivity extends MainActivity {
 			dataNotFound.setText("Данные не найдены");
 			linearLayout.addView(dataNotFound);
 
+		} else {
+			if (added < daysAmount) {
+				for (int i = added; i < daysAmount; i++) {
+					tableRowDays.getChildAt(i).setVisibility(View.GONE);
+					tableRowValues.getChildAt(i).setVisibility(
+							View.GONE);
+				}
+			}
 		}
 	}
 
@@ -968,19 +1078,14 @@ public class DisplayPanesActivity extends MainActivity {
 
 				Calendar date = recordsArray.get(i).getDate();
 
-				TextView textViewDay = new TextView(this);
+				TextView textViewDay = (TextView) tableRowDays
+						.getChildAt(added);
 				textViewDay.setText(String.valueOf(date
 						.get(Calendar.DAY_OF_MONTH)));
-				textViewDay.setGravity(Gravity.CENTER);
-				textViewDay.setPadding(0, paddingTop, 0, paddingBottom);
-				tableRowDays.addView(textViewDay);
 
-				TextView textViewValue = new TextView(this);
-				textViewValue.setPadding(0, paddingTop, 0, paddingBottom);
-				textViewValue.setGravity(Gravity.CENTER);
-
+				TextView textViewValue = (TextView) tableRowValues
+						.getChildAt(added);
 				textViewValue.setText(recordsArray.get(i).getParameterValue());
-				tableRowValues.addView(textViewValue);
 
 				added++;
 
@@ -997,6 +1102,14 @@ public class DisplayPanesActivity extends MainActivity {
 			dataNotFound.setText("Данные не найдены");
 			linearLayout.addView(dataNotFound);
 
+		} else {
+			if (added < daysAmount) {
+				for (int i = added; i < daysAmount; i++) {
+					tableRowDays.getChildAt(i).setVisibility(View.GONE);
+					tableRowValues.getChildAt(i).setVisibility(
+							View.GONE);
+				}
+			}
 		}
 	}
 

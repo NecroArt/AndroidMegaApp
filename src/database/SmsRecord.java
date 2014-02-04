@@ -43,6 +43,17 @@ public class SmsRecord {
 		this.parameterValue = parameterValue;
 
 	}
+	
+	public SmsRecord(Calendar date, String parameterName,
+			String parameterValue) {
+
+		this.setId(0);
+		this.smsId = "0";
+		this.date = date;
+		this.parameterName = parameterName;
+		this.parameterValue = parameterValue;
+
+	}
 
 	public String getSmsId() {
 		return this.smsId;

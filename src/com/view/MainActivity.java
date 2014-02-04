@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-	public void onResume() {
+	public void onRestart() {
 		onCreate(null);
 	}
 

@@ -32,12 +32,100 @@
                 android:id="@+id/svobodnoTableRowDays"
                 android:layout_width="fill_parent"
                 android:gravity="center_horizontal" >
+                <TextView
+                    android:id="@+id/svobodnoTextViewDay1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="1" />
+
+                <TextView
+                    android:id="@+id/svobodnoTextViewDay2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="2" />
+
+                <TextView
+                    android:id="@+id/svobodnoTextViewDay3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="3" />
+
+                <TextView
+                    android:id="@+id/svobodnoTextViewDay4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="4" />
+
+                <TextView
+                    android:id="@+id/svobodnoTextViewDay5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="5" />
             </TableRow>
 
             <TableRow
                 android:id="@+id/svobodnoTableRowValues"
                 android:layout_width="fill_parent"
                 android:gravity="center_horizontal" >
+                <TextView
+                    android:id="@+id/svobodnoTextViewValue1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="56" />
+
+                <TextView
+                    android:id="@+id/svobodnoTextViewValue2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="23" />
+
+                <TextView
+                    android:id="@+id/svobodnoTextViewValue3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="67" />
+
+                <TextView
+                    android:id="@+id/svobodnoTextViewValue4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="84" />
+
+                <TextView
+                    android:id="@+id/svobodnoTextViewValue5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="97" />
             </TableRow>
         </TableLayout>
     </LinearLayout>

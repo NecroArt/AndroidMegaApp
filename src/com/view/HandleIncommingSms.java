@@ -69,7 +69,7 @@ public class HandleIncommingSms extends Thread {
 
 				}
 
-				ArrayList<SmsRecord> recordsArray = Parser.parse(allMessages, msgs[0].getIndexOnIcc());
+				ArrayList<SmsRecord> recordsArray = Parser.parse(allMessages);
 
 				for (SmsRecord currentRecord : recordsArray) {
 

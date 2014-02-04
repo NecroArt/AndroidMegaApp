@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.view.DisplayPanesActivity;
 import com.view.MainActivity;
 import com.view.SMS;
 
@@ -17,15 +18,15 @@ public class Parser {
 		ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
 
 		// check that sms contain what will
-		//TODO remove this?
-		if (smsText.startsWith("Ñòàòóñ êğèòè÷íûõ ïğîöåññîâ REP-COMM")){
-						
+		// TODO remove this?
+		if (smsText.startsWith(DisplayPanesActivity.keyPhraseRepDBStatus)) {
+
 			String[] arrayPhrases = smsText.split((char) 10 + "|" + (char) 13);
 
 			String[] parameterNames = { "GoldenGate", "ÎÒĞÀÁÎÒÀËÎ",
 					"ÍÎ×ÜŞ_ÓÏÀËÎ", "ABONTODAY", "ÂÛĞÓ×ÊÀ", "ÂÛĞÓ×ÊÀ",
 					"ÎÏÅĞÀÒÈÂÍÛÉ", "SEND_IMSI", "Â×ÅĞÀ_ÓÏÀËÎ", "ÏÀÄÀËÎ_7_ÄÍÅÉ",
-					"ÑÂÎÁÎÄÍÎ", "FTP_UPL"};
+					"ÑÂÎÁÎÄÍÎ", "FTP_UPL" };
 
 			for (String currentString : arrayPhrases) {
 
@@ -57,20 +58,20 @@ public class Parser {
 
 	}
 
-	public static ArrayList<SmsRecord> parse(String allMessages, int indexOnIcc) {
-		String smsText = allMessages;
+	public static ArrayList<SmsRecord> parse(String allMessages) {
+		
 		ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
 
 		// check that sms contain what will
-		//TODO remove this?
-		if (smsText.startsWith(MainActivity.keyPhrase)){
-						
-			String[] arrayPhrases = smsText.split((char) 10 + "|" + (char) 13);
+		// TODO remove this?
+		if (allMessages.startsWith(MainActivity.keyPhrase)) {
+
+			String[] arrayPhrases = allMessages.split((char) 10 + "|" + (char) 13);
 
 			String[] parameterNames = { "GoldenGate", "ÎÒĞÀÁÎÒÀËÎ",
 					"ÍÎ×ÜŞ_ÓÏÀËÎ", "ABONTODAY", "ÂÛĞÓ×ÊÀ", "ÂÛĞÓ×ÊÀ",
 					"ÎÏÅĞÀÒÈÂÍÛÉ", "SEND_IMSI", "Â×ÅĞÀ_ÓÏÀËÎ", "ÏÀÄÀËÎ_7_ÄÍÅÉ",
-					"ÑÂÎÁÎÄÍÎ", "FTP_UPL"};
+					"ÑÂÎÁÎÄÍÎ", "FTP_UPL" };
 
 			Calendar calendar = Calendar.getInstance();
 			for (String currentString : arrayPhrases) {
@@ -84,9 +85,8 @@ public class Parser {
 									currentString.indexOf(":")).equals(
 									parameterNames[j])) {
 
-						SmsRecord newRecord = new SmsRecord(String.valueOf(indexOnIcc),
-								calendar, parameterNames[j],
-								currentString.substring(
+						SmsRecord newRecord = new SmsRecord(calendar,
+								parameterNames[j], currentString.substring(
 										currentString.indexOf(":") + 2,
 										currentString.length()));
 						recordsArray.add(newRecord);
