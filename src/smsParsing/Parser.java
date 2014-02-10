@@ -1,50 +1,81 @@
 package smsParsing;
 
-import java.text.SimpleDateFormat;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.view.DisplayPanesActivity;
 import com.view.MainActivity;
-import com.view.SMS;
+import com.view.SMSInstance;
 
-import database.SmsRecord;
+import database.SmsRecordAbonDynamic;
+import database.SmsRecordRepDbStatus;
 
 public class Parser {
 
-	public static ArrayList<SmsRecord> parse(SMS sms) {
+	public static ArrayList<Object> parse(SMSInstance smsInstance) {
 
-		String smsText = sms.getContent();
-		ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
+		String allMessages = smsInstance.getContent();
 
-		// check that sms contain what will
-		// TODO remove this?
-		if (smsText.startsWith(DisplayPanesActivity.keyPhraseRepDBStatus)) {
+		ArrayList<Object> recordsArray = new ArrayList<Object>();
+		try {
 
-			String[] arrayPhrases = smsText.split((char) 10 + "|" + (char) 13);
+			// check that sms contain what will
+			// TODO remove this?
+			if (allMessages
+					.startsWith(DisplayPanesActivity.keyPhraseRepDBStatus)) {
 
-			String[] parameterNames = { "GoldenGate", "нрпюанрюкн",
-					"мнвэч_союкн", "ABONTODAY", "бшпсвйю", "бшпсвйю",
-					"ноепюрхбмши", "SEND_IMSI", "бвепю_союкн", "оюдюкн_7_дмеи",
-					"ябнандмн", "FTP_UPL" };
+				String[] arrayPhrases = allMessages.split((char) 10 + "|"
+						+ (char) 13);
+
+				String[] parameterNames = { "GoldenGate", "нрпюанрюкн",
+						"мнвэч_союкн", "ABONTODAY", "бшпсвйю", "ноепюрхбмши",
+						"SEND_IMSI", "бвепю_союкн", "оюдюкн_7_дмеи",
+						"ябнандмн", "FTP_UPL" };
+
+				ArrayList<SimpleEntry<String, String>> keyValueArray = getKeyAndValue(
+						arrayPhrases, parameterNames);
+				// Calendar calendar = Calendar.getInstance();
+				for (SimpleEntry<String, String> currentRecord : keyValueArray) {
+
+					SmsRecordRepDbStatus newRecord = new SmsRecordRepDbStatus(
+							smsInstance.getDate(), currentRecord.getKey(),
+							currentRecord.getValue());
+					recordsArray.add(newRecord);
+
+				}
+
+			}
+		} catch (Exception ex) {
+			MainActivity.writeLog(ex, allMessages);
+		}
+		return recordsArray;
+
+	}
+
+	private static ArrayList<SimpleEntry<String, String>> getKeyAndValue(
+			String[] arrayPhrases, String[] parameters) {
+		ArrayList<SimpleEntry<String, String>> arrayList = null;
+		try {
+			arrayList = new ArrayList<SimpleEntry<String, String>>();
 
 			for (String currentString : arrayPhrases) {
 
 				boolean added = false;
 
-				for (int j = 0; j < parameterNames.length && !added; j++) {
+				for (int j = 0; j < parameters.length && !added; j++) {
 
 					if (currentString.indexOf(":") != -1
 							&& currentString.substring(0,
 									currentString.indexOf(":")).equals(
-									parameterNames[j])) {
+									parameters[j])) {
 
-						SmsRecord newRecord = new SmsRecord(sms.getId(),
-								sms.getDate(), parameterNames[j],
-								currentString.substring(
-										currentString.indexOf(":") + 2,
-										currentString.length()));
-						recordsArray.add(newRecord);
+						String parameterValue = currentString.substring(
+								currentString.indexOf(":") + 2,
+								currentString.length());
+						SimpleEntry<String, String> newEntry = new SimpleEntry<String, String>(
+								parameters[j], parameterValue);
+						arrayList.add(newEntry);
 						added = true;
 
 					}
@@ -52,53 +83,10 @@ public class Parser {
 
 			}
 
+		} catch (Exception ex) {
+			MainActivity.writeLog(ex);
 		}
-
-		return recordsArray;
-
+		return arrayList;
 	}
 
-	public static ArrayList<SmsRecord> parse(String allMessages) {
-		
-		ArrayList<SmsRecord> recordsArray = new ArrayList<SmsRecord>();
-
-		// check that sms contain what will
-		// TODO remove this?
-		if (allMessages.startsWith(MainActivity.keyPhrase)) {
-
-			String[] arrayPhrases = allMessages.split((char) 10 + "|" + (char) 13);
-
-			String[] parameterNames = { "GoldenGate", "нрпюанрюкн",
-					"мнвэч_союкн", "ABONTODAY", "бшпсвйю", "бшпсвйю",
-					"ноепюрхбмши", "SEND_IMSI", "бвепю_союкн", "оюдюкн_7_дмеи",
-					"ябнандмн", "FTP_UPL" };
-
-			Calendar calendar = Calendar.getInstance();
-			for (String currentString : arrayPhrases) {
-
-				boolean added = false;
-
-				for (int j = 0; j < parameterNames.length && !added; j++) {
-
-					if (currentString.indexOf(":") != -1
-							&& currentString.substring(0,
-									currentString.indexOf(":")).equals(
-									parameterNames[j])) {
-
-						SmsRecord newRecord = new SmsRecord(calendar,
-								parameterNames[j], currentString.substring(
-										currentString.indexOf(":") + 2,
-										currentString.length()));
-						recordsArray.add(newRecord);
-						added = true;
-
-					}
-				}
-
-			}
-
-		}
-
-		return recordsArray;
-	}
 }

@@ -61,7 +61,7 @@
                 android:onClick="deleteAll"
                 android:text="@string/title_activity_delete_all" />
 
-            <Button
+            <!-- <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -83,7 +83,7 @@
                 android:layout_weight="2"
                 android:onClick="test"
                 android:text="@string/title_activity_show_panes"
-                android:visibility="gone" />
+                android:visibility="gone" /> -->
         </LinearLayout>
     </ScrollView>
 

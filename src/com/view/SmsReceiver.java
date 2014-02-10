@@ -31,8 +31,8 @@ public class SmsReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		//intent.setFlags(32);
-		
+		// intent.setFlags(32);
+
 		SmsReceiver.context = context;
 		Bundle bundle = intent.getExtras(); // ---get the SMS message passed
 											// in---
@@ -43,7 +43,7 @@ public class SmsReceiver extends BroadcastReceiver {
 			try {
 				Object[] pdus = (Object[]) bundle.get("pdus");
 				msgs = new SmsMessage[pdus.length];
-				
+
 				String allMessages = "";
 
 				boolean isNumber000019 = false;
@@ -60,41 +60,50 @@ public class SmsReceiver extends BroadcastReceiver {
 							&& !isNumber000019) {
 
 						isNumber000019 = true;
-						
+
 					}
-					
+
 					allMessages += msgBody;
 
 				}
 
-				if (isNumber000019 && allMessages.startsWith(MainActivity.keyPhrase)) {
+				SharedPreferences prefs = PreferenceManager
+						.getDefaultSharedPreferences(context);
+
+				// TODO стоит проверять только первую строку
+				if (isNumber000019
+						&& (allMessages
+								.startsWith(DisplayPanesActivity.keyPhraseRepDBStatus) || allMessages
+								.startsWith(DisplayPanesActivity.keyPhraseAbonDynamic))) {
 					HandleIncommingSms.setContext(context);
 					HandleIncommingSms.setSms(msgs);
 					HandleIncommingSms.incNumberRunning();
 					(new HandleIncommingSms()).start();
 
-					//TODO delete this?
+					// TODO delete this?
 					isNumber000019 = false;
-					
-					abortBroadcast();
+
+					if (prefs.getBoolean("abort_broadcast", false)) {
+
+						abortBroadcast();
+					}
+
 				}
 
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(msgs[0].getTimestampMillis());
 				sms = msgs[0].getTimestampMillis();
-				
-				SharedPreferences prefs = PreferenceManager
-						.getDefaultSharedPreferences(context);
-				if (prefs.getBoolean(
-						"show_sms_content_on_receive", false)) {
-					
+
+				if (prefs.getBoolean("show_sms_content_on_receive", false)) {
+
 					Toast.makeText(
-	                        context,
-	                        (allMessages.length() == 0 ? "no text" : allMessages
-	                                        + "\n" + msg_from), Toast.LENGTH_LONG).show();
-					
+							context,
+							(allMessages.length() == 0 ? "no text"
+									: allMessages + "\n" + msg_from),
+							Toast.LENGTH_LONG).show();
+
 				}
-				
+
 			} catch (Exception e) {
 
 				Toast.makeText(context, "exception on sms catch",
@@ -115,7 +124,8 @@ public class SmsReceiver extends BroadcastReceiver {
 
 		String result = "";
 		Uri uri = Uri.parse("content://sms/inbox");
-		String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER + "\"";
+		String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
+				+ "\"";
 
 		Cursor cursor = context.getContentResolver().query(uri, null,
 				whereClause, null, null);

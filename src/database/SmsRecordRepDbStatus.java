@@ -2,29 +2,27 @@ package database;
 
 import java.util.Calendar;
 
-public class SmsRecord {
+public class SmsRecordRepDbStatus {
 
 	private int id;
-	private String smsId;
 	private Calendar date;
 	private String parameterName;
 	private String parameterValue;
 
-	public SmsRecord(int id, String smsId, Calendar date, String parameterName,
-			String parameterValue) {
+	/*public SmsRecord(int id, Calendar date,
+			String parameterName, String parameterValue) {
 
-		this.setId(id);
-		this.smsId = smsId;
+		this.id = id;
 		this.date = date;
 		this.parameterName = parameterName;
 		this.parameterValue = parameterValue;
 
-	}
+	}*/
+	
+	public SmsRecordRepDbStatus(Integer id, String date,
+			String parameterName, String parameterValue) {
 
-	public SmsRecord(String smsId, String date, String parameterName,
-			String parameterValue) {
-
-		this.smsId = smsId;
+		this.id = id;
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(Long.parseLong(date));
 		this.date = calendar;
@@ -33,30 +31,25 @@ public class SmsRecord {
 
 	}
 
-	public SmsRecord(String smsId, Calendar date, String parameterName,
-			String parameterValue) {
+	public SmsRecordRepDbStatus(String date,
+			String parameterName, String parameterValue) {
 
-		this.setId(0);
-		this.smsId = smsId;
-		this.date = date;
-		this.parameterName = parameterName;
-		this.parameterValue = parameterValue;
-
-	}
-	
-	public SmsRecord(Calendar date, String parameterName,
-			String parameterValue) {
-
-		this.setId(0);
-		this.smsId = "0";
-		this.date = date;
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(Long.parseLong(date));
+		this.date = calendar;
 		this.parameterName = parameterName;
 		this.parameterValue = parameterValue;
 
 	}
 
-	public String getSmsId() {
-		return this.smsId;
+	public SmsRecordRepDbStatus(Calendar date,
+			String parameterName, String parameterValue) {
+
+		this.id = 0;
+		this.date = date;
+		this.parameterName = parameterName;
+		this.parameterValue = parameterValue;
+
 	}
 
 	public Calendar getDate() {
@@ -91,7 +84,8 @@ public class SmsRecord {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;

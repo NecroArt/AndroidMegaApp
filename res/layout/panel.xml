@@ -13,13 +13,34 @@
         android:gravity="center"
         android:orientation="vertical" >
 
+        <!--
+             <RelativeLayout
+            android:id="@+id/relative_layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            >
+        -->
+
+        <TextView
+            android:id="@+id/text_view_version"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Версия" >
+        </TextView>
+
         <TextView
             android:id="@+id/last_sms_date"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dip"
             android:layout_weight="1"
-            android:gravity="center" >
+            android:gravity="center"
+            android:text="Дата обновления статуса" >
         </TextView>
+
+        <!-- </RelativeLayout> -->
 
         <include
             android:id="@+id/golden_gate_include"

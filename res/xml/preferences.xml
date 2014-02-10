@@ -7,6 +7,11 @@
             android:title="Показывать уведомления"
             android:summary="При получении SMS показывать сообщение в статус-баре"
             android:defaultValue="true"/>
+    <CheckBoxPreference
+            android:key="abort_broadcast"
+            android:title="Перехватывать SMS"
+            android:summary="При получении SMS не передавать её остальным программам"
+            android:defaultValue="true"/>
     
     <PreferenceScreen
             android:key="second_preferencescreen"

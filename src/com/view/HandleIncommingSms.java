@@ -1,6 +1,7 @@
 package com.view;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import smsParsing.Parser;
 import android.app.Notification;
@@ -14,7 +15,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.telephony.SmsMessage;
 import database.DbHelper;
-import database.SmsRecord;
+import database.SmsRecordRepDbStatus;
 
 public class HandleIncommingSms extends Thread {
 
@@ -34,7 +35,7 @@ public class HandleIncommingSms extends Thread {
 	@SuppressWarnings("deprecation")
 	public void run() {
 
-		// проверка того, что нет треда, ищущего смс
+		// проверка того, что нет такого же треда
 		if (runningThreadAmount == 1) {
 
 			try {
@@ -43,40 +44,27 @@ public class HandleIncommingSms extends Thread {
 				DbHelper dbHelper = new DbHelper(SmsReceiver.getContext(),
 						null, null, DbHelper.getDBVersion());
 				dbHelper.close();
-				ArrayList<String> smsIds = dbHelper.getSmsIds();
-
+				
 				String allMessages = "";
 
-				String msg_from = null;
-				boolean isNumber000019 = false;
-				// if full message body will be contained in several
-				// sms-messages, than msgs.length will > 1
 				for (int i = 0; i < msgs.length; i++) {
 
-					msg_from = msgs[i].getOriginatingAddress();
-					//TODO test
-
 					String msgBody = msgs[i].getMessageBody();
-
-					if (msg_from.equals(MainActivity.TELEPHONE_NUMBER)
-							&& !isNumber000019) {
-
-						isNumber000019 = true;
-
-					}
-
 					allMessages += msgBody;
 
 				}
 
-				ArrayList<SmsRecord> recordsArray = Parser.parse(allMessages);
+				Calendar cal = Calendar.getInstance();
+				SMSInstance smsInstance = new SMSInstance(allMessages, String.valueOf(cal.getTimeInMillis()));
+				
+				ArrayList<Object> recordsArray = Parser.parse(smsInstance);
 
-				for (SmsRecord currentRecord : recordsArray) {
+				for (Object currentRecord: recordsArray) {
 
 					// TODO delete this
 					SmsReceiver.amount++;
 
-					dbHelper.addRecord(currentRecord);
+					dbHelper.addRecordRepDBStatus((SmsRecordRepDbStatus)currentRecord);
 
 				}
 

@@ -18,41 +18,41 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import database.DbHelper;
-import database.SmsRecord;
-
-
+import database.SmsRecordRepDbStatus;
 
 public class DisplayTableActivity extends Activity {
-	
-	@SuppressLint("NewApi") 
+
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
-		super.onCreate(savedInstanceState);
-		
-		// Make sure we're running on Honeycomb or higher to use ActionBar APIs
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        
-        DbHelper dbHelper = new DbHelper(this, null, null, DbHelper.getDBVersion());
-        
-        //TODO create method with parameter - amount required records
-        ArrayList<SmsRecord> recordsArray = dbHelper.getAll();
-        
-        TableLayout SMSTable = new TableLayout(this);
-        SMSTable.setStretchAllColumns(true);  
-        SMSTable.setShrinkAllColumns(true);
 
-    	//TODO change this to parameter
-        int i = 0;
-        
-		String lastSmsId = "";
-		for (SmsRecord currentSMS : recordsArray) {
+		super.onCreate(savedInstanceState);
+
+		// Make sure we're running on Honeycomb or higher to use ActionBar
+		// APIs
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			// Show the Up button in the action bar.
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+
+		DbHelper dbHelper = new DbHelper(this, null, null,
+				DbHelper.getDBVersion());
+
+		// TODO create method with parameter - amount required records
+		ArrayList<SmsRecordRepDbStatus> recordsArray = dbHelper.getAllRepDbStatus();
+
+		TableLayout SMSTable = new TableLayout(this);
+		SMSTable.setStretchAllColumns(true);
+		SMSTable.setShrinkAllColumns(true);
+
+		// TODO change this to parameter
+		int i = 0;
+
+		Calendar lastSmsId = null;
+		for (SmsRecordRepDbStatus currentSMS : recordsArray) {
 
 			// add space between different sms
-			if (!currentSMS.getSmsId().equals(lastSmsId)) {
+			if (!currentSMS.getDate().equals(lastSmsId)) {
 
 				TableRow currentRow = new TableRow(this);
 				currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -76,31 +76,31 @@ public class DisplayTableActivity extends Activity {
 			TableRow currentRow = new TableRow(this);
 			currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
 
-			/*TextView SMSSmsIdView = new TextView(this);
+			TextView SMSSmsIdView = new TextView(this);
 			SMSSmsIdView.setGravity(Gravity.LEFT);
-			SMSSmsIdView.setText(currentSMS.getSmsId());
+			SMSSmsIdView.setText(String.valueOf(currentSMS.getDate().getTimeInMillis()));
 			currentRow.addView(SMSSmsIdView);
 
 			TextView Delimeter1 = new TextView(this);
 			Delimeter1.setText("|");
 			currentRow.addView(Delimeter1);
-			
+
 			TextView SMSIdView = new TextView(this);
 			SMSIdView.setGravity(Gravity.CENTER);
 			SMSIdView.setText(String.valueOf(currentSMS.getId()));
 			currentRow.addView(SMSIdView);
-			
+
 			TextView Delimeter2 = new TextView(this);
 			Delimeter2.setText("|");
-			currentRow.addView(Delimeter2);*/
-			
+			currentRow.addView(Delimeter2);
+
 			TextView SMSDateView = new TextView(this);
-			//TODO test
+			// TODO test
 			Locale locale = getResources().getConfiguration().locale;
 			SMSDateView.setText(currentSMS.getDate().get(Calendar.DAY_OF_MONTH)
 					+ " "
-					+ new SimpleDateFormat("MMMM", locale).format(currentSMS.getDate()
-							.getTime())
+					+ new SimpleDateFormat("MMMM", locale).format(currentSMS
+							.getDate().getTime())
 					+ " "
 					+ String.format("%02d:%02d",
 							currentSMS.getDate().get(Calendar.HOUR_OF_DAY),
@@ -118,50 +118,23 @@ public class DisplayTableActivity extends Activity {
 
 			SMSTable.addView(currentRow);
 
-			lastSmsId = currentSMS.getSmsId();
+			lastSmsId = currentSMS.getDate();
 
 			// TODO change this to parameter
+
 			i++;
-			if (i == 10 * 10 /*that means rownum * 10*/) {
+			if (i == 11 * 100) {
 				break;
 			}
+
 		}
-		
-		/*for (SmsRecord currentSMS : recordsArray) {
 
-			TableRow currentRow = new TableRow(this);
-			currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
+		ScrollView tableScrollView = new ScrollView(this);
+		tableScrollView.setFillViewport(true);
+		tableScrollView.addView(SMSTable);
 
-			TextView SMSDateView = new TextView(this);
-			SMSDateView.setText(currentSMS.getDate().get(Calendar.DAY_OF_MONTH)
-					+ " "
-					+ new SimpleDateFormat("MMMM").format(currentSMS.getDate()
-							.getTime())
-					+ " "
-					+ String.format("%02d:%02d",
-							currentSMS.getDate().get(Calendar.HOUR_OF_DAY),
-							currentSMS.getDate().get(Calendar.MINUTE)));
-			currentRow.addView(SMSDateView);
+		setContentView(tableScrollView);
 
-			TextView SMSParamName = new TextView(this);
-			SMSParamName.setText(currentSMS.getParameterName());
-			currentRow.addView(SMSParamName);
-
-			TextView SMSParamValue = new TextView(this);
-			SMSParamValue.setText(currentSMS.getParameterValue());
-			currentRow.addView(SMSParamValue);
-
-			SMSTable.addView(currentRow);
-
-			
-		}*/
-        
-        ScrollView tableScrollView = new ScrollView(this);
-        tableScrollView.setFillViewport(true);
-        tableScrollView.addView(SMSTable);
-        
-        setContentView(tableScrollView);
-       
 	}
 
 	/**
@@ -190,5 +163,5 @@ public class DisplayTableActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 }

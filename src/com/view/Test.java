@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import database.DbHelper;
-import database.SmsRecord;
+import database.SmsRecordRepDbStatus;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -38,7 +38,7 @@ public class Test extends Activity {
 		//
 		//
 		//
-		// оперативный
+		// РѕРїРµСЂР°С‚РёРІРЅС‹Р№
 		//
 
 		LinearLayout innerLinearLayout = new LinearLayout(this);
@@ -51,7 +51,7 @@ public class Test extends Activity {
 
 		// label
 		TextView textView = new TextView(this);
-		textView.setText("Оперативный");
+		textView.setText("РћРїРµСЂР°С‚РёРІРЅС‹Р№");
 		textView.setId(++childId);
 		textView.setBackgroundColor(Color.parseColor("#43C6DB"));
 		textView.setGravity(Gravity.CENTER);
@@ -71,8 +71,8 @@ public class Test extends Activity {
 				DbHelper.getDBVersion());
 
 		//TODO make it as user options
-		String [] parameters = {"ОПЕРАТИВНЫЙ", "ABONTODAY"};
-		ArrayList<SmsRecord> recordsArray = dbHelper.getLastRecords(5, parameters);
+		String [] parameters = {"РћРџР•Р РђРўР�Р’РќР«Р™", "ABONTODAY"};
+		ArrayList<SmsRecordRepDbStatus> recordsArray = dbHelper.getLastRecordsRepDbStatus(5, parameters);
 
 		ArrayList<Integer> daysNumber = new ArrayList<Integer>();
 		ArrayList<Integer> status = new ArrayList<Integer>();
@@ -85,7 +85,7 @@ public class Test extends Activity {
 		// TODO make days amount parameter
 		for (int i = 0; added < daysAmount && i < recordsArray.size(); i++) {
 
-			if (recordsArray.get(i).getParameterName().equals("ОПЕРАТИВНЫЙ")) {
+			if (recordsArray.get(i).getParameterName().equals("РћРџР•Р РђРўР�Р’РќР«Р™")) {
 				ImageView imageView = new ImageView(this);
 				imageView.setId(++childId);
 				imageView.setPadding(0, 0, 0, 0);
@@ -94,11 +94,11 @@ public class Test extends Activity {
 				daysNumber.add(recordsArray.get(i).getDate()
 						.get(Calendar.DAY_OF_MONTH));
 				
-				if (recordsArray.get(i).getParameterValue().matches("вчера")) {
+				if (recordsArray.get(i).getParameterValue().matches("РІС‡РµСЂР°")) {
 					status.add(0);
 				} else {
 					if (recordsArray.get(i).getParameterValue()
-							.equals("позавчера")) {
+							.equals("РїРѕР·Р°РІС‡РµСЂР°")) {
 						status.add(1);
 					} else {
 						status.add(2);
@@ -113,7 +113,7 @@ public class Test extends Activity {
 		if (added == 0) {
 			TextView dataNotFound = new TextView(this);
 			dataNotFound.setGravity(Gravity.CENTER);
-			dataNotFound.setText("Данные не найдены");
+			dataNotFound.setText("Р”Р°РЅРЅС‹Рµ РЅРµ РЅР°Р№РґРµРЅС‹");
 			dataNotFound.setBackgroundColor(Color.parseColor("#43C6DB"));
 			innerLinearLayout.addView(dataNotFound);
 		}
@@ -156,7 +156,7 @@ public class Test extends Activity {
 		//
 		//
 		//
-		// выручка
+		// РІС‹СЂСѓС‡РєР°
 		//
 
 		innerLinearLayout = new LinearLayout(this);
@@ -203,11 +203,11 @@ public class Test extends Activity {
 						daysNumber.add(recordsArray.get(i).getDate()
 								.get(Calendar.DAY_OF_MONTH));
 						
-						if (recordsArray.get(i).getParameterValue().matches("вчера")) {
+						if (recordsArray.get(i).getParameterValue().matches("РІС‡РµСЂР°")) {
 							status.add(0);
 						} else {
 							if (recordsArray.get(i).getParameterValue()
-									.equals("позавчера")) {
+									.equals("РїРѕР·Р°РІС‡РµСЂР°")) {
 								status.add(1);
 							} else {
 								status.add(2);
@@ -222,7 +222,7 @@ public class Test extends Activity {
 				if (added == 0) {
 					TextView dataNotFound = new TextView(this);
 					dataNotFound.setGravity(Gravity.CENTER);
-					dataNotFound.setText("Данные не найдены");
+					dataNotFound.setText("Р”Р°РЅРЅС‹Рµ РЅРµ РЅР°Р№РґРµРЅС‹");
 					dataNotFound.setBackgroundColor(Color.parseColor("#8800CCCC"));
 					innerLinearLayout.addView(dataNotFound);
 				}

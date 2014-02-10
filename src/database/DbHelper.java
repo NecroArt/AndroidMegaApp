@@ -1,12 +1,5 @@
 package database;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -21,48 +14,113 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.BaseColumns;
 
 import com.view.MainActivity;
-import com.view.SMS;
+import com.view.SMSInstance;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-	public static abstract class TableEntry implements BaseColumns {
+	public static abstract class TableEntryRepDBStatus implements BaseColumns {
 		public static final String TABLE_NAME = "SMS_CONTENT";
 		public static final String COLUMN_NAME_ID = "id";
-		public static final String COLUMN_NAME_SMS_ID = "sms_id";
 		public static final String COLUMN_NAME_DATE = "date";
 		public static final String COLUMN_NAME_PARAMETER = "parameter";
 		public static final String COLUMN_NAME_VALUE = "value";
-		public static final String INTEGER_TYPE = "INTEGER";
+	}
+
+	public static abstract class TableEntryAbonDynamic implements BaseColumns {
+		public static final String TABLE_NAME = "ADON_DYNAMIC_CONTENT";
+		public static final String COLUMN_NAME_ID = "id";
+		public static final String COLUMN_NAME_DATE = "date";
+		public static final String COLUMN_NAME_REGION = "region";
+		public static final String COLUMN_NAME_DELIVERY_SUBS = "delivery_subs";
+		public static final String COLUMN_NAME_CHURN = "churn";
+		public static final String COLUMN_NAME_TREND = "trend";
 	}
 
 	public static final String COLUMN_NAME_SMS_ID = "sms_id";
 	public static final String COLUMN_NAME_DATE = "date";
 	public static final String COLUMN_NAME_PARAMETER = "parameter";
 	public static final String COLUMN_NAME_VALUE = "value";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 3;
 	private static final String DATABASE_NAME = "productDB.db";
 
 	public static final String INTEGER_TYPE = "INTEGER";
+	public static final String VARCHAR_TYPE = "VARCHAR (100)";
+
 	final String SMS_URI_INBOX = "content://sms/inbox";
 
-	public static final String SQL_CREATE_ENTRIES = "CREATE TABLE "
-			+ TableEntry.TABLE_NAME + " (" + TableEntry.COLUMN_NAME_ID + " "
-			+ TableEntry.INTEGER_TYPE + " PRIMARY KEY, "
-			+ TableEntry.COLUMN_NAME_SMS_ID + " " + TableEntry.INTEGER_TYPE
-			+ ", " + TableEntry.COLUMN_NAME_DATE + " "
-			+ TableEntry.INTEGER_TYPE + " , "
-			+ TableEntry.COLUMN_NAME_PARAMETER + " varchar (100), "
-			+ TableEntry.COLUMN_NAME_VALUE + " varchar (100)" + ");";
+	public static final String SQL_CREATE_ENTRIES = "CREATE TABLE IF NOT EXISTS "
+			+ TableEntryRepDBStatus.TABLE_NAME + " ("
+			+ TableEntryRepDBStatus.COLUMN_NAME_ID + " " + INTEGER_TYPE
+			+ " PRIMARY KEY, " + TableEntryRepDBStatus.COLUMN_NAME_DATE
+			+ " " + INTEGER_TYPE + ", "
+			+ TableEntryRepDBStatus.COLUMN_NAME_PARAMETER + " varchar (100), "
+			+ TableEntryRepDBStatus.COLUMN_NAME_VALUE + " varchar (100)"
+			+ ");| create table IF NOT EXISTS " + TableEntryAbonDynamic.TABLE_NAME + " ("
+			+ TableEntryAbonDynamic.COLUMN_NAME_ID + " " + INTEGER_TYPE
+			+ " PRIMARY KEY, " + TableEntryAbonDynamic.COLUMN_NAME_DATE
+			+ " " + INTEGER_TYPE + ", "
+			+ TableEntryAbonDynamic.COLUMN_NAME_REGION + " " + VARCHAR_TYPE
+			+ ", " + TableEntryAbonDynamic.COLUMN_NAME_DELIVERY_SUBS + " "
+			+ INTEGER_TYPE + ", " + TableEntryAbonDynamic.COLUMN_NAME_CHURN
+			+ " " + INTEGER_TYPE + ", "
+			+ TableEntryAbonDynamic.COLUMN_NAME_TREND + " " + INTEGER_TYPE
+			+ ");";
 
 	private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS "
-			+ TableEntry.TABLE_NAME;
+			+ TableEntryRepDBStatus.TABLE_NAME + ";| DROP TABLE IF EXISTS "
+			+ TableEntryAbonDynamic.TABLE_NAME;
 
-	public static final String TABLE_NAME = "sms_content";
-	public static final String VARCHARTYPE = "VARCHAR (100)";
+	private static final String SQL_UPGRADE_FROM_1_to_2_ENTRIES = "create table "
+			+ TableEntryAbonDynamic.TABLE_NAME
+			+ " ("
+			+ TableEntryAbonDynamic.COLUMN_NAME_ID
+			+ " "
+			+ INTEGER_TYPE
+			+ " PRIMARY KEY, "
+			+ COLUMN_NAME_SMS_ID
+			+ " "
+			+ INTEGER_TYPE
+			+ ", "
+			+ TableEntryAbonDynamic.COLUMN_NAME_DATE
+			+ " "
+			+ INTEGER_TYPE
+			+ ", "
+			+ TableEntryAbonDynamic.COLUMN_NAME_REGION
+			+ " "
+			+ VARCHAR_TYPE
+			+ ", "
+			+ TableEntryAbonDynamic.COLUMN_NAME_DELIVERY_SUBS
+			+ " "
+			+ INTEGER_TYPE
+			+ ", "
+			+ TableEntryAbonDynamic.COLUMN_NAME_CHURN
+			+ " "
+			+ INTEGER_TYPE
+			+ ", "
+			+ TableEntryAbonDynamic.COLUMN_NAME_TREND
+			+ " "
+			+ INTEGER_TYPE
+			+ ");";
+	
+	private static final String SQL_UPGRADE_FROM_2_to_3_ENTRIES = "alter table " + TableEntryRepDBStatus.TABLE_NAME + " rename to " +
+			TableEntryRepDBStatus.TABLE_NAME + "_old " + ";|" + "alter table " + TableEntryAbonDynamic.TABLE_NAME + " rename to " +
+			TableEntryAbonDynamic.TABLE_NAME + "_old " + ";|" + SQL_CREATE_ENTRIES + "|" + "insert into " + TableEntryRepDBStatus.TABLE_NAME + "(" + 
+			TableEntryRepDBStatus.COLUMN_NAME_ID + ", " + TableEntryRepDBStatus.COLUMN_NAME_DATE + ", " + TableEntryRepDBStatus.COLUMN_NAME_PARAMETER
+			+ ", " + TableEntryRepDBStatus.COLUMN_NAME_VALUE + ")" + " select " + TableEntryRepDBStatus.COLUMN_NAME_ID
+			+ ", " + TableEntryRepDBStatus.COLUMN_NAME_DATE + ", " + TableEntryRepDBStatus.COLUMN_NAME_PARAMETER
+			+ ", " + TableEntryRepDBStatus.COLUMN_NAME_VALUE + " from " + TableEntryRepDBStatus.TABLE_NAME + "_old ;|"
+			
+			+ "insert into " + TableEntryAbonDynamic.TABLE_NAME + "(" + 
+			TableEntryAbonDynamic.COLUMN_NAME_ID + ", " + TableEntryAbonDynamic.COLUMN_NAME_DATE + ", " + TableEntryAbonDynamic.COLUMN_NAME_CHURN +
+			", " + TableEntryAbonDynamic.COLUMN_NAME_DELIVERY_SUBS + ", " + TableEntryAbonDynamic.COLUMN_NAME_REGION + ", " + 
+			TableEntryAbonDynamic.COLUMN_NAME_TREND + ")" + " select " + TableEntryAbonDynamic.COLUMN_NAME_ID + ", " + 
+			TableEntryAbonDynamic.COLUMN_NAME_DATE + ", " + TableEntryAbonDynamic.COLUMN_NAME_CHURN +
+			", " + TableEntryAbonDynamic.COLUMN_NAME_DELIVERY_SUBS + ", " + TableEntryAbonDynamic.COLUMN_NAME_REGION + ", " + 
+			TableEntryAbonDynamic.COLUMN_NAME_TREND + " from " + TableEntryAbonDynamic.TABLE_NAME + "_old ;| drop table if exists " +
+			TableEntryRepDBStatus.TABLE_NAME + "_old ;| drop table if exists " + TableEntryAbonDynamic.TABLE_NAME + "_old;";
 
 	public DbHelper(Context context, String name, CursorFactory factory,
 			int version) {
@@ -111,11 +169,18 @@ public class DbHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		try {
-			db.execSQL(SQL_DELETE_ENTRIES);
+			//db.execSQL(SQL_UPGRADE_FROM_1_to_2_ENTRIES);
+			String[] arrayPhrases = SQL_CREATE_ENTRIES.split("\\|");
+			for (String curEntry: arrayPhrases) {
+				db.execSQL(curEntry);
+			}
+			arrayPhrases = SQL_UPGRADE_FROM_2_to_3_ENTRIES.split("\\|");
+			for (String curEntry: arrayPhrases) {
+				db.execSQL(curEntry);
+			}
 		} catch (SQLException ex) {
-			throw ex;
+			MainActivity.writeLog(ex);
 		}
-		onCreate(db);
 		db.close();
 	}
 
@@ -124,7 +189,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		try {
 			db.execSQL(SQL_DELETE_ENTRIES);
 		} catch (SQLException ex) {
-			throw ex;
+			MainActivity.writeLog(ex);
 		}
 		onCreate(db);
 		db.close();
@@ -153,19 +218,19 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		DbHelper dbHelper = new DbHelper(context, null, null,
 				DbHelper.getDBVersion());
-		ArrayList<SMS> smsArrayList = dbHelper.getNewSms(context);
+		ArrayList<SMSInstance> smsArrayList = dbHelper.getNewSms(context);
 
 		int rowsAddedAmount = 0;
 
-		for (SMS currentSms : smsArrayList) {
+		for (SMSInstance currentSms : smsArrayList) {
 
 			// check, that current sms is not already in database
 
-			ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
+			ArrayList<Object> recordsArray = Parser.parse(currentSms);
 
-			for (SmsRecord currentRecord : recordsArray) {
+			for (Object currentRecord : recordsArray) {
 
-				addRecord(currentRecord);
+				addRecordRepDBStatus((SmsRecordRepDbStatus) currentRecord);
 				rowsAddedAmount++;
 
 			}
@@ -189,20 +254,20 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		DbHelper dbHelper = new DbHelper(context, null, null,
 				DbHelper.getDBVersion());
-		ArrayList<SMS> smsArrayList = dbHelper.getNewSms(context,
+		ArrayList<SMSInstance> smsArrayList = dbHelper.getNewSms(context,
 				addingSmsNumber);
 
 		int rowsAddedAmount = 0;
 
-		for (SMS currentSms : smsArrayList) {
+		for (SMSInstance currentSms : smsArrayList) {
 
 			// check, that current sms is not already in database
 
-			ArrayList<SmsRecord> recordsArray = Parser.parse(currentSms);
+			ArrayList<Object> recordsArray = Parser.parse(currentSms);
 
-			for (SmsRecord currentRecord : recordsArray) {
+			for (Object currentRecord : recordsArray) {
 
-				addRecord(currentRecord);
+				addRecordRepDBStatus((SmsRecordRepDbStatus) currentRecord);
 				rowsAddedAmount++;
 
 			}
@@ -215,26 +280,25 @@ public class DbHelper extends SQLiteOpenHelper {
 	/**
 	 * Add new record in database.
 	 * 
-	 * @param date
-	 *            - SMS date
-	 * @param parameter
-	 *            - parameter name
-	 * @param value
-	 *            - parameter value
+	 * @param addingRecord - «апись статуса REP-DB, которую нужно добавить в таблицу {@link TableEntryRepDBStatus}.
 	 */
-	public boolean addRecord(SmsRecord addingRecord) {
+	public boolean addRecordRepDBStatus(SmsRecordRepDbStatus addingRecord) {
 
 		boolean added = false;
 
 		ContentValues values = new ContentValues();
-		values.put(COLUMN_NAME_SMS_ID, addingRecord.getSmsId());
-		values.put(COLUMN_NAME_DATE, addingRecord.getDate().getTimeInMillis());
-		values.put(COLUMN_NAME_PARAMETER, addingRecord.getParameterName());
-		values.put(COLUMN_NAME_VALUE, addingRecord.getParameterValue());
+		
+		values.put(TableEntryRepDBStatus.COLUMN_NAME_DATE, addingRecord
+				.getDate().getTimeInMillis());
+		values.put(TableEntryRepDBStatus.COLUMN_NAME_PARAMETER,
+				addingRecord.getParameterName());
+		values.put(TableEntryRepDBStatus.COLUMN_NAME_VALUE,
+				addingRecord.getParameterValue());
 
 		SQLiteDatabase db = this.getWritableDatabase();
 
-		added = db.insert(TABLE_NAME, null, values) == -1L ? false : true;
+		added = db.insert(TableEntryRepDBStatus.TABLE_NAME, null, values) == -1L ? false
+				: true;
 		db.close();
 
 		return added;
@@ -248,14 +312,14 @@ public class DbHelper extends SQLiteOpenHelper {
 	 *            - Id of SmsRecord which must be delete.
 	 * @return The number of rows affected.
 	 */
-	public int deleteById(Integer id) {
+	public int deleteByIdRepDbStatus(Integer id) {
 
 		int rowsDeleted = 0;
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = new String[] { String.valueOf(id) };
-		rowsDeleted = db.delete(TABLE_NAME, TableEntry.COLUMN_NAME_ID + " = ?",
-				args);
+		rowsDeleted = db.delete(TableEntryRepDBStatus.TABLE_NAME,
+				TableEntryRepDBStatus.COLUMN_NAME_ID + " = ?", args);
 
 		db.close();
 		return rowsDeleted;
@@ -267,10 +331,10 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * 
 	 * @return ћиллисекунды, которые можно перевести в календарь.
 	 */
-	public Long getLastSmsDate() {
+	public Long getLastSmsDateRepDbStatus() {
 
-		String query = "Select MAX(" + TableEntry.COLUMN_NAME_DATE + ") FROM "
-				+ TABLE_NAME;
+		String query = "Select MAX(" + TableEntryRepDBStatus.COLUMN_NAME_DATE
+				+ ") FROM " + TableEntryRepDBStatus.TABLE_NAME;
 
 		SQLiteDatabase db = this.getWritableDatabase();
 
@@ -292,30 +356,31 @@ public class DbHelper extends SQLiteOpenHelper {
 	 *            - Id of Sms which contained in SmsRecord that must be delete.
 	 * @return The number of rows affected.
 	 */
-	public int deleteBySmsId(Integer id) {
+	/*public int deleteBySmsIdRepDbStatus(Integer id) {
 
 		int rowsDeleted = 0;
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		String[] args = new String[] { String.valueOf(id) };
-		rowsDeleted = db.delete(TABLE_NAME, TableEntry.COLUMN_NAME_SMS_ID
-				+ " = ?", args);
+		rowsDeleted = db.delete(TableEntryRepDBStatus.TABLE_NAME,
+				TableEntryRepDBStatus.COLUMN_NAME_SMS_ID + " = ?", args);
 
 		db.close();
 		return rowsDeleted;
 
-	}
+	}*/
 
 	/**
 	 * Delete all data from table DbHelper.TABLE_NAME
 	 * 
 	 * @return
 	 */
-	public int deleteAll() {
+	public int deleteAllRepDbStatus() {
 
 		SQLiteDatabase db = this.getWritableDatabase();
 
-		int amountRows = db.delete(TABLE_NAME, null, null);
+		int amountRows = db
+				.delete(TableEntryRepDBStatus.TABLE_NAME, null, null);
 
 		db.close();
 
@@ -330,17 +395,17 @@ public class DbHelper extends SQLiteOpenHelper {
 	 *            - ƒата получени€ сообщени€.
 	 * @return ћассив найденных записей.
 	 */
-	public ArrayList<SmsRecord> findRecordByDate(Long date) {
+	public ArrayList<SmsRecordRepDbStatus> findRecordByDate(Long date) {
 
 		// TODO work out
-		ArrayList<SmsRecord> rec = null;
+		ArrayList<SmsRecordRepDbStatus> rec = null;
 		return rec;
 
 	}
 
-	public SMS findLastSms(Context context) {
+	public SMSInstance findLastSmsRepDbStatus(Context context) {
 
-		SMS sms = null;
+		SMSInstance sMSInstance = null;
 
 		try {
 
@@ -363,23 +428,19 @@ public class DbHelper extends SQLiteOpenHelper {
 				int index_Body = cursor.getColumnIndex("body");
 				int index_Date = cursor.getColumnIndex("date");
 
-				sms = new SMS(cursor.getString(index_id),
+				sMSInstance = new SMSInstance(cursor.getString(index_id),
 						cursor.getString(index_Body),
 						cursor.getString(index_Date));
 
 			}
 
-		} catch (SQLiteException ex) {
-
-			MainActivity.writeLog(ex);
-
-		} catch (NullPointerException ex) {
+		} catch (Exception ex) {
 
 			MainActivity.writeLog(ex);
 
 		}
-
-		return sms;
+		
+		return sMSInstance;
 	}
 
 	/**
@@ -390,25 +451,23 @@ public class DbHelper extends SQLiteOpenHelper {
 	 *            - Name of interesting parameter.
 	 * @return Array list of SmsRecord.
 	 */
-	public ArrayList<SmsRecord> findByParameterName(String name) {
+	public ArrayList<SmsRecordRepDbStatus> findByParameterNameRepDbStatus(String name) {
 
 		// TODO test
-		String query = "Select * FROM " + TABLE_NAME + " WHERE "
-				+ COLUMN_NAME_PARAMETER + " = \"" + name + "\"";
+		String query = "Select * FROM " + TableEntryRepDBStatus.TABLE_NAME
+				+ " WHERE " + COLUMN_NAME_PARAMETER + " = \"" + name + "\"";
 
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		Cursor cursor = db.rawQuery(query, null);
 
-		ArrayList<SmsRecord> rec = new ArrayList<SmsRecord>();
+		ArrayList<SmsRecordRepDbStatus> rec = new ArrayList<SmsRecordRepDbStatus>();
 
 		if (cursor.moveToFirst() == true) {
 			do {
-				Calendar date = Calendar.getInstance();
-				date.setTimeInMillis(Long.parseLong(cursor.getString(2)));
-
-				SmsRecord newRecord = new SmsRecord(cursor.getString(1), date,
-						cursor.getString(2), cursor.getString(3));
+				SmsRecordRepDbStatus newRecord = new SmsRecordRepDbStatus(
+						cursor.getInt(0), cursor.getString(1), cursor.getString(2),
+						cursor.getString(3));
 				rec.add(newRecord);
 			} while (cursor.moveToNext());
 		}
@@ -427,23 +486,21 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * Return set number records from database, group by id. If amount is not
 	 * defined or 0, then return all records. If table empty - returns null.
 	 */
-	public ArrayList<SmsRecord> getAll() {
+	public ArrayList<SmsRecordRepDbStatus> getAllRepDbStatus() {
 
-		ArrayList<SmsRecord> recordArray = new ArrayList<SmsRecord>();
+		ArrayList<SmsRecordRepDbStatus> recordArray = new ArrayList<SmsRecordRepDbStatus>();
 
-		String query = "Select * FROM " + TABLE_NAME + " order by date desc";
+		String query = "Select * FROM " + TableEntryRepDBStatus.TABLE_NAME
+				+ " order by date desc";
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		Cursor cursor = db.rawQuery(query, null);
 
 		if (cursor.moveToFirst()) {
 			do {
-				Calendar date = Calendar.getInstance();
-				date.setTimeInMillis(Long.parseLong(cursor.getString(2)));
-
-				SmsRecord newRecord = new SmsRecord(cursor.getInt(0),
-						cursor.getString(1), date, cursor.getString(3),
-						cursor.getString(4));
+				SmsRecordRepDbStatus newRecord = new SmsRecordRepDbStatus(cursor.getInt(0),
+						cursor.getString(1), cursor.getString(2),
+						cursor.getString(3));
 				recordArray.add(newRecord);
 			} while (cursor.moveToNext());
 		}
@@ -470,15 +527,15 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * @return ћассив соответствующих записей в количестве, не более чем
 	 *         количество_строк * количество_имЄн_параметров.
 	 */
-	public ArrayList<SmsRecord> getLastRecords(Integer rowNumReq,
+	public ArrayList<SmsRecordRepDbStatus> getLastRecordsRepDbStatus(Integer rowNumReq,
 			String[] parameterNames) {
 
-		ArrayList<SmsRecord> records = new ArrayList<SmsRecord>();
+		ArrayList<SmsRecordRepDbStatus> records = new ArrayList<SmsRecordRepDbStatus>();
 
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		String lastSmsDateQuery = "select max(date) from "
-				+ TableEntry.TABLE_NAME;
+				+ TableEntryRepDBStatus.TABLE_NAME;
 
 		Cursor cursor = db.rawQuery(lastSmsDateQuery, null);
 
@@ -517,8 +574,10 @@ public class DbHelper extends SQLiteOpenHelper {
 				endCalendar.set(Calendar.MILLISECOND, 99);
 				endCalendar.add(Calendar.DAY_OF_MONTH, -i);
 
-				query += " select max(" + TableEntry.COLUMN_NAME_DATE
-						+ ") from " + TABLE_NAME + " where date between "
+				query += " select max("
+						+ TableEntryRepDBStatus.COLUMN_NAME_DATE + ") from "
+						+ TableEntryRepDBStatus.TABLE_NAME
+						+ " where date between "
 						+ String.valueOf(startCalendar.getTimeInMillis())
 						+ " and "
 						+ String.valueOf(endCalendar.getTimeInMillis());
@@ -561,22 +620,23 @@ public class DbHelper extends SQLiteOpenHelper {
 				}
 			}
 
-			query = "select * from (select " + TableEntry.COLUMN_NAME_SMS_ID
-					+ ", " + TableEntry.COLUMN_NAME_DATE + ", "
-					+ TableEntry.COLUMN_NAME_PARAMETER + ", "
-					+ TableEntry.COLUMN_NAME_VALUE + " from " + TABLE_NAME
-					+ " where " + TableEntry.COLUMN_NAME_DATE + " in (" + dates
-					+ ") and " + TableEntry.COLUMN_NAME_PARAMETER + " in ("
-					+ parameters + ") order by " + TableEntry.COLUMN_NAME_DATE
-					+ " asc) q limit "
+			query = "select * from (select "
+					+ TableEntryRepDBStatus.COLUMN_NAME_DATE + ", "
+					+ TableEntryRepDBStatus.COLUMN_NAME_PARAMETER + ", "
+					+ TableEntryRepDBStatus.COLUMN_NAME_VALUE + " from "
+					+ TableEntryRepDBStatus.TABLE_NAME + " where "
+					+ TableEntryRepDBStatus.COLUMN_NAME_DATE + " in (" + dates
+					+ ") and " + TableEntryRepDBStatus.COLUMN_NAME_PARAMETER
+					+ " in (" + parameters + ") order by "
+					+ TableEntryRepDBStatus.COLUMN_NAME_DATE + " asc) q limit "
 					+ String.valueOf(rowNumReq * parameterNames.length);
 			cursor = db.rawQuery(query, null);
 			if (cursor.moveToFirst()) {
 
 				do {
-					SmsRecord newSmsRecrd = new SmsRecord(cursor.getString(0),
-							cursor.getString(1), cursor.getString(2),
-							cursor.getString(3));
+					SmsRecordRepDbStatus newSmsRecrd = new SmsRecordRepDbStatus(
+							cursor.getString(0),
+							cursor.getString(1), cursor.getString(2));
 					records.add(newSmsRecrd);
 				} while (cursor.moveToNext());
 
@@ -587,12 +647,12 @@ public class DbHelper extends SQLiteOpenHelper {
 			}
 
 		}
-		
+
 		db.close();
 
 		return records;
 	}
-	
+
 	/**
 	 * ѕолучает из базы данных приложени€ строки, названи€ параметров которых
 	 * содержитс€ в parameterNames.
@@ -605,15 +665,15 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * @return ћассив соответствующих записей в количестве, не более чем
 	 *         количество_строк * количество_имЄн_параметров.
 	 */
-	public ArrayList<SmsRecord> getLastRecords(Integer rowNumReq,
+	public ArrayList<SmsRecordRepDbStatus> getLastRecordsRepDbStatus(Integer rowNumReq,
 			ArrayList<String> parameterNames) {
 
-		ArrayList<SmsRecord> records = new ArrayList<SmsRecord>();
+		ArrayList<SmsRecordRepDbStatus> records = new ArrayList<SmsRecordRepDbStatus>();
 
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		String lastSmsDateQuery = "select max(date) from "
-				+ TableEntry.TABLE_NAME;
+				+ TableEntryRepDBStatus.TABLE_NAME;
 
 		Cursor cursor = db.rawQuery(lastSmsDateQuery, null);
 
@@ -632,7 +692,6 @@ public class DbHelper extends SQLiteOpenHelper {
 			Calendar lastCal = Calendar.getInstance();
 			lastCal.setTimeInMillis(maxDate);
 
-			// TODO cast sql queries for all intervals by union operator
 			String query = "";
 
 			for (int i = 0; i < rowNumReq; i++) {
@@ -652,8 +711,10 @@ public class DbHelper extends SQLiteOpenHelper {
 				endCalendar.set(Calendar.MILLISECOND, 99);
 				endCalendar.add(Calendar.DAY_OF_MONTH, -i);
 
-				query += " select max(" + TableEntry.COLUMN_NAME_DATE
-						+ ") from " + TABLE_NAME + " where date between "
+				query += " select max("
+						+ TableEntryRepDBStatus.COLUMN_NAME_DATE + ") from "
+						+ TableEntryRepDBStatus.TABLE_NAME
+						+ " where date between "
 						+ String.valueOf(startCalendar.getTimeInMillis())
 						+ " and "
 						+ String.valueOf(endCalendar.getTimeInMillis());
@@ -696,22 +757,23 @@ public class DbHelper extends SQLiteOpenHelper {
 				}
 			}
 
-			query = "select * from (select " + TableEntry.COLUMN_NAME_SMS_ID
-					+ ", " + TableEntry.COLUMN_NAME_DATE + ", "
-					+ TableEntry.COLUMN_NAME_PARAMETER + ", "
-					+ TableEntry.COLUMN_NAME_VALUE + " from " + TABLE_NAME
-					+ " where " + TableEntry.COLUMN_NAME_DATE + " in (" + dates
-					+ ") and " + TableEntry.COLUMN_NAME_PARAMETER + " in ("
-					+ parameters + ") order by " + TableEntry.COLUMN_NAME_DATE
-					+ " asc) q limit "
+			query = "select * from (select "
+					+ TableEntryRepDBStatus.COLUMN_NAME_DATE + ", "
+					+ TableEntryRepDBStatus.COLUMN_NAME_PARAMETER + ", "
+					+ TableEntryRepDBStatus.COLUMN_NAME_VALUE + " from "
+					+ TableEntryRepDBStatus.TABLE_NAME + " where "
+					+ TableEntryRepDBStatus.COLUMN_NAME_DATE + " in (" + dates
+					+ ") and " + TableEntryRepDBStatus.COLUMN_NAME_PARAMETER
+					+ " in (" + parameters + ") order by "
+					+ TableEntryRepDBStatus.COLUMN_NAME_DATE + " asc) q limit "
 					+ String.valueOf(rowNumReq * parameterNames.size());
 			cursor = db.rawQuery(query, null);
 			if (cursor.moveToFirst()) {
 
 				do {
-					SmsRecord newSmsRecrd = new SmsRecord(cursor.getString(0),
-							cursor.getString(1), cursor.getString(2),
-							cursor.getString(3));
+					SmsRecordRepDbStatus newSmsRecrd = new SmsRecordRepDbStatus(cursor.getString(0),
+							cursor.getString(1),
+							cursor.getString(2));
 					records.add(newSmsRecrd);
 				} while (cursor.moveToNext());
 
@@ -724,7 +786,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		}
 
 		db.close();
-		
+
 		return records;
 	}
 
@@ -736,11 +798,11 @@ public class DbHelper extends SQLiteOpenHelper {
 	 *            - Context where function use.
 	 * @return Array list of sms, which _id fields not in application database.
 	 */
-	public ArrayList<SMS> getNewSms(Context context) {
+	public ArrayList<SMSInstance> getNewSms(Context context) {
 
-		ArrayList<SMS> messages = new ArrayList<SMS>();
+		ArrayList<SMSInstance> messages = new ArrayList<SMSInstance>();
 
-		ArrayList<String> smsIds = getSmsIds();
+		Long lastSmsDate = getLastDateRepDbStatus();
 
 		try {
 
@@ -749,34 +811,14 @@ public class DbHelper extends SQLiteOpenHelper {
 			// TODO clear this
 			String[] projection = new String[] { "_id", "address", "person",
 					"body", "date", "type" };
-			String smsIdsList = null;
+			
+			String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER + "\"";
+			if (lastSmsDate != null && lastSmsDate != 0) {
 
-			for (String id : smsIds) {
-
-				if (smsIdsList == null) {
-
-					smsIdsList = id;
-				} else {
-
-					smsIdsList += ", " + id;
-
-				}
+				whereClause += " and date > " + String.valueOf(lastSmsDate);
 
 			}
-
-			String whereClause = null;
-			if (smsIdsList != null) {
-
-				whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
-						+ "\"" + " and _id not in (" + smsIdsList + ")";
-
-			} else {
-
-				whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
-						+ "\"";
-
-			}
-
+			
 			ContextWrapper contextWrapper = new android.content.ContextWrapper(
 					context);
 
@@ -791,7 +833,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
 				do {
 
-					SMS newSms = new SMS(cursor.getString(index_id),
+					SMSInstance newSms = new SMSInstance(
+							cursor.getString(index_id),
 							cursor.getString(index_Body),
 							cursor.getString(index_Date));
 
@@ -808,18 +851,46 @@ public class DbHelper extends SQLiteOpenHelper {
 
 			}
 
-		} catch (SQLiteException ex) {
+		} catch (Exception ex) {
 
-			MainActivity.writeLog(ex);
-
-		} catch (NullPointerException ex) {
-			
 			MainActivity.writeLog(ex);
 
 		}
 
 		return messages;
 
+	}
+
+	/**
+	 * ¬озвращает максимальную дату из записей в {@link TableEntryRepDBStatus}. ≈сли возникло исключение, то возвращает null. ≈сли данные не найдены, то возвращает 0. 
+	 * @return ƒата в миллисекундах.
+	 */
+	private Long getLastDateRepDbStatus() {
+
+		Long maxDate = null;
+		
+		try {
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		String lastSmsDateQuery = "select max(date) from "
+				+ TableEntryRepDBStatus.TABLE_NAME;
+
+		Cursor cursor = db.rawQuery(lastSmsDateQuery, null);
+		
+		maxDate = 0L;
+		if (cursor.moveToFirst()) {
+			maxDate = cursor.getLong(0);
+		}
+		if (!cursor.isClosed()) {
+			cursor.close();
+			cursor = null;
+		}
+		}
+		catch (Exception ex) {
+			MainActivity.writeLog(ex);
+		}
+				
+		return maxDate;
 	}
 
 	/**
@@ -834,15 +905,15 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * @return Array list of sms, which _id fields not in application database.
 	 */
 	// TODO test
-	private ArrayList<SMS> getNewSms(Context context, Integer smsNumber) {
+	private ArrayList<SMSInstance> getNewSms(Context context, Integer smsNumber) {
 
 		if (smsNumber < 1) {
 			smsNumber = 1;
 		}
 
-		ArrayList<SMS> messages = new ArrayList<SMS>();
+		ArrayList<SMSInstance> messages = new ArrayList<SMSInstance>();
 
-		ArrayList<String> smsIds = getSmsIds();
+		Long lastSmsDate = getLastDateRepDbStatus();
 
 		try {
 
@@ -851,31 +922,10 @@ public class DbHelper extends SQLiteOpenHelper {
 			// TODO clear this
 			String[] projection = new String[] { "_id", "address", "person",
 					"body", "date", "type" };
-			String smsIdsList = null;
+			String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER + "\"";
+			if (lastSmsDate != null && lastSmsDate != 0) {
 
-			for (String id : smsIds) {
-
-				if (smsIdsList == null) {
-
-					smsIdsList = id;
-				} else {
-
-					smsIdsList += ", " + id;
-
-				}
-
-			}
-
-			String whereClause = null;
-			if (smsIdsList != null) {
-
-				whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
-						+ "\"" + " and _id not in (" + smsIdsList + ")";
-
-			} else {
-
-				whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
-						+ "\"";
+				whereClause += " and date > " + String.valueOf(lastSmsDate);
 
 			}
 
@@ -894,7 +944,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
 				do {
 
-					SMS newSms = new SMS(cursor.getString(index_id),
+					SMSInstance newSms = new SMSInstance(
+							cursor.getString(index_id),
 							cursor.getString(index_Body),
 							cursor.getString(index_Date));
 
@@ -911,13 +962,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
 			}
 
-		} catch (SQLiteException ex) {
+		} catch (Exception ex) {
 
 			MainActivity.writeLog(ex);
-
-		} catch (NullPointerException ex) {
-
-			MainActivity.writeLog(ex); 
 
 		}
 
@@ -932,10 +979,10 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * @param rowNumReq
 	 * @return
 	 */
-	public static ArrayList<SMS> getSMSArrayList(Context context,
+	public static ArrayList<SMSInstance> getSMSArrayList(Context context,
 			Integer rowNumReq) {
 
-		ArrayList<SMS> array = new ArrayList<SMS>();
+		ArrayList<SMSInstance> array = new ArrayList<SMSInstance>();
 
 		final String SMS_URI_INBOX = "content://sms/inbox";
 
@@ -971,7 +1018,7 @@ public class DbHelper extends SQLiteOpenHelper {
 				String strbody = cur.getString(index_Body);
 				String longDate = cur.getString(index_Date);
 
-				SMS newSMS = new SMS(strId, strbody, longDate);
+				SMSInstance newSMS = new SMSInstance(strId, strbody, longDate);
 
 				array.add(newSMS);
 
@@ -988,103 +1035,4 @@ public class DbHelper extends SQLiteOpenHelper {
 		return array;
 	}
 
-	/**
-	 * Fetch sms id of all records from table DbHelper.TableEntry.TABLE_NAME
-	 * 
-	 * @return Array list of ids.
-	 */
-	public ArrayList<String> getSmsIds() {
-
-		ArrayList<String> ids = new ArrayList<String>();
-
-		String query = "Select distinct " + TableEntry.COLUMN_NAME_SMS_ID
-				+ " FROM " + TABLE_NAME;
-
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery(query, null);
-
-		if (cursor.moveToFirst()) {
-
-			do {
-
-				ids.add(cursor.getString(0));
-
-			} while (cursor.moveToNext());
-
-		}
-		if (!cursor.isClosed()) {
-			cursor.close();
-			cursor = null;
-		}
-
-		db.close();
-
-		return ids;
-
-	}
-
-	/**
-	 * Fetch sms from phone memory using ContentProvider. Look up sms that only
-	 * received from number 000019.
-	 * 
-	 * @param context
-	 *            - Context where function use.
-	 * @param rowNumReq
-	 *            - number of required sms amount.
-	 * @return ArrayList of SmsRecord.
-	 */
-	public ArrayList<SmsRecord> getSMSRecordArrayList(Context context,
-			Integer rowNumReq) {
-		ArrayList<SmsRecord> array = new ArrayList<SmsRecord>();
-		final String SMS_URI_INBOX = "content://sms/inbox";
-		try {
-			Uri uri = Uri.parse(SMS_URI_INBOX);
-			String[] projection = new String[] { "_id", "address", "person",
-					"body", "date", "type" };
-
-			// interesting sms only from 000019
-			String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
-					+ "\"";
-
-			// fetching sms with order by date
-
-			ContextWrapper contextWrapper = new android.content.ContextWrapper(
-					context);
-
-			Cursor cur = contextWrapper.getContentResolver().query(
-					uri,
-					projection,
-					whereClause,
-					null,
-					" date asc"
-							+ (rowNumReq > 0 ? " limit 0, "
-									+ rowNumReq.toString() : ""));
-			if (cur.moveToFirst()) {
-
-				int index_Date = cur.getColumnIndex("date");
-				do {
-					long longDate = cur.getLong(index_Date);
-
-					Calendar currentCalendarDate = Calendar.getInstance();
-					currentCalendarDate.setTimeInMillis(longDate);
-					SmsRecord newSMS = new SmsRecord("1", currentCalendarDate,
-							"name", "value");
-
-					array.add(newSMS);
-
-				} while (cur.moveToNext());
-
-				if (!cur.isClosed()) {
-					cur.close();
-					cur = null;
-				}
-			}
-		} catch (SQLiteException ex) {
-			System.out.println("sql-exception occured");
-		} catch (NullPointerException ex) {
-			System.out.println("null pointer exception occured");
-		}
-
-		return array;
-	}
 }

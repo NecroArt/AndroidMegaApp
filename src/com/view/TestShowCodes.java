@@ -3,7 +3,7 @@ package com.view;
 import java.util.ArrayList;
 
 import database.DbHelper;
-import database.SmsRecord;
+import database.SmsRecordRepDbStatus;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.LinearLayout;

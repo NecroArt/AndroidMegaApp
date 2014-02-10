@@ -36,14 +36,13 @@ public class MainActivity extends Activity {
 
 	public static String my_text = null;
 	public static String text = null;
-	
-	//TODO выпилить?
+
+	// TODO выпилить?
 	public static Locale locale = null;
-	
+
 	public static int mId;
 	private static boolean firstLaunch = true;
 	public static Context context = null;
-	public static String keyPhrase = "Статус критичных процессов REP-COMM";
 
 	@SuppressLint("NewApi")
 	@Override
@@ -58,7 +57,7 @@ public class MainActivity extends Activity {
 			DbHelper dbHelper = new DbHelper(this, null, null,
 					DbHelper.getDBVersion());
 
-			Long millis = dbHelper.getLastSmsDate();
+			Long millis = dbHelper.getLastSmsDateRepDbStatus();
 			locale = getResources().getConfiguration().locale;
 			if (millis != 0L) {
 				Calendar date = Calendar.getInstance();
@@ -184,7 +183,7 @@ public class MainActivity extends Activity {
 
 		DbHelper dbHelper = new DbHelper(this, null, null,
 				DbHelper.getDBVersion());
-		Integer deletedRows = dbHelper.deleteAll();
+		Integer deletedRows = dbHelper.deleteAllRepDbStatus();
 		Toast.makeText(
 				this,
 				deletedRows > 0 ? "deleted " + deletedRows.toString() + " rows"
@@ -241,14 +240,6 @@ public class MainActivity extends Activity {
 
 	}
 
-	/*
-	 * public void showCodes(View view) {
-	 * 
-	 * Intent intent = new Intent(this, TestShowCodes.class);
-	 * 
-	 * startActivity(intent); }
-	 */
-
 	public static void writeLog(Exception ex) {
 
 		File sdCard = Environment.getExternalStorageDirectory();
@@ -256,20 +247,65 @@ public class MainActivity extends Activity {
 		dir.mkdirs();
 		File file = new File(dir, "logcat.txt");
 		try {
-			// to write logcat in text file
-			FileOutputStream fOut = new FileOutputStream(file);
+			FileOutputStream fOut = new FileOutputStream(file, true);
 			OutputStreamWriter osw = new OutputStreamWriter(fOut);
 
-			// Write the string to the file
+						Calendar calendar = Calendar.getInstance();
+			String date = calendar.get(Calendar.DAY_OF_MONTH)
+					+ " "
+					+ new SimpleDateFormat("MMMM", locale)
+							.format(calendar.getTime())
+					+ " "
+					+ String.format("%02d:%02d:%02d",
+							calendar.get(Calendar.HOUR_OF_DAY),
+							calendar.get(Calendar.MINUTE),
+							calendar.get(Calendar.SECOND));
 
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
 			ex.printStackTrace(pw);
-			osw.write(sw.toString());
 
-			osw.write(sw.toString());
+			osw.write(date + "\n" + sw.toString() + "\n----------\n");
 			osw.flush();
 			osw.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public static void writeLog(Exception ex, String info) {
+
+		File sdCard = Environment.getExternalStorageDirectory();
+		File dir = new File(sdCard.getAbsolutePath() + "/myLogcat");
+		dir.mkdirs();
+		File file = new File(dir, "logcat.txt");
+		try {
+			FileOutputStream fOut = new FileOutputStream(file, true);
+			OutputStreamWriter osw = new OutputStreamWriter(fOut);
+
+						Calendar calendar = Calendar.getInstance();
+			String date = calendar.get(Calendar.DAY_OF_MONTH)
+					+ " "
+					+ new SimpleDateFormat("MMMM", locale)
+							.format(calendar.getTime())
+					+ " "
+					+ String.format("%02d:%02d:%02d",
+							calendar.get(Calendar.HOUR_OF_DAY),
+							calendar.get(Calendar.MINUTE),
+							calendar.get(Calendar.SECOND));
+
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			ex.printStackTrace(pw);
+
+			osw.write(date + " \n " + sw.toString() + " params: " + info + " \n----------\n");
+			osw.flush();
+			osw.close();
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
