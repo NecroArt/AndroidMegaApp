@@ -29,6 +29,13 @@ public class DbHelper extends SQLiteOpenHelper {
 		public static final String COLUMN_NAME_VALUE = "value";
 	}
 
+	/**
+	 * ѕредставл€ет таблицу притока-оттока абонентов. ƒл€ каждой смс хранитс€ особа€ строка с датой актуальности смс. “ака€ строка идентифицируетс€
+	 * словом "DATE" в колонке COLUMN_NAME_REGION; в этом случае дата хранитс€ в формате дд.мм.гггг в колонке COLUMN_NAME_DELIVERY_SUBS, а остальные
+	 * содержат null-значени€.
+	 * @author artem.voytsekhovsky
+	 *
+	 */
 	public static abstract class TableEntryAbonDynamic implements BaseColumns {
 		public static final String TABLE_NAME = "ADON_DYNAMIC_CONTENT";
 		public static final String COLUMN_NAME_ID = "id";
@@ -129,7 +136,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(SQL_CREATE_ENTRIES);
+		//db.execSQL(SQL_CREATE_ENTRIES);
+		String[] arrayPhrases = SQL_CREATE_ENTRIES.split("\\|");
+		for (String curEntry: arrayPhrases) {
+			db.execSQL(curEntry);
+		}
 	}
 
 	/**
@@ -278,9 +289,10 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * Add new record in database.
+	 * ƒобавл€ет новую запись в таблицу статуса REP-DB {@link TableEntryRepDBStatus}.
 	 * 
 	 * @param addingRecord - «апись статуса REP-DB, которую нужно добавить в таблицу {@link TableEntryRepDBStatus}.
+	 * @return true - если запись была добавлена, иначе false.
 	 */
 	public boolean addRecordRepDBStatus(SmsRecordRepDbStatus addingRecord) {
 
@@ -304,6 +316,32 @@ public class DbHelper extends SQLiteOpenHelper {
 		return added;
 
 	}
+	
+	/**
+	 * ƒобавл€ет новую запись в таблицу движений абонентов {@link TableEntryAbonDynamic}.
+	 * @param addingRecord  - «апись статуса REP-DB, которую нужно добавить в таблицу {@link TableEntryAbonDynamic}.
+	 * @return true - если запись была добавлена, иначе false.
+	 */
+	public boolean addRecordAbonDynamic (SmsRecordAbonDynamic addingRecord) {
+		
+		boolean added = false;
+
+		ContentValues values = new ContentValues();
+		
+		values.put(TableEntryAbonDynamic.COLUMN_NAME_REGION, addingRecord.getRegion());
+		values.put(TableEntryAbonDynamic.COLUMN_NAME_DELIVERY_SUBS, addingRecord.getSubs());
+		values.put(TableEntryAbonDynamic.COLUMN_NAME_CHURN, addingRecord.getChurn());
+		values.put(TableEntryAbonDynamic.COLUMN_NAME_TREND, addingRecord.getTrend());
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		added = db.insert(TableEntryAbonDynamic.TABLE_NAME, null, values) == -1L ? false
+				: true;
+		
+		db.close();
+		
+		return added;
+	}
 
 	/**
 	 * Delete SmsRecord by id parameter.
@@ -326,28 +364,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
-	/**
-	 * ¬озвращает дату последней смс из базы данных.
-	 * 
-	 * @return ћиллисекунды, которые можно перевести в календарь.
-	 */
-	public Long getLastSmsDateRepDbStatus() {
-
-		String query = "Select MAX(" + TableEntryRepDBStatus.COLUMN_NAME_DATE
-				+ ") FROM " + TableEntryRepDBStatus.TABLE_NAME;
-
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		Cursor cursor = db.rawQuery(query, null);
-
-		if (cursor.moveToFirst() == true) {
-			return cursor.getLong(0);
-		}
-
-		db.close();
-		return 0L;
-
-	}
+	
 
 	/**
 	 * Delete SmsRecord by id parameter.
@@ -381,6 +398,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		int amountRows = db
 				.delete(TableEntryRepDBStatus.TABLE_NAME, null, null);
+		
+		amountRows += db
+				.delete(TableEntryAbonDynamic.TABLE_NAME, null, null);
 
 		db.close();
 
@@ -442,7 +462,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		
 		return sMSInstance;
 	}
-
+	
 	/**
 	 * Fetch SmsRecords from application database, which parameter name equal
 	 * "name"
@@ -516,141 +536,26 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * ѕолучает из базы данных приложени€ строки, названи€ параметров которых
-	 * содержитс€ в parameterNames.
+	 * ¬озвращает дату последней смс из базы данных.
 	 * 
-	 * @param rowNumReq
-	 *            - количество строк дл€ каждого параметра, которое нужно
-	 *            получить.
-	 * @param parameterNames
-	 *            - названи€ параметров, которые движок будет искать в базе.
-	 * @return ћассив соответствующих записей в количестве, не более чем
-	 *         количество_строк * количество_имЄн_параметров.
+	 * @return ћиллисекунды, которые можно перевести в календарь.
 	 */
-	public ArrayList<SmsRecordRepDbStatus> getLastRecordsRepDbStatus(Integer rowNumReq,
-			String[] parameterNames) {
-
-		ArrayList<SmsRecordRepDbStatus> records = new ArrayList<SmsRecordRepDbStatus>();
-
-		SQLiteDatabase db = this.getReadableDatabase();
-
-		String lastSmsDateQuery = "select max(date) from "
-				+ TableEntryRepDBStatus.TABLE_NAME;
-
-		Cursor cursor = db.rawQuery(lastSmsDateQuery, null);
-
-		Long maxDate = null;
-		if (cursor.moveToFirst()) {
-			maxDate = cursor.getLong(0);
+	public Long getLastSmsDateRepDbStatus() {
+	
+		String query = "Select MAX(" + TableEntryRepDBStatus.COLUMN_NAME_DATE
+				+ ") FROM " + TableEntryRepDBStatus.TABLE_NAME;
+	
+		SQLiteDatabase db = this.getWritableDatabase();
+	
+		Cursor cursor = db.rawQuery(query, null);
+	
+		if (cursor.moveToFirst() == true) {
+			return cursor.getLong(0);
 		}
-		if (!cursor.isClosed()) {
-			cursor.close();
-			cursor = null;
-		}
-
-		if (maxDate != null) {
-
-			// TODO cast rowNumReq time intervals below last sms time
-			Calendar lastCal = Calendar.getInstance();
-			lastCal.setTimeInMillis(maxDate);
-
-			// TODO cast sql queries for all intervals by union operator
-			String query = "";
-
-			for (int i = 0; i < rowNumReq; i++) {
-				Calendar startCalendar = Calendar.getInstance();
-				startCalendar.setTimeInMillis(maxDate);
-				startCalendar.set(Calendar.HOUR_OF_DAY, 0);
-				startCalendar.set(Calendar.MINUTE, 0);
-				startCalendar.set(Calendar.SECOND, 0);
-				startCalendar.set(Calendar.MILLISECOND, 0);
-				startCalendar.add(Calendar.DAY_OF_MONTH, -i);
-
-				Calendar endCalendar = Calendar.getInstance();
-				endCalendar.setTimeInMillis(maxDate);
-				endCalendar.set(Calendar.HOUR_OF_DAY, 23);
-				endCalendar.set(Calendar.MINUTE, 59);
-				endCalendar.set(Calendar.SECOND, 59);
-				endCalendar.set(Calendar.MILLISECOND, 99);
-				endCalendar.add(Calendar.DAY_OF_MONTH, -i);
-
-				query += " select max("
-						+ TableEntryRepDBStatus.COLUMN_NAME_DATE + ") from "
-						+ TableEntryRepDBStatus.TABLE_NAME
-						+ " where date between "
-						+ String.valueOf(startCalendar.getTimeInMillis())
-						+ " and "
-						+ String.valueOf(endCalendar.getTimeInMillis());
-				if (i < rowNumReq - 1) {
-					query += " union ";
-				}
-			}
-
-			ArrayList<Long> arrayCal = new ArrayList<Long>();
-
-			if (!query.equals("")) {
-				cursor = db.rawQuery(query, null);
-				if (cursor.moveToFirst()) {
-
-					do {
-						arrayCal.add(cursor.getLong(0));
-					} while (cursor.moveToNext());
-
-				}
-				if (!cursor.isClosed()) {
-					cursor.close();
-					cursor = null;
-				}
-			}
-			String dates = "";
-			for (int i = 0; i < arrayCal.size(); i++) {
-				if (i < arrayCal.size() - 1) {
-					dates += arrayCal.get(i) + ", ";
-				} else {
-					dates += arrayCal.get(i);
-				}
-			}
-
-			String parameters = "";
-			for (int i = 0; i < parameterNames.length; i++) {
-				if (i < parameterNames.length - 1) {
-					parameters += "\'" + parameterNames[i] + "\', ";
-				} else {
-					parameters += "\'" + parameterNames[i] + "\'";
-				}
-			}
-
-			query = "select * from (select "
-					+ TableEntryRepDBStatus.COLUMN_NAME_DATE + ", "
-					+ TableEntryRepDBStatus.COLUMN_NAME_PARAMETER + ", "
-					+ TableEntryRepDBStatus.COLUMN_NAME_VALUE + " from "
-					+ TableEntryRepDBStatus.TABLE_NAME + " where "
-					+ TableEntryRepDBStatus.COLUMN_NAME_DATE + " in (" + dates
-					+ ") and " + TableEntryRepDBStatus.COLUMN_NAME_PARAMETER
-					+ " in (" + parameters + ") order by "
-					+ TableEntryRepDBStatus.COLUMN_NAME_DATE + " asc) q limit "
-					+ String.valueOf(rowNumReq * parameterNames.length);
-			cursor = db.rawQuery(query, null);
-			if (cursor.moveToFirst()) {
-
-				do {
-					SmsRecordRepDbStatus newSmsRecrd = new SmsRecordRepDbStatus(
-							cursor.getString(0),
-							cursor.getString(1), cursor.getString(2));
-					records.add(newSmsRecrd);
-				} while (cursor.moveToNext());
-
-			}
-			if (!cursor.isClosed()) {
-				cursor.close();
-				cursor = null;
-			}
-
-		}
-
+	
 		db.close();
-
-		return records;
+		return 0L;
+	
 	}
 
 	/**
@@ -790,6 +695,57 @@ public class DbHelper extends SQLiteOpenHelper {
 		return records;
 	}
 
+	/**
+	 * ѕолучает из базы данных приложени€ строки, названи€ параметров которых
+	 * содержитс€ в parameterNames.
+	 * 
+	 * @param rowNumReq
+	 *            - количество строк дл€ каждого параметра, которое нужно
+	 *            получить.
+	 * @param parameterNames
+	 *            - названи€ параметров, которые движок будет искать в базе.
+	 * @return ћассив соответствующих записей в количестве, не более чем
+	 *         количество_строк * количество_имЄн_параметров.
+	 */
+	public ArrayList<SmsRecordAbonDynamic> getLastRecordsAbonDynamic() {
+		ArrayList<SmsRecordAbonDynamic> records = new ArrayList<SmsRecordAbonDynamic>();
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		String query = 
+				"select " +
+						TableEntryAbonDynamic.COLUMN_NAME_DATE + ", " +
+						TableEntryAbonDynamic.COLUMN_NAME_REGION + ", " +
+						TableEntryAbonDynamic.COLUMN_NAME_DELIVERY_SUBS + ", " +
+						TableEntryAbonDynamic.COLUMN_NAME_CHURN + ", " +
+						TableEntryAbonDynamic.COLUMN_NAME_TREND +
+		" from " + TableEntryAbonDynamic.TABLE_NAME +
+				" where " + TableEntryAbonDynamic.COLUMN_NAME_DATE + " in (select max(" + TableEntryAbonDynamic.COLUMN_NAME_DATE + ") from "
+				+ TableEntryAbonDynamic.TABLE_NAME + ")";
+		
+		Cursor cursor = db.rawQuery(query, null);
+		
+		if (cursor.moveToFirst()) {
+
+			do {
+				SmsRecordAbonDynamic newSmsRecord = new SmsRecordAbonDynamic(cursor.getString(0),
+						cursor.getString(1),
+						cursor.getString(2),
+						cursor.getString(3),
+						cursor.getString(4));
+				records.add(newSmsRecord);
+			} while (cursor.moveToNext());
+
+		}
+		if (!cursor.isClosed()) {
+			cursor.close();
+			cursor = null;
+		}
+		
+		db.close();
+
+		return records;
+	}
 	/**
 	 * Fetch sms from phone memory, which have ids have not contained in
 	 * application database.

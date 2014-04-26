@@ -13,6 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fillViewport="true" >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,6 +23,7 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:weightSum="4" >
+
             <TextView
                 android:id="@+id/last_sms_date_on_database_panel"
                 android:layout_width="match_parent"
@@ -29,31 +31,27 @@
                 android:layout_weight="1"
                 android:gravity="center" >
             </TextView>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="addAll"
                 android:text="@string/title_activity_add_all" />
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="deleteAll"
                 android:text="@string/title_activity_delete_all" />
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="showTable"
                 android:text="@string/button_show_table" />
-            
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="showIds"
-                android:text="show ids" />
         </LinearLayout>
     </ScrollView>
 

@@ -96,6 +96,20 @@
             android:id="@+id/svobodno_include"
             layout="@layout/status_svobodno"
             android:visibility="gone" />
+        
+        <TextView
+            android:id="@+id/last_abon_dynamic_sms_date"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Дата обновления статуса" >
+        </TextView>
+        
+        <include
+            android:id="@+id/abon_dynamic_include"
+            layout="@layout/abon_dynamic"
+            android:visibility="gone" />
     </LinearLayout>
 
 </ScrollView>

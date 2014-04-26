@@ -70,66 +70,6 @@ public class SettingsDatabaseActivity extends DisplayPanesActivity {
 			MainActivity.writeLog(ex);
 		}
 	}
-	
-	public void showIds(View view) {
-		ArrayList<String> smsIds = new ArrayList<String>();
-		final String SMS_URI_INBOX = "content://sms/inbox";
-		Uri uri = Uri.parse(SMS_URI_INBOX);
-		String[] projection = new String[] { "_id"};
-
-		// interesting sms only from 000019
-		String whereClause = "address=\"" + MainActivity.TELEPHONE_NUMBER
-				+ "\"";
-
-		// fetching sms with order by date
-
-		ContextWrapper contextWrapper = new android.content.ContextWrapper(
-				this);
-
-		Cursor cur = contextWrapper.getContentResolver().query(
-				uri,
-				projection,
-				whereClause,
-				null,
-				" date asc");
-		if (cur.moveToFirst()) {
-
-			int index_Date = cur.getColumnIndex("_id");
-			do {
-				String longDate = cur.getString(index_Date);
-
-				
-				smsIds.add(longDate);
-
-			} while (cur.moveToNext());
-
-			if (!cur.isClosed()) {
-				cur.close();
-				cur = null;
-			}
-		}
-		
-		
-		TableLayout SMSTable = new TableLayout(this);
-		SMSTable.setStretchAllColumns(true);
-		SMSTable.setShrinkAllColumns(true);
-		for (String str: smsIds) {
-			TableRow currentRow = new TableRow(this);
-			currentRow.setGravity(Gravity.CENTER_HORIZONTAL);
-			
-			TextView SMSDateView = new TextView(this);
-			SMSDateView.setText(str);
-			currentRow.addView(SMSDateView);
-			
-			SMSTable.addView(currentRow);
-		}
-		
-		ScrollView tableScrollView = new ScrollView(this);
-		tableScrollView.setFillViewport(true);
-		tableScrollView.addView(SMSTable);
-
-		setContentView(tableScrollView);
-	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupActionBar() {

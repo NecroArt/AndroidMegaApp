@@ -36,6 +36,36 @@ public class SmsRecordAbonDynamic {
 		this.trend = trend;
 		
 	}
+	
+	public SmsRecordAbonDynamic (String date, String region, String subs, String churn, String trend) {
+		
+		this.id = 0;
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(Long.parseLong(date));
+		this.date = calendar;
+		
+		this.region = region;
+		this.subs = subs;
+		this.churn = churn;
+		this.trend = trend;
+		
+	}
+	
+	public SmsRecordAbonDynamic (String date, String region, String subs) {
+		
+		this.id = 0;
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(Long.parseLong(date));
+		this.date = calendar;
+		
+		this.region = region;
+		this.subs = subs;
+		this.churn = null;
+		this.trend = null;
+		
+	}
 
 	public int getId() {
 		return id;

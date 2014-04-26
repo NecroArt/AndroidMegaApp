@@ -1,11 +1,6 @@
 package com.view;
 
 import java.util.Calendar;
-import java.util.Locale;
-
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,13 +13,10 @@ import android.preference.PreferenceManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 public class SmsReceiver extends BroadcastReceiver {
 	private static Context context = null;
-	public static int amount = 0;
-
+	
 	// TODO delete this
 	public static Long sms = 0L;
 	public static Long db = 0L;
@@ -120,6 +112,8 @@ public class SmsReceiver extends BroadcastReceiver {
 
 	}
 
+	//TODO реализовать или удалить
+	@SuppressWarnings("unused")
 	private String markMessageRead(Context context, String body) {
 
 		String result = "";

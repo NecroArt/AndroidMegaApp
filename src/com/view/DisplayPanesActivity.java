@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +23,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import database.DbHelper;
+import database.SmsRecordAbonDynamic;
 import database.SmsRecordRepDbStatus;
 
 public class DisplayPanesActivity extends Activity {
@@ -30,7 +31,8 @@ public class DisplayPanesActivity extends Activity {
 	private static int daysAmount = 5;
 	private static final int RESULT_SETTINGS = 1;
 	public static String keyPhraseRepDBStatus = "Статус критичных процессов REP-COMM";
-	public static String keyPhraseAbonDynamic = "Динамика АБ за ";
+	// public static String keyPhraseAbonDynamic = "Динамика АБ за ";
+	public static String keyPhraseAbonDynamic = "fff";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,80 +50,6 @@ public class DisplayPanesActivity extends Activity {
 
 			DbHelper dbHelper = new DbHelper(this, null, null,
 					DbHelper.getDBVersion());
-			
-			//TEST
-			/*Calendar cal = Calendar.getInstance();
-			
-			SmsRecordRepDbStatus rec = new SmsRecordRepDbStatus(cal, "GoldenGate", "OK");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ОТРАБОТАЛО", "123");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "НОЧЬЮ_УПАЛО", "2");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ABONTODAY", "вчера");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ВЫРУЧКА", "вчера");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ОПЕРАТИВНЫЙ", "вчера");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "SEND_IMSI", "OK");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ВЧЕРА_УПАЛО", "2");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ПАДАЛО_7_ДНЕЙ", "2");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "СВОБОДНО", "234");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "FTP_UPL", "OK");
-			dbHelper.addRecordRepDBStatus(rec);
-			
-			cal.add(Calendar.HOUR_OF_DAY, 2);
-			rec = new SmsRecordRepDbStatus(cal, "GoldenGate", "OK");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ОТРАБОТАЛО", "123");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "НОЧЬЮ_УПАЛО", "2");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ABONTODAY", "вчера");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ВЫРУЧКА", "вчера");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ОПЕРАТИВНЫЙ", "вчера");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "SEND_IMSI", "OK");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ВЧЕРА_УПАЛО", "2");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ПАДАЛО_7_ДНЕЙ", "2");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "СВОБОДНО", "234");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "FTP_UPL", "OK");
-			dbHelper.addRecordRepDBStatus(rec);
-			
-			cal.add(Calendar.DAY_OF_MONTH, -1);
-			rec = new SmsRecordRepDbStatus(cal, "GoldenGate", "WARN");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ОТРАБОТАЛО", "124");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "НОЧЬЮ_УПАЛО", "5");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ABONTODAY", "позавчера");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ВЫРУЧКА", "позавчера");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ОПЕРАТИВНЫЙ", "позавчера");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "SEND_IMSI", "WARN");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ВЧЕРА_УПАЛО", "6");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "ПАДАЛО_7_ДНЕЙ", "5");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "СВОБОДНО", "879");
-			dbHelper.addRecordRepDBStatus(rec);
-			rec = new SmsRecordRepDbStatus(cal, "FTP_UPL", "ERR");
-			dbHelper.addRecordRepDBStatus(rec);*/
 
 			Long millis = dbHelper.getLastSmsDateRepDbStatus();
 			Locale locale = getResources().getConfiguration().locale;
@@ -143,8 +71,10 @@ public class DisplayPanesActivity extends Activity {
 			}
 
 			TextView version = (TextView) findViewById(R.id.text_view_version);
-			version.setText(this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName);
-			
+			version.setText("v"
+					+ this.getPackageManager().getPackageInfo(
+							this.getPackageName(), 0).versionName);
+
 			ArrayList<String> parameters = new ArrayList<String>();
 
 			SharedPreferences prefs = PreferenceManager
@@ -329,6 +259,10 @@ public class DisplayPanesActivity extends Activity {
 			ArrayList<SmsRecordRepDbStatus> recordsArray = dbHelper
 					.getLastRecordsRepDbStatus(5, parameters);
 
+			// TODO показывать, только если нужно
+			ArrayList<SmsRecordAbonDynamic> abonDynamics = dbHelper
+					.getLastRecordsAbonDynamic();
+
 			// GoldenGate
 			if (prefs.getBoolean("show_golden_gate_status", true)) {
 				showGoldenGate(recordsArray);
@@ -384,6 +318,11 @@ public class DisplayPanesActivity extends Activity {
 				showSvobodno(recordsArray);
 			}
 
+			// Динамика абонентов
+			if (prefs.getBoolean("show_abon_dynamic", true)) {
+				showAbonDynamic(abonDynamics);
+			}
+
 		} catch (Exception ex) {
 			MainActivity.writeLog(ex);
 		}
@@ -436,7 +375,7 @@ public class DisplayPanesActivity extends Activity {
 		}
 
 	}
-	
+
 	public void addAll(View view) {
 
 		try {
@@ -1191,6 +1130,12 @@ public class DisplayPanesActivity extends Activity {
 				}
 			}
 		}
+	}
+
+	private void showAbonDynamic(ArrayList<SmsRecordAbonDynamic> abonDynamics) {
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater.inflate()
+
 	}
 
 	public static int getDaysAmount() {

@@ -36,6 +36,7 @@
     <string name="vchera_upalo_label">ВЧЕРА_УПАЛО</string>
     <string name="padalo_sem_dney_label">ПАДАЛО_7_ДНЕЙ</string>
     <string name="svobodno_label">СВОБОДНО</string>
+    <string name="abon_dynamic_label">Динамика АБ</string>
     
     <string name="label_one">1</string>
     <string name="label_two">2</string>
@@ -48,6 +49,11 @@
     <string name="label_content_description_value_three">День 3</string>
     <string name="label_content_description_value_four">День 4</string>
     <string name="label_content_description_value_five">День 5</string>
+    
+    <string name="abon_dynamic_region">Рег</string>
+    <string name="abon_dynamic_delivery_subs">Прит</string>
+    <string name="abon_dynamic_churn">Отт</string>
+    <string name="abon_dynamic_trend">Тренд B2C</string>
     
     <string name="action_about">История изменений</string>
 

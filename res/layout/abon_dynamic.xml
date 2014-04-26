@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <LinearLayout
+        android:id="@+id/abonDynamicLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/status_linear_layout_bottom_margin"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="@dimen/status_linear_layout_top_margin"
+        android:background="@drawable/card"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/abonDynamicLable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/abon_dynamic_label" />
+
+        <TableLayout
+            android:id="@+id/abonDynamicTableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:stretchColumns="*" >
+
+            <TableRow
+                android:id="@+id/abonDynamicTableRowDays"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal" >
+                <TextView
+                    android:id="@+id/abonDynamicRegion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="@string/abon_dynamic_region" />
+
+                <TextView
+                    android:id="@+id/abonDynamicDeliverySubs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="@string/abon_dynamic_delivery_subs" />
+
+                <TextView
+                    android:id="@+id/abonDynamicChurn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="@string/abon_dynamic_churn" />
+
+                <TextView
+                    android:id="@+id/abonDynamicTrend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/status_linear_layout_bottom_margin"
+                    android:paddingTop="@dimen/status_linear_layout_top_margin"
+                    android:text="@string/abon_dynamic_trend" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/abonDynamicTableRowValues"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal" >
+
+                <
+                
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+</merge>
